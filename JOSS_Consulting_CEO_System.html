@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOSS Consulting Group — CEO Operations System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coral:    #E8715A;
+  --coral-dk: #C4503C;
+  --coral-lt: #F5C4BA;
+  --coral-xl: #FDF0ED;
+  --sage:     #7A9E7E;
+  --sage-dk:  #4E7254;
+  --sage-lt:  #C8DEC9;
+  --sage-xl:  #EEF5EE;
+  --black:    #141414;
+  --charcoal: #2A2A2A;
+  --gray-dk:  #555555;
+  --gray-md:  #888888;
+  --gray-lt:  #CCCCCC;
+  --gray-xl:  #F4F4F2;
+  --white:    #FFFFFF;
+  --cream:    #FAFAF8;
+  --border:   #E8E5E0;
+  --radius:   12px;
+  --radius-sm:8px;
+  --shadow:   0 2px 12px rgba(20,20,20,0.08);
+  --shadow-md:0 4px 24px rgba(20,20,20,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--cream);
+  color: var(--black);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── LAYOUT ── */
+.shell { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.brand-block {
+  padding: 28px 24px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+.brand-name span { color: var(--coral); }
+.brand-locations {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+.brand-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  background: var(--coral);
+  color: var(--white);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 99px;
+}
+
+.nav-section {
+  padding: 18px 14px 8px;
+}
+.nav-section-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  padding: 0 10px;
+  margin-bottom: 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.18s;
+  color: rgba(255,255,255,0.55);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+.nav-item.active {
+  background: var(--coral);
+  color: var(--white);
+  font-weight: 600;
+}
+.nav-icon {
+  width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.nav-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7);
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,0.25); color: var(--white); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-date {
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 2px;
+}
+.sidebar-time {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Jost', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.topbar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--black);
+}
+.topbar-title span { color: var(--coral); }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-loc {
+  font-size: 11px;
+  color: var(--gray-md);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.loc-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--sage);
+  animation: breathe 3s infinite;
+}
+@keyframes breathe { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── PANELS ── */
+.panel { display: none; padding: 28px 32px 60px; }
+.panel.active { display: block; }
+
+/* ── SECTION HEADERS ── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--black);
+}
+.section-sub {
+  font-size: 12px;
+  color: var(--gray-md);
+  margin-top: 2px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+}
+
+/* ── KPI GRID ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 22px; }
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s;
+}
+.kpi-card:hover { box-shadow: var(--shadow-md); }
+.kpi-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+.kpi-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-md); margin-bottom: 6px; }
+.kpi-value { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--black); line-height: 1; }
+.kpi-change { font-size: 11px; color: var(--sage-dk); margin-top: 5px; font-weight: 500; }
+.kpi-change.down { color: var(--coral); }
+
+/* ── TWO COL ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+
+/* ── CLOCK SECTION ── */
+.clock-hero {
+  background: var(--black);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.clock-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(232,113,90,0.08);
+}
+.clock-time-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.clock-time-big.running { color: var(--coral-lt); }
+.clock-status-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+.clock-elapsed { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 5px; }
+.clock-btns { display: flex; flex-direction: column; gap: 8px; }
+
+/* ── BUTTONS ── */
+.btn {
+  padding: 11px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-coral { background: var(--coral); color: var(--white); }
+.btn-coral:hover:not(:disabled) { background: var(--coral-dk); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(232,113,90,0.35); }
+.btn-sage { background: var(--sage); color: var(--white); }
+.btn-sage:hover:not(:disabled) { background: var(--sage-dk); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--charcoal); border: 1.5px solid var(--border); }
+.btn-outline:hover:not(:disabled) { border-color: var(--gray-lt); background: var(--gray-xl); }
+.btn-black { background: var(--black); color: var(--white); }
+.btn-black:hover:not(:disabled) { background: var(--charcoal); transform: translateY(-1px); }
+.btn-danger { background: #FEE2E2; color: #B91C1C; border: 1px solid #FECACA; }
+.btn-danger:hover:not(:disabled) { background: #FECACA; }
+.btn-sm { padding: 7px 14px; font-size: 11px; }
+.btn-full { width: 100%; padding: 14px; font-size: 13px; }
+
+/* ── STAT COUNTERS ── */
+.stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 18px; }
+.stat-tile {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+.stat-tile:hover { box-shadow: var(--shadow); }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.stat-lbl { font-size: 10px; color: var(--gray-md); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+.stat-adj { display: flex; gap: 4px; justify-content: center; margin-top: 8px; }
+.adj-btn {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--gray-xl);
+  color: var(--gray-dk);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.adj-btn:hover { border-color: var(--coral-lt); color: var(--coral); background: var(--coral-xl); }
+.adj-btn:active { transform: scale(0.9); }
+
+/* ── OFFER CARDS ── */
+.offers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.offer-tile {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.offer-tile:hover { border-color: var(--coral-lt); transform: translateY(-2px); box-shadow: var(--shadow); }
+.offer-tile.free-offer { border-color: var(--sage-lt); }
+.offer-tile.free-offer:hover { border-color: var(--sage); }
+.offer-tile.selected { border-color: var(--coral); background: var(--coral-xl); }
+.offer-tile.selected::after { content: '✓'; position: absolute; top: 8px; right: 10px; font-size: 12px; color: var(--coral); font-weight: 700; }
+.offer-price { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
+.offer-price.free { color: var(--sage-dk); }
+.offer-name { font-size: 11px; font-weight: 600; color: var(--charcoal); }
+.offer-tag { display: inline-block; margin-top: 5px; padding: 2px 8px; border-radius: 99px; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.tag-lead { background: var(--sage-lt); color: var(--sage-dk); }
+.tag-core { background: var(--coral-xl); color: var(--coral-dk); }
+.tag-premium { background: #F3F0FF; color: #5B21B6; }
+.tag-custom { background: var(--gray-xl); color: var(--gray-dk); }
+
+/* ── CUSTOM SALE ROW ── */
+.custom-row { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
+.input {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 13px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: var(--black);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus { border-color: var(--coral-lt); box-shadow: 0 0 0 3px rgba(232,113,90,0.08); }
+.input::placeholder { color: var(--gray-lt); }
+
+/* ── ENERGY ── */
+.energy-card { margin-bottom: 16px; }
+.energy-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.energy-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; }
+.energy-emoji { font-size: 22px; }
+input[type=range] {
+  width: 100%; -webkit-appearance: none;
+  height: 5px; border-radius: 99px;
+  background: var(--gray-xl); outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--coral);
+  cursor: pointer;
+  border: 3px solid var(--white);
+  box-shadow: 0 0 0 1.5px var(--coral-lt);
+}
+.energy-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--gray-md); margin-top: 5px; }
+
+/* ── TASKS ── */
+.task-group { margin-bottom: 20px; }
+.task-group-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  padding: 7px 12px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  margin-bottom: 0;
+}
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.task-item:last-child { border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+.task-item:hover { background: var(--gray-xl); }
+.task-item.done { opacity: 0.55; }
+.task-check {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  transition: all 0.15s;
+}
+.task-check.checked { background: var(--sage); border-color: var(--sage); color: var(--white); }
+.task-text { font-size: 13px; color: var(--charcoal); line-height: 1.4; flex: 1; }
+.task-text.done { text-decoration: line-through; color: var(--gray-md); }
+.task-priority {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 99px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.pri-high { background: #FEE2E2; color: #B91C1C; }
+.pri-med { background: var(--coral-xl); color: var(--coral-dk); }
+.pri-low { background: var(--sage-xl); color: var(--sage-dk); }
+
+/* ── CRM TABLE ── */
+.crm-toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.crm-search {
+  flex: 1;
+  min-width: 200px;
+}
+.crm-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead {
+  background: var(--black);
+  color: var(--white);
+  position: sticky;
+  top: 0;
+}
+th {
+  padding: 11px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--gray-xl); }
+.status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.s-active { background: var(--sage-lt); color: var(--sage-dk); }
+.s-lead { background: var(--coral-xl); color: var(--coral-dk); }
+.s-done { background: var(--gray-xl); color: var(--gray-dk); }
+.s-vip { background: #F3F0FF; color: #5B21B6; }
+.s-followup { background: #FEF3C7; color: #92400E; }
+.client-name { font-weight: 600; color: var(--black); }
+.client-handle { font-size: 11px; color: var(--gray-md); }
+.client-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── ADD CLIENT FORM ── */
+.add-client-form {
+  display: none;
+  background: var(--gray-xl);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.add-client-form.open { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.form-group label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-dk); margin-bottom: 5px; }
+select.input { width: 100%; cursor: pointer; }
+
+/* ── ACTIVITY LOG ── */
+.log-entry {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.log-entry:last-child { border-bottom: none; }
+.log-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.log-dot.sale { background: var(--coral); }
+.log-dot.ci { background: var(--sage); }
+.log-dot.co { background: var(--black); }
+.log-dot.task { background: var(--gray-lt); }
+.log-txt { font-size: 12px; color: var(--charcoal); }
+.log-time { font-size: 10px; color: var(--gray-md); margin-top: 2px; }
+
+/* ── SUMMARY MODAL ── */
+.modal-ov {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(20,20,20,0.7);
+  z-index: 200;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-ov.open { display: flex; }
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 28px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-md);
+  animation: modalIn 0.25s ease;
+  max-height: 90vh; overflow-y: auto;
+}
+@keyframes modalIn { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:scale(1)} }
+.modal-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--coral);
+}
+.modal-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.modal-row:last-of-type { border-bottom: none; }
+.modal-lbl { color: var(--gray-dk); }
+.modal-val { font-weight: 600; color: var(--black); }
+.modal-val.money { color: var(--coral); font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; }
+.data-box {
+  margin-top: 14px;
+  background: var(--gray-xl);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--gray-dk);
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.7;
+}
+.modal-btns { display: flex; gap: 8px; margin-top: 16px; }
+.modal-btns .btn { flex: 1; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--black);
+  color: var(--white);
+  padding: 11px 24px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  border-left: 3px solid var(--coral);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap { background: var(--gray-xl); border-radius: 99px; height: 6px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 99px; background: var(--coral); transition: width 0.4s; }
+
+textarea.input { min-height: 70px; resize: vertical; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="brand-block">
+    <div class="brand-name">JOSS <span>Consulting</span><br>Group</div>
+    <div class="brand-locations">Orlando · Columbus</div>
+    <div class="brand-badge">CEO System</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Operations</div>
+    <div class="nav-item active" onclick="showPanel('dashboard',this)">
+      <div class="nav-icon">◈</div> Dashboard
+    </div>
+    <div class="nav-item" onclick="showPanel('clock',this)">
+      <div class="nav-icon">◷</div> Clock In/Out
+    </div>
+    <div class="nav-item" onclick="showPanel('tasks',this)">
+      <div class="nav-icon">✓</div> Task Manager
+      <span class="nav-badge" id="taskBadge">0</span>
+    </div>
+    <div class="nav-item" onclick="showPanel('sales',this)">
+      <div class="nav-icon">$</div> Log a Sale
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Clients</div>
+    <div class="nav-item" onclick="showPanel('crm',this)">
+      <div class="nav-icon">⊞</div> Client CRM
+      <span class="nav-badge" id="crmBadge">0</span>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Review</div>
+    <div class="nav-item" onclick="showPanel('review',this)">
+      <div class="nav-icon">⊙</div> Weekly Review
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-date" id="sbDate"></div>
+    <div class="sidebar-time" id="sbTime"></div>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div class="main">
+<div class="topbar">
+  <div class="topbar-title">JOSS <span>Consulting</span> Group</div>
+  <div class="topbar-right">
+    <div class="topbar-loc">
+      <div class="loc-dot"></div>
+      Orlando · Columbus
+    </div>
+    <button class="btn btn-coral btn-sm" onclick="submitDay()">Submit Day</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════ -->
+<div class="panel active" id="panel-dashboard">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Good morning — let's build ✦</div>
+      <div class="section-sub" id="dashDate">Loading date...</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--coral)"></div>
+      <div class="kpi-label">Today's Revenue</div>
+      <div class="kpi-value" id="dRevenue">$0</div>
+      <div class="kpi-change" id="dRevenueChange">+ $0 from sales</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--sage)"></div>
+      <div class="kpi-label">Sales Closed</div>
+      <div class="kpi-value" id="dSales">0</div>
+      <div class="kpi-change" id="dSalesChange">No sales yet today</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--black)"></div>
+      <div class="kpi-label">Active Clients</div>
+      <div class="kpi-value" id="dClients">0</div>
+      <div class="kpi-change">Total in CRM: <span id="dClientsTotal">0</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-accent" style="background:var(--coral-lt)"></div>
+      <div class="kpi-label">Tasks Done</div>
+      <div class="kpi-value" id="dTasks">0%</div>
+      <div class="kpi-change" id="dTasksSub">0 of 0 complete</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:12px">Today's Activity</div>
+      <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px;color:var(--gray-dk)">Reels</span>
+          <span style="font-weight:700;font-family:'Playfair Display',serif;font-size:18px" id="dStatReels">0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px;color:var(--gray-dk)">DMs</span>
+          <span style="font-weight:700;font-family:'Playfair Display',serif;font-size:18px" id="dStatDMs">0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px;color:var(--gray-dk)">Follow-ups</span>
+          <span style="font-weight:700;font-family:'Playfair Display',serif;font-size:18px" id="dStatFU">0</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:12px;color:var(--gray-dk)">Leads In</span>
+          <span style="font-weight:700;font-family:'Playfair Display',serif;font-size:18px" id="dStatLeads">0</span>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <div style="font-size:10px;font-weight:600;color:var(--gray-md);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.08em">Shift Status</div>
+        <div style="font-size:13px;font-weight:600;color:var(--coral)" id="dShiftStatus">Not clocked in</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:12px">Recent Activity</div>
+      <div id="dashLog"><div style="font-size:12px;color:var(--gray-lt);text-align:center;padding:14px 0">No activity yet today.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md)">Daily Task Progress</div>
+      <div style="font-size:12px;color:var(--gray-dk)" id="dashTaskCount">0 / 0 tasks</div>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" id="dashTaskBar" style="width:0%"></div></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap" id="dashTaskQuick"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CLOCK IN / OUT
+════════════════════════════════════════ -->
+<div class="panel" id="panel-clock">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Clock In / Out</div>
+      <div class="section-sub">Track your money block. Every minute counts.</div>
+    </div>
+  </div>
+
+  <div class="clock-hero" id="clockHero">
+    <div>
+      <div class="clock-status-lbl" id="clockLabel">Ready to start your shift</div>
+      <div class="clock-time-big" id="clockBig">--:--:--</div>
+      <div class="clock-elapsed" id="clockElapsed"></div>
+    </div>
+    <div class="clock-btns">
+      <button class="btn btn-coral" id="btnIn" onclick="clockIn()">Clock In</button>
+      <button class="btn btn-outline" id="btnOut" onclick="clockOut()" disabled style="color:white;border-color:rgba(255,255,255,0.2)">Clock Out</button>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:14px">Today's Activity Counters</div>
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <div class="stat-num" style="color:var(--coral)" id="sReels">0</div>
+          <div class="stat-lbl">Reels</div>
+          <div class="stat-adj">
+            <button class="adj-btn" onclick="adj('reels',-1)">−</button>
+            <button class="adj-btn" onclick="adj('reels',1)">+</button>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num" style="color:var(--sage-dk)" id="sDMs">0</div>
+          <div class="stat-lbl">DMs Sent</div>
+          <div class="stat-adj">
+            <button class="adj-btn" onclick="adj('dms',-1)">−</button>
+            <button class="adj-btn" onclick="adj('dms',1)">+</button>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num" style="color:var(--charcoal)" id="sFU">0</div>
+          <div class="stat-lbl">Follow-ups</div>
+          <div class="stat-adj">
+            <button class="adj-btn" onclick="adj('fu',-1)">−</button>
+            <button class="adj-btn" onclick="adj('fu',1)">+</button>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num" style="color:var(--coral-dk)" id="sLeads">0</div>
+          <div class="stat-lbl">New Leads</div>
+          <div class="stat-adj">
+            <button class="adj-btn" onclick="adj('leads',-1)">−</button>
+            <button class="adj-btn" onclick="adj('leads',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:10px">Energy Level</div>
+      <div class="energy-card">
+        <div class="energy-header">
+          <div>
+            <div style="font-size:10px;color:var(--gray-md);margin-bottom:2px">How are you feeling?</div>
+            <div class="energy-num" id="eNum" style="color:var(--coral)">7</div>
+          </div>
+          <div class="energy-emoji" id="eEmoji">💪</div>
+        </div>
+        <input type="range" min="1" max="10" value="7" id="eSlider" oninput="setEnergy(this.value)">
+        <div class="energy-labels">
+          <span>Exhausted</span>
+          <span>Okay</span>
+          <span>On fire</span>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <label style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray-dk);display:block;margin-bottom:5px">Notes</label>
+        <textarea class="input" style="width:100%" id="notesField" placeholder="Wins, struggles, anything worth remembering..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-black btn-full" onclick="submitDay()">Submit Day Summary →</button>
+</div>
+
+<!-- ════════════════════════════════════════
+     TASKS
+════════════════════════════════════════ -->
+<div class="panel" id="panel-tasks">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Task Manager</div>
+      <div class="section-sub">Complete these every work day — Mon through Thu</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:11px;color:var(--gray-md);margin-bottom:4px" id="taskProgressLbl">0 / 0 complete</div>
+      <div class="progress-wrap" style="width:180px"><div class="progress-fill" id="taskBar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div id="taskList"></div>
+
+  <div class="card" style="margin-top:16px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:12px">Add Custom Task</div>
+    <div style="display:flex;gap:8px">
+      <input type="text" class="input" id="newTaskInput" placeholder="Enter task..." style="flex:3">
+      <select class="input" id="newTaskPri" style="flex:1">
+        <option value="high">High</option>
+        <option value="med" selected>Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <button class="btn btn-coral" onclick="addTask()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SALES
+════════════════════════════════════════ -->
+<div class="panel" id="panel-sales">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Log a Sale</div>
+      <div class="section-sub">Select an offer or enter a custom price</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:10px;color:var(--gray-md);text-transform:uppercase;letter-spacing:0.08em">Today's Revenue</div>
+      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--coral)" id="salesRevBig">$0</div>
+    </div>
+  </div>
+
+  <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:10px">Joss Consulting Group — Service Menu</div>
+  <div class="offers-grid" id="offersGrid"></div>
+
+  <div class="card" style="margin-bottom:14px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:12px">Custom / On-Demand Service</div>
+    <div class="custom-row">
+      <input type="text" class="input" id="cName" placeholder="Service name..." style="flex:2">
+      <input type="number" class="input" id="cPrice" placeholder="Price ($)" style="flex:1;max-width:100px">
+      <input type="text" class="input" id="cClient" placeholder="Client name..." style="flex:1.5">
+      <button class="btn btn-sage" onclick="addCustomSale()">Log Sale</button>
+    </div>
+  </div>
+
+  <button class="btn btn-coral" style="margin-bottom:14px;padding:12px 24px" onclick="logSelected()">Log Selected Offer as Sale</button>
+
+  <div class="card">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray-md);margin-bottom:12px">Today's Sales Log</div>
+    <div id="salesLogList"><div style="font-size:12px;color:var(--gray-lt);padding:10px 0">No sales recorded yet.</div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     CRM
+════════════════════════════════════════ -->
+<div class="panel" id="panel-crm">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Client CRM</div>
+      <div class="section-sub">Every client. Every status. Every dollar.</div>
+    </div>
+    <button class="btn btn-coral btn-sm" onclick="toggleAddClient()">+ Add Client</button>
+  </div>
+
+  <div class="add-client-form" id="addClientForm">
+    <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:var(--black)">New Client</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Full Name</label><input type="text" class="input" id="nc_name" placeholder="Jane Smith" style="width:100%"></div>
+      <div class="form-group"><label>@ Handle / Phone</label><input type="text" class="input" id="nc_handle" placeholder="@janesmithbiz" style="width:100%"></div>
+      <div class="form-group"><label>Service / Offer</label>
+        <select class="input" id="nc_service" style="width:100%">
+          <option>Free Lead Magnet</option>
+          <option>Starter Package — $49</option>
+          <option>Core Service — $197</option>
+          <option>Done-For-You — $999</option>
+          <option>Business Credit Coaching — $250</option>
+          <option>Consultation — $150</option>
+          <option>On-Demand / Custom</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Amount Paid ($)</label><input type="number" class="input" id="nc_amount" placeholder="0" style="width:100%"></div>
+      <div class="form-group"><label>Status</label>
+        <select class="input" id="nc_status" style="width:100%">
+          <option value="lead">Lead</option>
+          <option value="active">Active</option>
+          <option value="followup">Follow-up Needed</option>
+          <option value="done">Completed</option>
+          <option value="vip">VIP</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Location Source</label>
+        <select class="input" id="nc_loc" style="width:100%">
+          <option>Instagram</option>
+          <option>TikTok</option>
+          <option>Referral</option>
+          <option>GoHighLevel Funnel</option>
+          <option>Orlando Walk-In</option>
+          <option>Columbus Walk-In</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px"><label>Notes</label><textarea class="input" id="nc_notes" placeholder="Any notes about this client..." style="width:100%;min-height:50px"></textarea></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-coral" onclick="addClient()">Save Client</button>
+      <button class="btn btn-outline" onclick="toggleAddClient()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="crm-toolbar">
+    <input type="text" class="input crm-search" id="crmSearch" placeholder="Search clients..." oninput="filterCRM()">
+    <select class="input" id="crmFilter" onchange="filterCRM()" style="min-width:130px">
+      <option value="">All Statuses</option>
+      <option value="lead">Leads</option>
+      <option value="active">Active</option>
+      <option value="followup">Follow-up</option>
+      <option value="done">Completed</option>
+      <option value="vip">VIP</option>
+    </select>
+  </div>
+
+  <div class="crm-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Paid</th>
+          <th>Status</th>
+          <th>Source</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="crmBody"></tbody>
+    </table>
+  </div>
+  <div style="margin-top:10px;font-size:11px;color:var(--gray-md)" id="crmCount"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     WEEKLY REVIEW
+════════════════════════════════════════ -->
+<div class="panel" id="panel-review">
+  <div class="section-head">
+    <div>
+      <div class="section-title">Weekly CEO Review</div>
+      <div class="section-sub">Every Thursday — be honest, adjust fast, scale smart</div>
+    </div>
+  </div>
+  <div id="reviewForm"></div>
+  <button class="btn btn-black btn-full" style="margin-top:16px" onclick="saveReview()">Save Weekly Review</button>
+</div>
+
+</div><!-- end .main -->
+</div><!-- end .shell -->
+
+<!-- SUMMARY MODAL -->
+<div class="modal-ov" id="mOv">
+  <div class="modal-box">
+    <div class="modal-head">Day Summary — JOSS Consulting Group</div>
+    <div id="mRows"></div>
+    <div class="data-box" id="mCode"></div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="copyData()">Copy Data</button>
+      <button class="btn btn-coral" onclick="document.getElementById('mOv').classList.remove('open')">Done</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const ST = {
+  clockedIn: false, inT: null, outT: null,
+  stats: { reels:0, dms:0, fu:0, leads:0 },
+  sales: [], revenue: 0, selOffer: null,
+  energy: 7,
+  clients: [],
+  tasks: [],
+  log: [],
+  timerInterval: null,
+};
+
+// ── OFFERS ────────────────────────────────────────────────────────────────────
+const OFFERS = [
+  { name: "Free Lead Magnet",      price: 0,   tag: "lead",    tagLabel: "Lead Gen",   desc: "Capture & nurture" },
+  { name: "Starter Package",       price: 49,  tag: "core",    tagLabel: "Entry",      desc: "First step in" },
+  { name: "Core Service",          price: 197, tag: "core",    tagLabel: "Core",       desc: "Main offering" },
+  { name: "Done-For-You Service",  price: 999, tag: "premium", tagLabel: "Premium",    desc: "Full service DFY" },
+  { name: "Biz Credit Coaching",   price: 250, tag: "core",    tagLabel: "Coaching",   desc: "1:1 credit coaching" },
+  { name: "Consultation",          price: 150, tag: "core",    tagLabel: "Consult",    desc: "Strategy session" },
+];
+
+// ── DEFAULT TASKS ─────────────────────────────────────────────────────────────
+const DEFAULT_TASKS = [
+  { group: "Content", label: "Post 1 Reel or TikTok",             priority: "high",  done: false },
+  { group: "Content", label: "Batch 3 content pieces (Mon only)", priority: "med",   done: false },
+  { group: "Content", label: "Post in both English + Creole",     priority: "med",   done: false },
+  { group: "Sales",   label: "Respond to ALL DMs",                priority: "high",  done: false },
+  { group: "Sales",   label: "Follow up 5-10 leads",              priority: "high",  done: false },
+  { group: "Sales",   label: "Push one offer (Story/DM/Reel CTA)", priority: "high", done: false },
+  { group: "Sales",   label: "Send 10 new DM outreach messages",  priority: "med",   done: false },
+  { group: "Growth",  label: "Complete 30-60 min skill block",    priority: "med",   done: false },
+  { group: "Growth",  label: "Engage on 10+ posts in niche",      priority: "low",   done: false },
+  { group: "Systems", label: "Update all trackers",               priority: "med",   done: false },
+  { group: "Systems", label: "Log energy level + notes",          priority: "low",   done: false },
+  { group: "Systems", label: "Submit day summary",                priority: "high",  done: false },
+];
+
+// ── WEEKLY REVIEW QUESTIONS ───────────────────────────────────────────────────
+const REVIEW_QS = [
+  { section:"Money",   q:"What made me money this week?" },
+  { section:"Money",   q:"Total revenue this week ($)?" },
+  { section:"Money",   q:"How many sales did I close?" },
+  { section:"Content", q:"Which post performed best?" },
+  { section:"Content", q:"Did I post every work day? (Y/N)" },
+  { section:"Content", q:"Did I post in English + Creole? (Y/N)" },
+  { section:"Sales",   q:"Did I follow up with everyone? (Y/N)" },
+  { section:"Sales",   q:"What objections did I hear most?" },
+  { section:"Energy",  q:"Average energy level (1-10)?" },
+  { section:"Energy",  q:"Where did I waste time?" },
+  { section:"Systems", q:"Is my tracking system working? (Y/N)" },
+  { section:"NextWeek",q:"#1 income priority next week?" },
+  { section:"NextWeek",q:"What will I STOP doing?" },
+  { section:"NextWeek",q:"What will I START doing?" },
+];
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const fmtM = n => n === 0 ? 'Free' : '$' + n.toLocaleString('en-US', {minimumFractionDigits:0});
+const fmtT = t => t.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+const fmtTS = t => t.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+const fmtD = t => t.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+const initials = name => name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const AVATAR_COLORS = ['#E8715A','#7A9E7E','#141414','#C4503C','#4E7254'];
+
+function toast(msg, color) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.style.borderLeftColor = color || 'var(--coral)';
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 2700);
+}
+
+// ── CLOCK ─────────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  $('clockBig').textContent = fmtT(now);
+  $('sbTime').textContent = fmtT(now);
+  $('sbDate').textContent = now.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+  $('dashDate').textContent = fmtD(now);
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function clockIn() {
+  if (ST.clockedIn) return;
+  ST.clockedIn = true; ST.inT = new Date();
+  $('btnIn').disabled = true; $('btnOut').disabled = false;
+  $('clockHero').style.background = 'var(--charcoal)';
+  $('clockLabel').textContent = 'Money Block Active';
+  $('clockBig').classList.add('running');
+  $('dShiftStatus').textContent = '🟢 Clocked in — Money Block';
+  ST.timerInterval = setInterval(() => {
+    $('clockElapsed').textContent = elapsedStr(ST.inT);
+  }, 1000);
+  addLog('ci', `Clocked in at ${fmtTS(ST.inT)}`);
+  toast('Clocked in! Let\'s make money 💚', 'var(--sage)');
+  updateDash();
+}
+
+function clockOut() {
+  if (!ST.clockedIn) return;
+  ST.clockedIn = false; ST.outT = new Date();
+  clearInterval(ST.timerInterval);
+  const hs = hoursStr(ST.inT, ST.outT);
+  $('btnIn').disabled = false; $('btnOut').disabled = true;
+  $('clockHero').style.background = '';
+  $('clockLabel').textContent = `Shift complete — ${hs} worked`;
+  $('clockBig').classList.remove('running');
+  $('clockElapsed').textContent = `Total: ${hs}`;
+  $('dShiftStatus').textContent = `✓ Clocked out — ${hs} worked`;
+  addLog('co', `Clocked out at ${fmtTS(ST.outT)} — ${hs} worked`);
+  toast(`Shift done! ${hs} on the clock 🔥`);
+  updateDash();
+}
+
+function elapsedStr(from) {
+  const sec = Math.floor((Date.now() - from) / 1000);
+  const h = Math.floor(sec / 3600), m = Math.floor((sec%3600)/60), s = sec%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} elapsed`;
+}
+
+function hoursStr(from, to) {
+  const sec = Math.floor((to - from) / 1000);
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
+  return `${h}h ${m}m`;
+}
+
+// ── STATS ─────────────────────────────────────────────────────────────────────
+function adj(key, d) {
+  ST.stats[key] = Math.max(0, ST.stats[key] + d);
+  const map = { reels:'sReels', dms:'sDMs', fu:'sFU', leads:'sLeads' };
+  $(map[key]).textContent = ST.stats[key];
+  updateDash();
+}
+
+function setEnergy(v) {
+  ST.energy = parseInt(v);
+  const emojis = ['','😴','😩','😔','😐','🙂','😊','💪','🔥','⚡','🚀'];
+  const colors = ['','#E8715A','#E8715A','#C4503C','#888','#7A9E7E','#7A9E7E','#4E7254','#E8715A','#E8715A','var(--black)'];
+  $('eNum').textContent = v;
+  $('eNum').style.color = colors[v];
+  $('eEmoji').textContent = emojis[v] || '😊';
+}
+
+// ── OFFERS ────────────────────────────────────────────────────────────────────
+function buildOffers() {
+  $('offersGrid').innerHTML = OFFERS.map((o, i) => `
+    <div class="offer-tile${ST.selOffer===i?' selected':''}${o.tag==='lead'?' free-offer':''}" onclick="selOffer(${i})">
+      <div class="offer-price${o.price===0?' free':''}">${fmtM(o.price)}</div>
+      <div class="offer-name">${o.name}</div>
+      <div class="offer-tag tag-${o.tag}">${o.tagLabel}</div>
+    </div>`).join('');
+}
+
+function selOffer(i) {
+  ST.selOffer = ST.selOffer === i ? null : i;
+  buildOffers();
+}
+
+function logSelected() {
+  if (ST.selOffer === null) { toast('Select an offer first!', 'var(--coral)'); return; }
+  const o = OFFERS[ST.selOffer];
+  recordSale(o.name, o.price, '');
+  ST.selOffer = null; buildOffers();
+}
+
+function addCustomSale() {
+  const name = $('cName').value.trim() || 'Custom Service';
+  const price = parseFloat($('cPrice').value) || 0;
+  const client = $('cClient').value.trim();
+  recordSale(name, price, client);
+  $('cName').value = ''; $('cPrice').value = ''; $('cClient').value = '';
+}
+
+function recordSale(name, price, client) {
+  const sale = { name, price, client, time: new Date() };
+  ST.sales.push(sale);
+  ST.revenue += price;
+  $('salesRevBig').textContent = fmtM(ST.revenue);
+  renderSalesLog();
+  addLog('sale', `SALE: ${name} — ${fmtM(price)}${client ? ' (' + client + ')' : ''}`);
+  toast(`${fmtM(price)} sale recorded! 🎉`);
+  updateDash();
+}
+
+function renderSalesLog() {
+  if (!ST.sales.length) {
+    $('salesLogList').innerHTML = '<div style="font-size:12px;color:var(--gray-lt);padding:10px 0">No sales yet.</div>';
+    return;
+  }
+  $('salesLogList').innerHTML = ST.sales.map((s,i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--black)">${s.name}</div>
+        <div style="font-size:10px;color:var(--gray-md)">${fmtTS(s.time)}${s.client?' · '+s.client:''}</div>
+      </div>
+      <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--coral)">${fmtM(s.price)}</div>
+    </div>`).join('');
+}
+
+// ── TASKS ─────────────────────────────────────────────────────────────────────
+function initTasks() {
+  ST.tasks = DEFAULT_TASKS.map(t => ({...t}));
+  renderTasks();
+}
+
+function renderTasks() {
+  const groups = {};
+  ST.tasks.forEach((t,i) => {
+    if (!groups[t.group]) groups[t.group] = [];
+    groups[t.group].push({...t, idx: i});
+  });
+  const groupColors = { Content: 'var(--coral)', Sales: 'var(--sage-dk)', Growth: 'var(--charcoal)', Systems: 'var(--gray-dk)' };
+  $('taskList').innerHTML = Object.entries(groups).map(([g, tasks]) => `
+    <div class="task-group">
+      <div class="task-group-label" style="background:${groupColors[g]||'var(--charcoal)'}">${g}</div>
+      ${tasks.map(t => `
+        <div class="task-item${t.done?' done':''}" onclick="toggleTask(${t.idx})">
+          <div class="task-check${t.done?' checked'}">${t.done?'✓':''}</div>
+          <div class="task-text${t.done?' done'}">${t.label}</div>
+          <div class="task-priority pri-${t.priority}">${t.priority}</div>
+        </div>`).join('')}
+    </div>`).join('');
+  updateTaskProgress();
+}
+
+function toggleTask(i) {
+  ST.tasks[i].done = !ST.tasks[i].done;
+  renderTasks();
+  updateDash();
+}
+
+function addTask() {
+  const txt = $('newTaskInput').value.trim();
+  if (!txt) return;
+  ST.tasks.push({ group: 'Custom', label: txt, priority: $('newTaskPri').value, done: false });
+  $('newTaskInput').value = '';
+  renderTasks();
+  toast('Task added!', 'var(--sage)');
+}
+
+function updateTaskProgress() {
+  const total = ST.tasks.length;
+  const done = ST.tasks.filter(t => t.done).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  $('taskProgressLbl').textContent = `${done} / ${total} complete`;
+  $('taskBar').style.width = pct + '%';
+  $('taskBadge').textContent = total - done;
+}
+
+// ── CRM ───────────────────────────────────────────────────────────────────────
+function toggleAddClient() {
+  $('addClientForm').classList.toggle('open');
+}
+
+function addClient() {
+  const name = $('nc_name').value.trim();
+  if (!name) { toast('Enter a client name', 'var(--coral)'); return; }
+  const c = {
+    id: Date.now(),
+    name,
+    handle: $('nc_handle').value.trim(),
+    service: $('nc_service').value,
+    amount: parseFloat($('nc_amount').value) || 0,
+    status: $('nc_status').value,
+    source: $('nc_loc').value,
+    notes: $('nc_notes').value.trim(),
+    added: new Date(),
+  };
+  ST.clients.unshift(c);
+  $('nc_name').value=''; $('nc_handle').value=''; $('nc_amount').value=''; $('nc_notes').value='';
+  toggleAddClient();
+  renderCRM();
+  updateDash();
+  toast(`${name} added to CRM!`, 'var(--sage)');
+}
+
+function deleteClient(id) {
+  ST.clients = ST.clients.filter(c => c.id !== id);
+  renderCRM(); updateDash();
+  toast('Client removed');
+}
+
+function updateClientStatus(id, status) {
+  const c = ST.clients.find(c => c.id === id);
+  if (c) { c.status = status; renderCRM(); updateDash(); }
+}
+
+const STATUS_MAP = {
+  lead:     { label:'Lead',       cls:'s-lead' },
+  active:   { label:'Active',     cls:'s-active' },
+  followup: { label:'Follow-up',  cls:'s-followup' },
+  done:     { label:'Completed',  cls:'s-done' },
+  vip:      { label:'VIP',        cls:'s-vip' },
+};
+
+function renderCRM(filtered) {
+  const list = filtered || ST.clients;
+  $('crmCount').textContent = `Showing ${list.length} of ${ST.clients.length} clients`;
+  $('crmBadge').textContent = ST.clients.length;
+  if (!list.length) {
+    $('crmBody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--gray-lt);font-size:12px">No clients yet — add your first one above.</td></tr>`;
+    return;
+  }
+  $('crmBody').innerHTML = list.map(c => {
+    const s = STATUS_MAP[c.status] || STATUS_MAP.lead;
+    const col = AVATAR_COLORS[c.name.charCodeAt(0) % AVATAR_COLORS.length];
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="client-avatar" style="background:${col};color:white">${initials(c.name)}</div>
+          <div>
+            <div class="client-name">${c.name}</div>
+            <div class="client-handle">${c.handle || '—'}</div>
+          </div>
+        </div>
+      </td>
+      <td style="font-size:12px;color:var(--gray-dk)">${c.service}</td>
+      <td style="font-family:'Playfair Display',serif;font-weight:700;color:var(--coral)">${c.amount>0?fmtM(c.amount):'Free'}</td>
+      <td>
+        <select onchange="updateClientStatus(${c.id},this.value)" style="border:none;background:transparent;font-size:12px;cursor:pointer;color:var(--charcoal);font-family:'Jost',sans-serif">
+          ${Object.entries(STATUS_MAP).map(([k,v])=>`<option value="${k}"${c.status===k?' selected':''}>${v.label}</option>`).join('')}
+        </select>
+      </td>
+      <td style="font-size:11px;color:var(--gray-md)">${c.source}</td>
+      <td style="font-size:11px;color:var(--gray-dk);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.notes||'—'}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteClient(${c.id})">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterCRM() {
+  const q = $('crmSearch').value.toLowerCase();
+  const f = $('crmFilter').value;
+  const list = ST.clients.filter(c =>
+    (!q || c.name.toLowerCase().includes(q) || (c.handle||'').toLowerCase().includes(q) || c.service.toLowerCase().includes(q)) &&
+    (!f || c.status === f)
+  );
+  renderCRM(list);
+}
+
+// ── WEEKLY REVIEW ─────────────────────────────────────────────────────────────
+function buildReview() {
+  const secColors = { Money:'var(--coral)', Content:'var(--sage-dk)', Sales:'var(--charcoal)', Energy:'var(--gray-dk)', Systems:'var(--sage-dk)', NextWeek:'var(--black)' };
+  const grouped = {};
+  REVIEW_QS.forEach(q => {
+    if (!grouped[q.section]) grouped[q.section] = [];
+    grouped[q.section].push(q.q);
+  });
+  $('reviewForm').innerHTML = Object.entries(grouped).map(([sec, qs]) => `
+    <div class="card" style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid ${secColors[sec]||'var(--border)'}">
+        <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--black)">${sec}</div>
+      </div>
+      ${qs.map((q,i) => `
+        <div style="margin-bottom:12px">
+          <label style="font-size:11px;font-weight:600;color:var(--gray-dk);display:block;margin-bottom:4px">${q}</label>
+          <input type="text" class="input" placeholder="Your answer..." style="width:100%" id="rq_${sec}_${i}">
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function saveReview() {
+  toast('Weekly review saved! Great CEO work ✓', 'var(--sage)');
+}
+
+// ── DASHBOARD UPDATE ─────────────────────────────────────────────────────────
+function updateDash() {
+  $('dRevenue').textContent = fmtM(ST.revenue);
+  $('dRevenueChange').textContent = ST.sales.length > 0 ? `${ST.sales.length} sale${ST.sales.length>1?'s':''} today` : '+ $0 from sales';
+  $('dSales').textContent = ST.sales.length;
+  $('dSalesChange').textContent = ST.sales.length > 0 ? ST.sales.map(s=>s.name).join(', ') : 'No sales yet today';
+  const active = ST.clients.filter(c => c.status === 'active').length;
+  $('dClients').textContent = active;
+  $('dClientsTotal').textContent = ST.clients.length;
+  const total = ST.tasks.length, done = ST.tasks.filter(t=>t.done).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  $('dTasks').textContent = pct + '%';
+  $('dTasksSub').textContent = `${done} of ${total} complete`;
+  $('dashTaskCount').textContent = `${done} / ${total} tasks`;
+  $('dashTaskBar').style.width = pct + '%';
+  $('dStatReels').textContent = ST.stats.reels;
+  $('dStatDMs').textContent = ST.stats.dms;
+  $('dStatFU').textContent = ST.stats.fu;
+  $('dStatLeads').textContent = ST.stats.leads;
+  const quickTasks = ST.tasks.filter(t => t.priority === 'high').slice(0, 4);
+  $('dashTaskQuick').innerHTML = quickTasks.map((t,i) => `
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;padding:5px 10px;border-radius:99px;background:${t.done?'var(--sage-lt)':'var(--coral-xl)'};color:${t.done?'var(--sage-dk)':'var(--coral-dk)'}">
+      <span>${t.done?'✓':'○'}</span> ${t.label}
+    </div>`).join('');
+  $('dashLog').innerHTML = ST.log.length
+    ? ST.log.slice(0,5).map(e=>`
+        <div class="log-entry">
+          <div class="log-dot ${e.type}"></div>
+          <div><div class="log-txt">${e.text}</div><div class="log-time">${fmtTS(e.time)}</div></div>
+        </div>`).join('')
+    : '<div style="font-size:12px;color:var(--gray-lt);padding:10px 0">No activity yet today.</div>';
+}
+
+function addLog(type, text) {
+  ST.log.unshift({ type, text, time: new Date() });
+  updateDash();
+}
+
+// ── SUBMIT DAY ────────────────────────────────────────────────────────────────
+function submitDay() {
+  const now = new Date();
+  const inT = ST.inT ? fmtTS(ST.inT) : 'Not recorded';
+  const outT = ST.outT ? fmtTS(ST.outT) : ST.clockedIn ? 'Still working' : 'Not recorded';
+  let hs = '—';
+  if (ST.inT) { const end = ST.outT || now; hs = hoursStr(ST.inT, end); }
+  const rows = [
+    { l:'Business', v:'JOSS Consulting Group' },
+    { l:'Date', v:now.toLocaleDateString('en-US') },
+    { l:'Clock In', v:inT }, { l:'Clock Out', v:outT },
+    { l:'Hours Worked', v:hs },
+    { l:'Reels Created', v:ST.stats.reels },
+    { l:'DMs Sent', v:ST.stats.dms },
+    { l:'Follow-Ups', v:ST.stats.fu },
+    { l:'New Leads', v:ST.stats.leads },
+    { l:'Sales Closed', v:ST.sales.length },
+    { l:'Revenue', v:fmtM(ST.revenue), m:true },
+    { l:'Energy Level', v:ST.energy + '/10' },
+    { l:'Notes', v:$('notesField').value || '—' },
+  ];
+  $('mRows').innerHTML = rows.map(r =>
+    `<div class="modal-row"><span class="modal-lbl">${r.l}</span><span class="modal-val${r.m?' money':''}">${r.v}</span></div>`
+  ).join('');
+  window._csv = rows.map(r => `${r.l}: ${r.v}`).join('\n');
+  $('mCode').textContent = window._csv;
+  $('mOv').classList.add('open');
+}
+
+function copyData() {
+  navigator.clipboard.writeText(window._csv || '').catch(()=>{});
+  toast('Data copied to clipboard!', 'var(--sage)');
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showPanel(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  $('panel-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = { dashboard:'Dashboard', clock:'Clock In / Out', tasks:'Task Manager', sales:'Log a Sale', crm:'Client CRM', review:'Weekly Review' };
+  document.querySelector('.topbar-title').innerHTML = `JOSS <span>Consulting</span> Group — ${titles[name]||''}`;
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+buildOffers();
+initTasks();
+buildReview();
+renderCRM();
+updateDash();
+setEnergy(7);
+</script>
+</body>
+</html>
