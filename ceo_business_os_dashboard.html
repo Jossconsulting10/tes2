@@ -1,0 +1,291 @@
+
+<h2 class="sr-only">CEO Business Operating System — interactive weekly dashboard with schedule, checklist, and KPI tracker</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.os { padding: 1.5rem 0; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.tab { padding: 7px 16px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); font-size: 13px; font-weight: 500; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; }
+.tab.active { background: #534AB7; color: #EEEDFE; border-color: #534AB7; }
+.panel { display: none; }
+.panel.active { display: block; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+.card-title { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.big-num { font-size: 26px; font-weight: 500; color: var(--color-text-primary); }
+.label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.day-card { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); overflow: hidden; }
+.day-head { padding: 10px 14px; font-size: 13px; font-weight: 500; }
+.day-body { padding: 10px 14px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; background: var(--color-background-primary); }
+.shift { border-radius: var(--border-radius-md); padding: 10px 14px; margin-bottom: 8px; }
+.shift-label { font-size: 11px; font-weight: 500; letter-spacing: 0.05em; }
+.shift-time { font-size: 13px; font-weight: 500; margin: 2px 0; }
+.shift-items { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); cursor: pointer; }
+.check-item:last-child { border-bottom: none; }
+.check-box { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--color-border-secondary); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; margin-top: 1px; }
+.check-box.done { background: #534AB7; border-color: #534AB7; }
+.check-box.done::after { content: '✓'; color: white; font-size: 11px; font-weight: 500; }
+.check-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.5; }
+.check-text.done { color: var(--color-text-tertiary); text-decoration: line-through; }
+.check-sub { font-size: 11px; color: var(--color-text-secondary); }
+.progress-wrap { background: var(--color-background-secondary); border-radius: 99px; height: 6px; margin: 8px 0 4px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 99px; background: #534AB7; transition: width 0.3s; }
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; }
+.badge-purple { background: #EEEDFE; color: #3C3489; }
+.badge-green { background: #EAF3DE; color: #27500A; }
+.badge-amber { background: #FAEEDA; color: #633806; }
+.badge-pink { background: #FBEAF0; color: #72243E; }
+.badge-teal { background: #E1F5EE; color: #085041; }
+.section-head { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 12px; }
+.kpi-input { width: 70px; padding: 4px 8px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 13px; text-align: right; background: var(--color-background-primary); color: var(--color-text-primary); }
+.kpi-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; }
+.kpi-row:last-child { border-bottom: none; }
+.kpi-label { color: var(--color-text-secondary); }
+.kpi-val { font-weight: 500; color: var(--color-text-primary); }
+.pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.week-badge { padding: 5px 12px; border-radius: 99px; font-size: 12px; font-weight: 500; border: 0.5px solid var(--color-border-tertiary); cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); }
+.week-badge.active { background: #534AB7; color: #EEEDFE; border-color: #534AB7; }
+.skill-card { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 14px; }
+.skill-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.skill-items { font-size: 12px; color: var(--color-text-secondary); line-height: 1.8; }
+.ask-btn { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 12px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); }
+.warn-box { border-radius: var(--border-radius-md); padding: 10px 14px; margin-bottom: 8px; border-left: 3px solid; }
+</style>
+
+<div class="os">
+<div class="tabs">
+  <div class="tab active" onclick="showTab('schedule')">Weekly schedule</div>
+  <div class="tab" onclick="showTab('daily')">Daily shifts</div>
+  <div class="tab" onclick="showTab('checklist')">CEO checklist</div>
+  <div class="tab" onclick="showTab('kpis')">KPI dashboard</div>
+  <div class="tab" onclick="showTab('skills')">Skill builder</div>
+  <div class="tab" onclick="showTab('burnout')">Burnout prevention</div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="tab-schedule" class="panel active">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;">Your 4-day work week — Mon–Thu only. Friday, Saturday, Sunday belong to you.</p>
+  <div class="grid4">
+    <div class="day-card">
+      <div class="day-head" style="background:#EEEDFE;color:#3C3489;">Monday</div>
+      <div class="day-body">
+        <div style="margin-bottom:6px;"><span class="badge badge-purple">Content + Learning</span></div>
+        Create Reels & TikToks<br>Batch 3–5 pieces<br>30–60 min skill block<br>Focus: hooks & delivery
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-head" style="background:#EAF3DE;color:#27500A;">Tuesday</div>
+      <div class="day-body">
+        <div style="margin-bottom:6px;"><span class="badge badge-green">Sales + Follow-ups</span></div>
+        DM outreach blitz<br>Follow up 5–10 leads<br>Push one offer<br>Close open conversations
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-head" style="background:#FBEAF0;color:#72243E;">Wednesday</div>
+      <div class="day-body">
+        <div style="margin-bottom:6px;"><span class="badge badge-pink">Content + Engagement</span></div>
+        Post + engage<br>Reply to all comments<br>Go Live (optional)<br>30–60 min skill block
+      </div>
+    </div>
+    <div class="day-card">
+      <div class="day-head" style="background:#FAEEDA;color:#633806;">Thursday</div>
+      <div class="day-body">
+        <div style="margin-bottom:6px;"><span class="badge badge-amber">CEO + Review</span></div>
+        Weekly CEO review<br>Update all trackers<br>Fix broken systems<br>Plan next week
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:14px;padding:12px 16px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);font-size:12px;color:var(--color-text-secondary);">
+    Fri–Sun are protected. No guilt. No hustle. Your energy is a business asset — protect it.
+  </div>
+</div>
+
+<!-- DAILY SHIFTS -->
+<div id="tab-daily" class="panel">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;">Your clock-in/clock-out system. Every shift has a purpose — honor it.</p>
+  <div class="shift" style="background:#F1EFE8;border-left:3px solid #888780;">
+    <div class="shift-label" style="color:#5F5E5A;">SHIFT 1 — LIFE ADMIN</div>
+    <div class="shift-time" style="color:#2C2C2A;">9:00 AM – 12:00 PM</div>
+    <div class="shift-items">Breakfast + toddler time · Emails · Client messages · Bills / home admin<br><span style="font-size:11px;font-style:italic;">This is NOT CEO time. Do not mix.</span></div>
+  </div>
+  <div class="shift" style="background:#EEEDFE;border-left:3px solid #534AB7;">
+    <div class="shift-label" style="color:#534AB7;">SHIFT 2 — MONEY BLOCK</div>
+    <div class="shift-time" style="color:#3C3489;">12:30 PM – 3:00 PM</div>
+    <div class="shift-items">Content creation OR sales activity (based on the day)<br><span style="font-size:11px;font-style:italic;">This is your income-producing time. Guard it fiercely.</span></div>
+  </div>
+  <div class="shift" style="background:#EAF3DE;border-left:3px solid #3B6D11;">
+    <div class="shift-label" style="color:#3B6D11;">SHIFT 3 — FAMILY</div>
+    <div class="shift-time" style="color:#27500A;">3:00 PM – 7:30 PM</div>
+    <div class="shift-items">Zero business stress · Present with your toddler · Recharge fully<br><span style="font-size:11px;font-style:italic;">Non-negotiable. Rested moms build better businesses.</span></div>
+  </div>
+  <div class="shift" style="background:#E1F5EE;border-left:3px solid #0F6E56;">
+    <div class="shift-label" style="color:#0F6E56;">SHIFT 4 — LIGHT WORK</div>
+    <div class="shift-time" style="color:#085041;">8:00 PM – 10:00 PM</div>
+    <div class="shift-items">Reply to DMs · Post scheduled content · Engage on posts<br><span style="font-size:11px;font-style:italic;">Low-energy tasks only. No strategy work at night.</span></div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="tab-checklist" class="panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+    <p style="font-size:13px;color:var(--color-text-secondary);">Tap each item to check it off. Reset daily.</p>
+    <button onclick="resetChecks()" style="font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);">Reset</button>
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:6px 10px;margin-bottom:12px;">
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;" id="check-label">0 of 7 complete</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+  </div>
+  <div id="checklist">
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">Post 1 Reel or TikTok</div><div class="check-sub">Use your batched content — don't create from scratch daily</div></div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">Respond to ALL DMs</div><div class="check-sub">Every unanswered DM is a missed sale</div></div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">Follow up 5–10 people</div><div class="check-sub">Use your Sales Tracker — check "Follow-ups Needed" column</div></div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">Push ONE offer today</div><div class="check-sub">Story, DM, Reel CTA — one clear call to action</div></div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">Track your numbers</div><div class="check-sub">Fill in your Daily Tracker before Shift 4 ends</div></div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">30–60 min skill block (Mon + Wed only)</div><div class="check-sub">Apply what you learn SAME DAY — no shelf learning</div></div>
+    </div>
+    <div class="check-item" onclick="toggle(this)">
+      <div class="check-box"></div>
+      <div><div class="check-text">Log energy level (1–10)</div><div class="check-sub">Track patterns — low energy days need easier tasks</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div id="tab-kpis" class="panel">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;">Enter this week's numbers. Watch your conversion rate calculate live.</p>
+  <div class="grid4" style="margin-bottom:16px;">
+    <div class="card"><div class="card-title">Revenue</div><div class="big-num" id="rev-display">$0</div><div class="label">this week</div></div>
+    <div class="card"><div class="card-title">Conversion rate</div><div class="big-num" id="conv-display">0%</div><div class="label">leads → sales</div></div>
+    <div class="card"><div class="card-title">Reels posted</div><div class="big-num" id="reels-display">0</div><div class="label">this week</div></div>
+    <div class="card"><div class="card-title">DMs sent</div><div class="big-num" id="dms-display">0</div><div class="label">this week</div></div>
+  </div>
+  <div class="card">
+    <div class="section-head">Update weekly numbers</div>
+    <div class="kpi-row"><span class="kpi-label">Leads (DMs received)</span><input class="kpi-input" type="number" id="k-leads" value="0" oninput="calcKpis()"></div>
+    <div class="kpi-row"><span class="kpi-label">Sales closed</span><input class="kpi-input" type="number" id="k-sales" value="0" oninput="calcKpis()"></div>
+    <div class="kpi-row"><span class="kpi-label">Revenue ($)</span><input class="kpi-input" type="number" id="k-rev" value="0" oninput="calcKpis()"></div>
+    <div class="kpi-row"><span class="kpi-label">Reels posted</span><input class="kpi-input" type="number" id="k-reels" value="0" oninput="calcKpis()"></div>
+    <div class="kpi-row"><span class="kpi-label">DMs sent</span><input class="kpi-input" type="number" id="k-dms" value="0" oninput="calcKpis()"></div>
+    <div class="kpi-row"><span class="kpi-label">Follow-ups done</span><input class="kpi-input" type="number" id="k-fups" value="0" oninput="calcKpis()"></div>
+  </div>
+  <button class="ask-btn" onclick="sendPrompt('Give me a CEO-level analysis of my business numbers and what I should focus on next week.')">Get CEO analysis of my numbers ↗</button>
+</div>
+
+<!-- SKILLS -->
+<div id="tab-skills" class="panel">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;">30–60 min on Mon + Wed. One skill per week. Apply immediately — no shelf learning.</p>
+  <div class="pill-row" style="margin-bottom:16px;">
+    <div class="week-badge active" onclick="showWeek(1,this)">Week 1</div>
+    <div class="week-badge" onclick="showWeek(2,this)">Week 2</div>
+    <div class="week-badge" onclick="showWeek(3,this)">Week 3</div>
+    <div class="week-badge" onclick="showWeek(4,this)">Week 4</div>
+  </div>
+  <div id="skill-content"></div>
+  <button class="ask-btn" onclick="sendPrompt('Create a 30-minute learning plan for my current skill focus with specific actions I can apply today.')">Build my 30-min plan ↗</button>
+</div>
+
+<!-- BURNOUT -->
+<div id="tab-burnout" class="panel">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;">Your burnout prevention rules. Non-negotiable. These are what keep you in the game long-term.</p>
+  <div class="warn-box" style="background:#FAEEDA;border-color:#BA7517;">
+    <div style="font-size:12px;font-weight:500;color:#633806;margin-bottom:6px;">Stop doing these immediately</div>
+    <div style="font-size:12px;color:#854F0B;line-height:1.8;">Working randomly with no plan · Overthinking content · Creating but not selling · Ignoring follow-ups · Working late with no structure · Saying yes to everything · Skipping your skill block</div>
+  </div>
+  <div class="warn-box" style="background:#EAF3DE;border-color:#3B6D11;margin-top:8px;">
+    <div style="font-size:12px;font-weight:500;color:#27500A;margin-bottom:6px;">Protect these every week</div>
+    <div style="font-size:12px;color:#3B6D11;line-height:1.8;">Fri–Sun completely off · Shift 3 family time (3–7:30 PM) is sacred · One "easy week" per month · Celebrate every sale — no minimizing wins · Ask for help before you break</div>
+  </div>
+  <div class="warn-box" style="background:#EEEDFE;border-color:#534AB7;margin-top:8px;">
+    <div style="font-size:12px;font-weight:500;color:#3C3489;margin-bottom:6px;">Monthly recharge check-in</div>
+    <div style="font-size:12px;color:#534AB7;line-height:1.8;">Did I hit my income goal? · Did I take real days off? · What drained me most? · What lit me up most? · What system can I automate or delegate next month?</div>
+  </div>
+  <button class="ask-btn" onclick="sendPrompt('I feel overwhelmed with my business. Help me identify what to cut, simplify, or automate this week.')">Help me simplify right now ↗</button>
+</div>
+</div>
+
+<script>
+const skills = {
+  1: { title: 'Content & hooks', badge: 'badge-pink', color: '#72243E', items: ['Study 10 viral hooks in your niche', 'Rewrite your top 3 posts with stronger hooks', 'Record yourself — watch it back, improve delivery', 'Create 1 Reel using a hook formula you studied', 'Post and note which hook gets most saves'] },
+  2: { title: 'Sales & closing', badge: 'badge-green', color: '#27500A', items: ['Learn 3 objection responses (price, time, trust)', 'Write 5 DM openers — test them this week', 'Practice your offer pitch out loud (record it)', 'Follow up every open conversation from last week', 'Track close rate in your Sales Tracker'] },
+  3: { title: 'Meta ads basics', badge: 'badge-amber', color: '#633806', items: ['Watch Meta Ads Manager walkthrough (free on YouTube)', 'Set up your Business Manager if you haven\'t yet', 'Study 5 high-performing ad creatives in your niche', 'Draft 1 test ad (you don\'t have to run it yet)', 'Learn about custom audiences and retargeting'] },
+  4: { title: 'Branding & positioning', badge: 'badge-purple', color: '#3C3489', items: ['Write your 1-sentence brand statement', 'Audit your IG/TikTok bio — does it say who you help?', 'Identify your 3 content pillars for next month', 'Create a consistent visual style (colors, fonts)', 'Write 3 FAQs your audience always asks'] }
+};
+
+function showWeek(n, el) {
+  document.querySelectorAll('.week-badge').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const s = skills[n];
+  document.getElementById('skill-content').innerHTML = `
+    <div class="skill-card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <span class="badge ${s.badge}" style="font-size:12px;">Week ${n}</span>
+        <div class="skill-title">${s.title}</div>
+      </div>
+      <div class="skill-items">${s.items.map(i => '→ ' + i).join('<br>')}</div>
+    </div>`;
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[onclick="showTab('${name}')"]`).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function toggle(item) {
+  const box = item.querySelector('.check-box');
+  const text = item.querySelector('.check-text');
+  box.classList.toggle('done');
+  text.classList.toggle('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.check-item').length;
+  const done = document.querySelectorAll('.check-box.done').length;
+  document.getElementById('check-label').textContent = `${done} of ${total} complete`;
+  document.getElementById('progress-bar').style.width = Math.round((done / total) * 100) + '%';
+}
+
+function resetChecks() {
+  document.querySelectorAll('.check-box').forEach(b => b.classList.remove('done'));
+  document.querySelectorAll('.check-text').forEach(t => t.classList.remove('done'));
+  updateProgress();
+}
+
+function calcKpis() {
+  const leads = parseFloat(document.getElementById('k-leads').value) || 0;
+  const sales = parseFloat(document.getElementById('k-sales').value) || 0;
+  const rev = parseFloat(document.getElementById('k-rev').value) || 0;
+  const reels = parseFloat(document.getElementById('k-reels').value) || 0;
+  const dms = parseFloat(document.getElementById('k-dms').value) || 0;
+  const conv = leads > 0 ? Math.round((sales / leads) * 100) : 0;
+  document.getElementById('rev-display').textContent = '$' + rev.toLocaleString();
+  document.getElementById('conv-display').textContent = conv + '%';
+  document.getElementById('reels-display').textContent = reels;
+  document.getElementById('dms-display').textContent = dms;
+}
+
+showWeek(1, document.querySelector('.week-badge'));
+</script>
