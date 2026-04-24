@@ -1,0 +1,714 @@
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+#joss-app *{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',sans-serif}
+#joss-app{width:100%;max-width:900px;margin:0 auto;background:#FAFAF8;border-radius:16px;overflow:hidden;border:1px solid #E8E5E0}
+#joss-app .j-topbar{background:#141414;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+#joss-app .j-brand{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff}
+#joss-app .j-brand span{color:#E8715A}
+#joss-app .j-locs{font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
+#joss-app .j-rev-pill{background:rgba(232,113,90,0.15);border:1px solid rgba(232,113,90,0.3);border-radius:99px;padding:6px 14px;text-align:right}
+#joss-app .j-rev-pill-lbl{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em}
+#joss-app .j-rev-pill-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#E8715A}
+#joss-app .j-tabs{display:flex;background:#fff;border-bottom:1px solid #E8E5E0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#joss-app .j-tabs::-webkit-scrollbar{display:none}
+#joss-app .j-tab{padding:13px 18px;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#888;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.18s;flex-shrink:0}
+#joss-app .j-tab:hover{color:#141414;background:#FAFAF8}
+#joss-app .j-tab.active{color:#E8715A;border-bottom-color:#E8715A;background:#fff}
+#joss-app .j-panel{display:none;padding:24px;animation:jFadeIn 0.25s ease}
+#joss-app .j-panel.active{display:block}
+@keyframes jFadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+#joss-app .j-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+#joss-app .j-kpi{background:#fff;border:1px solid #E8E5E0;border-radius:12px;padding:16px;position:relative;overflow:hidden}
+#joss-app .j-kpi-bar{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+#joss-app .j-kpi-lbl{font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:6px}
+#joss-app .j-kpi-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#141414;line-height:1}
+#joss-app .j-kpi-sub{font-size:10px;color:#7A9E7E;margin-top:4px;font-weight:500}
+#joss-app .j-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+#joss-app .j-card{background:#fff;border:1px solid #E8E5E0;border-radius:12px;padding:18px}
+#joss-app .j-card-title{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px}
+#joss-app .j-clock-hero{background:#141414;border-radius:12px;padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+#joss-app .j-clock-big{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:#fff;letter-spacing:-1px;line-height:1}
+#joss-app .j-clock-big.on{color:#C8DEC9}
+#joss-app .j-clock-lbl{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:5px}
+#joss-app .j-clock-elapsed{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;min-height:18px}
+#joss-app .j-clock-btns{display:flex;gap:8px}
+#joss-app .j-btn{padding:10px 20px;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;transition:all 0.18s}
+#joss-app .j-btn:disabled{opacity:0.3;cursor:not-allowed}
+#joss-app .j-btn-coral{background:#E8715A;color:#fff}
+#joss-app .j-btn-coral:hover:not(:disabled){background:#C4503C;transform:translateY(-1px)}
+#joss-app .j-btn-sage{background:#7A9E7E;color:#fff}
+#joss-app .j-btn-sage:hover:not(:disabled){background:#4E7254}
+#joss-app .j-btn-outline{background:transparent;color:#555;border:1.5px solid #E8E5E0}
+#joss-app .j-btn-outline:hover:not(:disabled){border-color:#ccc;background:#F4F4F2}
+#joss-app .j-btn-black{background:#141414;color:#fff}
+#joss-app .j-btn-black:hover:not(:disabled){background:#2A2A2A}
+#joss-app .j-btn-danger{background:#FEE2E2;color:#B91C1C;border:1px solid #FECACA}
+#joss-app .j-btn-sm{padding:6px 12px;font-size:10px}
+#joss-app .j-btn-full{width:100%;padding:14px;font-size:13px;margin-top:14px}
+#joss-app .j-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+#joss-app .j-stat{background:#fff;border:1px solid #E8E5E0;border-radius:10px;padding:12px 8px;text-align:center}
+#joss-app .j-stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1;margin-bottom:3px}
+#joss-app .j-stat-lbl{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em}
+#joss-app .j-stat-btns{display:flex;gap:3px;justify-content:center;margin-top:7px}
+#joss-app .j-adj{width:24px;height:24px;border-radius:6px;border:1px solid #E8E5E0;background:#F4F4F2;color:#555;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;line-height:1}
+#joss-app .j-adj:hover{border-color:#E8715A;color:#E8715A;background:#FDF0ED}
+#joss-app .j-energy{margin-bottom:16px}
+#joss-app .j-energy-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#joss-app .j-energy-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700}
+#joss-app input[type=range]{width:100%;-webkit-appearance:none;height:5px;border-radius:99px;background:#F4F4F2;outline:none;cursor:pointer}
+#joss-app input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#E8715A;cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1.5px #E8715A}
+#joss-app .j-e-labels{display:flex;justify-content:space-between;font-size:9px;color:#888;margin-top:4px}
+#joss-app .j-input{width:100%;background:#fff;border:1px solid #E8E5E0;border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:#141414;outline:none;transition:border-color 0.2s}
+#joss-app .j-input:focus{border-color:#E8715A;box-shadow:0 0 0 3px rgba(232,113,90,0.1)}
+#joss-app .j-input::placeholder{color:#ccc}
+#joss-app textarea.j-input{min-height:70px;resize:vertical}
+#joss-app select.j-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+#joss-app .j-offers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+#joss-app .j-offer{background:#fff;border:2px solid #E8E5E0;border-radius:10px;padding:12px;cursor:pointer;transition:all 0.18s;position:relative}
+#joss-app .j-offer:hover{border-color:#E8715A;transform:translateY(-2px)}
+#joss-app .j-offer.sel{border-color:#E8715A;background:#FDF0ED}
+#joss-app .j-offer.sel::after{content:'✓';position:absolute;top:7px;right:9px;font-size:11px;color:#E8715A;font-weight:700}
+#joss-app .j-offer.free-o{border-color:#C8DEC9}
+#joss-app .j-offer.free-o:hover{border-color:#7A9E7E}
+#joss-app .j-offer-price{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#141414;margin-bottom:3px}
+#joss-app .j-offer-price.free{color:#4E7254}
+#joss-app .j-offer-name{font-size:10px;font-weight:600;color:#555}
+#joss-app .j-offer-tag{display:inline-block;margin-top:4px;padding:2px 7px;border-radius:99px;font-size:8px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+#joss-app .tag-lead{background:#EEF5EE;color:#4E7254}
+#joss-app .tag-core{background:#FDF0ED;color:#C4503C}
+#joss-app .tag-premium{background:#F3F0FF;color:#5B21B6}
+#joss-app .j-custom-row{display:flex;gap:7px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+#joss-app .j-log-entry{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #F4F4F2;align-items:flex-start}
+#joss-app .j-log-entry:last-child{border-bottom:none}
+#joss-app .j-log-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
+#joss-app .j-log-dot.sale{background:#E8715A}
+#joss-app .j-log-dot.ci{background:#7A9E7E}
+#joss-app .j-log-dot.co{background:#141414}
+#joss-app .j-log-txt{font-size:12px;color:#555;line-height:1.4}
+#joss-app .j-log-time{font-size:9px;color:#888;margin-top:1px}
+#joss-app .j-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+#joss-app .j-form-lbl{display:block;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#666;margin-bottom:4px}
+#joss-app .j-crm-wrap{overflow-x:auto;border-radius:10px;border:1px solid #E8E5E0}
+#joss-app table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+#joss-app thead{background:#141414}
+#joss-app th{padding:10px 12px;text-align:left;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);white-space:nowrap}
+#joss-app td{padding:10px 12px;border-bottom:1px solid #F4F4F2;vertical-align:middle}
+#joss-app tr:last-child td{border-bottom:none}
+#joss-app tr:hover td{background:#FAFAF8}
+#joss-app .j-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+#joss-app .j-pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:9px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase}
+#joss-app .s-lead{background:#FDF0ED;color:#C4503C}
+#joss-app .s-active{background:#EEF5EE;color:#4E7254}
+#joss-app .s-done{background:#F4F4F2;color:#666}
+#joss-app .s-vip{background:#F3F0FF;color:#5B21B6}
+#joss-app .s-followup{background:#FFFBEB;color:#92400E}
+#joss-app .j-progress-wrap{background:#F4F4F2;border-radius:99px;height:5px;overflow:hidden}
+#joss-app .j-progress-fill{height:100%;border-radius:99px;background:#E8715A;transition:width 0.4s}
+#joss-app .j-task-group-lbl{padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fff;border-radius:6px 6px 0 0;margin-top:14px}
+#joss-app .j-task-item{display:flex;align-items:flex-start;gap:11px;padding:11px 12px;background:#fff;border:1px solid #E8E5E0;border-top:none;cursor:pointer;transition:background 0.15s}
+#joss-app .j-task-item:hover{background:#FAFAF8}
+#joss-app .j-task-item:last-child{border-radius:0 0 6px 6px}
+#joss-app .j-task-item.done{opacity:0.5}
+#joss-app .j-chk{width:17px;height:17px;border-radius:5px;border:2px solid #E8E5E0;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all 0.15s}
+#joss-app .j-chk.checked{background:#7A9E7E;border-color:#7A9E7E;color:#fff}
+#joss-app .j-task-txt{font-size:12px;color:#333;line-height:1.4;flex:1}
+#joss-app .j-task-txt.done{text-decoration:line-through;color:#888}
+#joss-app .j-pri{font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0;align-self:flex-start;margin-top:2px}
+#joss-app .pri-high{background:#FEE2E2;color:#B91C1C}
+#joss-app .pri-med{background:#FDF0ED;color:#C4503C}
+#joss-app .pri-low{background:#EEF5EE;color:#4E7254}
+#joss-app .j-modal-ov{display:none;position:absolute;inset:0;background:rgba(20,20,20,0.65);z-index:100;align-items:flex-start;justify-content:center;padding:30px 20px;min-height:400px}
+#joss-app .j-modal-ov.open{display:flex}
+#joss-app .j-modal{background:#fff;border-radius:14px;padding:24px;width:100%;max-width:420px}
+#joss-app .j-modal-head{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #E8715A}
+#joss-app .j-modal-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F4F4F2;font-size:12px}
+#joss-app .j-modal-row:last-of-type{border-bottom:none}
+#joss-app .j-modal-lbl{color:#888}
+#joss-app .j-modal-val{font-weight:600;color:#141414}
+#joss-app .j-modal-val.money{color:#E8715A;font-family:'Playfair Display',serif;font-size:14px;font-weight:700}
+#joss-app .j-data-box{background:#F4F4F2;border:1px solid #E8E5E0;border-radius:8px;padding:10px;font-family:monospace;font-size:9px;color:#555;white-space:pre-wrap;word-break:break-all;line-height:1.7;margin-top:12px;max-height:160px;overflow-y:auto}
+#joss-app .j-modal-btns{display:flex;gap:7px;margin-top:14px}
+#joss-app .j-modal-btns .j-btn{flex:1}
+#joss-app .j-toast{position:absolute;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#141414;color:#fff;padding:9px 20px;border-radius:99px;font-size:11px;font-weight:600;z-index:200;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;border-left:3px solid #E8715A;pointer-events:none}
+#joss-app .j-toast.show{transform:translateX(-50%) translateY(0)}
+#joss-app .j-section-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#141414;margin-bottom:4px}
+#joss-app .j-section-sub{font-size:12px;color:#888;margin-bottom:18px}
+#joss-app .j-dash-activity-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F4F4F2;font-size:12px}
+#joss-app .j-dash-activity-row:last-child{border-bottom:none}
+#joss-app .j-dash-activity-lbl{color:#888}
+#joss-app .j-dash-activity-val{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#141414}
+#joss-app .j-review-section{background:#fff;border:1px solid #E8E5E0;border-radius:10px;padding:16px;margin-bottom:12px}
+#joss-app .j-review-head{font-size:13px;font-weight:600;color:#141414;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E8715A}
+#joss-app .j-review-q{margin-bottom:10px}
+#joss-app .j-review-q label{display:block;font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#666;margin-bottom:4px}
+#joss-app .j-add-client-form{background:#F4F4F2;border:1px solid #E8E5E0;border-radius:10px;padding:16px;margin-bottom:14px;display:none}
+#joss-app .j-add-client-form.open{display:block}
+#joss-app .j-crm-toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+#joss-app .j-empty{text-align:center;padding:24px;font-size:12px;color:#ccc}
+@media(max-width:600px){
+  #joss-app .j-2col{grid-template-columns:1fr}
+  #joss-app .j-offers-grid{grid-template-columns:1fr 1fr}
+  #joss-app .j-stat-grid{grid-template-columns:repeat(2,1fr)}
+  #joss-app .j-form-grid{grid-template-columns:1fr}
+  #joss-app .j-clock-btns{flex-direction:column}
+}
+</style>
+
+<div id="joss-app" style="position:relative">
+
+  <div class="j-topbar">
+    <div>
+      <div class="j-brand">JOSS <span>Consulting</span> Group</div>
+      <div class="j-locs">Orlando · Columbus</div>
+    </div>
+    <div class="j-rev-pill">
+      <div class="j-rev-pill-lbl">Today's Revenue</div>
+      <div class="j-rev-pill-val" id="topRev">$0</div>
+    </div>
+  </div>
+
+  <div class="j-tabs" id="jTabs">
+    <div class="j-tab active" onclick="jTab('dashboard',this)">Dashboard</div>
+    <div class="j-tab" onclick="jTab('clock',this)">Clock In/Out</div>
+    <div class="j-tab" onclick="jTab('tasks',this)">Tasks</div>
+    <div class="j-tab" onclick="jTab('sales',this)">Log Sale</div>
+    <div class="j-tab" onclick="jTab('crm',this)">Client CRM</div>
+    <div class="j-tab" onclick="jTab('review',this)">Weekly Review</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="j-panel active" id="jp-dashboard">
+    <div class="j-section-title">Good day — let's build ✦</div>
+    <div class="j-section-sub" id="jDashDate">Loading...</div>
+    <div class="j-kpi-row">
+      <div class="j-kpi"><div class="j-kpi-bar" style="background:#E8715A"></div><div class="j-kpi-lbl">Today's Revenue</div><div class="j-kpi-val" id="dKpiRev">$0</div><div class="j-kpi-sub" id="dKpiRevSub">No sales yet</div></div>
+      <div class="j-kpi"><div class="j-kpi-bar" style="background:#7A9E7E"></div><div class="j-kpi-lbl">Sales Closed</div><div class="j-kpi-val" id="dKpiSales">0</div><div class="j-kpi-sub" id="dKpiSalesSub">—</div></div>
+      <div class="j-kpi"><div class="j-kpi-bar" style="background:#141414"></div><div class="j-kpi-lbl">Active Clients</div><div class="j-kpi-val" id="dKpiClients">0</div><div class="j-kpi-sub" id="dKpiClientsSub">0 total in CRM</div></div>
+      <div class="j-kpi"><div class="j-kpi-bar" style="background:#C8DEC9"></div><div class="j-kpi-lbl">Tasks Done</div><div class="j-kpi-val" id="dKpiTasks">0%</div><div class="j-kpi-sub" id="dKpiTasksSub">0 of 0</div></div>
+    </div>
+    <div class="j-2col">
+      <div class="j-card">
+        <div class="j-card-title">Today's Activity</div>
+        <div class="j-dash-activity-row"><span class="j-dash-activity-lbl">Reels Posted</span><span class="j-dash-activity-val" id="dAReels">0</span></div>
+        <div class="j-dash-activity-row"><span class="j-dash-activity-lbl">DMs Sent</span><span class="j-dash-activity-val" id="dADMs">0</span></div>
+        <div class="j-dash-activity-row"><span class="j-dash-activity-lbl">Follow-Ups</span><span class="j-dash-activity-val" id="dAFU">0</span></div>
+        <div class="j-dash-activity-row"><span class="j-dash-activity-lbl">New Leads</span><span class="j-dash-activity-val" id="dALeads">0</span></div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid #F4F4F2">
+          <div style="font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Shift Status</div>
+          <div style="font-size:13px;font-weight:600;color:#E8715A" id="dShift">Not clocked in</div>
+        </div>
+      </div>
+      <div class="j-card">
+        <div class="j-card-title">Recent Activity</div>
+        <div id="dLog"><div class="j-empty" style="padding:10px">No activity yet</div></div>
+      </div>
+    </div>
+    <div class="j-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="j-card-title" style="margin-bottom:0">Task Progress</div>
+        <div style="font-size:11px;color:#888" id="dTaskCount">0 / 0</div>
+      </div>
+      <div class="j-progress-wrap"><div class="j-progress-fill" id="dTaskBar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- CLOCK -->
+  <div class="j-panel" id="jp-clock">
+    <div class="j-section-title">Clock In / Out</div>
+    <div class="j-section-sub">Track your money block. Every minute counts.</div>
+    <div class="j-clock-hero">
+      <div>
+        <div class="j-clock-lbl" id="jClockLbl">Ready to start your shift</div>
+        <div class="j-clock-big" id="jClockBig">--:--:--</div>
+        <div class="j-clock-elapsed" id="jClockElapsed"></div>
+      </div>
+      <div class="j-clock-btns">
+        <button class="j-btn j-btn-coral" id="jBtnIn" onclick="jClockIn()">Clock In</button>
+        <button class="j-btn j-btn-outline" id="jBtnOut" onclick="jClockOut()" disabled style="color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.2)">Clock Out</button>
+      </div>
+    </div>
+    <div class="j-2col">
+      <div class="j-card">
+        <div class="j-card-title">Activity Counters</div>
+        <div class="j-stat-grid">
+          <div class="j-stat"><div class="j-stat-num" style="color:#E8715A" id="sReels">0</div><div class="j-stat-lbl">Reels</div><div class="j-stat-btns"><button class="j-adj" onclick="jAdj('reels',-1)">−</button><button class="j-adj" onclick="jAdj('reels',1)">+</button></div></div>
+          <div class="j-stat"><div class="j-stat-num" style="color:#7A9E7E" id="sDMs">0</div><div class="j-stat-lbl">DMs</div><div class="j-stat-btns"><button class="j-adj" onclick="jAdj('dms',-1)">−</button><button class="j-adj" onclick="jAdj('dms',1)">+</button></div></div>
+          <div class="j-stat"><div class="j-stat-num" style="color:#555" id="sFU">0</div><div class="j-stat-lbl">Follow-ups</div><div class="j-stat-btns"><button class="j-adj" onclick="jAdj('fu',-1)">−</button><button class="j-adj" onclick="jAdj('fu',1)">+</button></div></div>
+          <div class="j-stat"><div class="j-stat-num" style="color:#C4503C" id="sLeads">0</div><div class="j-stat-lbl">Leads In</div><div class="j-stat-btns"><button class="j-adj" onclick="jAdj('leads',-1)">−</button><button class="j-adj" onclick="jAdj('leads',1)">+</button></div></div>
+        </div>
+      </div>
+      <div class="j-card">
+        <div class="j-card-title">Energy Level</div>
+        <div class="j-energy">
+          <div class="j-energy-row">
+            <div><div style="font-size:10px;color:#888;margin-bottom:2px">How are you feeling?</div><div class="j-energy-num" id="jENVal" style="color:#E8715A">7</div></div>
+            <div style="font-size:22px" id="jENEmoji">💪</div>
+          </div>
+          <input type="range" min="1" max="10" step="1" value="7" id="jESlider" oninput="jSetEnergy(this.value)">
+          <div class="j-e-labels"><span>Exhausted</span><span>Okay</span><span>On fire</span></div>
+        </div>
+        <div>
+          <label class="j-form-lbl">Notes</label>
+          <textarea class="j-input" id="jNotes" placeholder="Wins, struggles, anything worth noting..."></textarea>
+        </div>
+      </div>
+    </div>
+    <button class="j-btn j-btn-black j-btn-full" onclick="jSubmitDay()">Submit Day Summary →</button>
+  </div>
+
+  <!-- TASKS -->
+  <div class="j-panel" id="jp-tasks">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="j-section-title">Task Manager</div>
+      <div style="font-size:11px;color:#888" id="jTaskLbl">0 / 0</div>
+    </div>
+    <div class="j-section-sub">Mon–Thu daily tasks. Check off as you go.</div>
+    <div class="j-progress-wrap" style="margin-bottom:20px"><div class="j-progress-fill" id="jTaskBar" style="width:0%"></div></div>
+    <div id="jTaskList"></div>
+    <div class="j-card" style="margin-top:16px">
+      <div class="j-card-title">Add Custom Task</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="text" class="j-input" id="jNewTask" placeholder="Task description..." style="flex:3;min-width:180px">
+        <select class="j-input" id="jNewPri" style="flex:1;min-width:100px"><option value="high">High</option><option value="med" selected>Medium</option><option value="low">Low</option></select>
+        <button class="j-btn j-btn-coral" onclick="jAddTask()">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SALES -->
+  <div class="j-panel" id="jp-sales">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="j-section-title">Log a Sale</div>
+        <div class="j-section-sub" style="margin-bottom:0">Select an offer or enter custom price</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Today's Revenue</div>
+        <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#E8715A" id="jSalesRevBig">$0</div>
+      </div>
+    </div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:10px">JOSS Consulting Group — Service Menu</div>
+    <div class="j-offers-grid" id="jOffersGrid"></div>
+    <button class="j-btn j-btn-coral" style="margin-bottom:14px;padding:11px 22px" onclick="jLogSelected()">Log Selected Offer as Sale</button>
+    <div class="j-card" style="margin-bottom:14px">
+      <div class="j-card-title">Custom / On-Demand Service</div>
+      <div class="j-custom-row">
+        <input type="text" class="j-input" id="jCName" placeholder="Service name..." style="flex:2;min-width:140px">
+        <input type="number" class="j-input" id="jCPrice" placeholder="$0" style="flex:1;max-width:90px">
+        <input type="text" class="j-input" id="jCClient" placeholder="Client name..." style="flex:1.5;min-width:120px">
+        <button class="j-btn j-btn-sage" onclick="jAddCustomSale()">Log</button>
+      </div>
+    </div>
+    <div class="j-card">
+      <div class="j-card-title">Today's Sales Log</div>
+      <div id="jSalesLog"><div class="j-empty">No sales recorded yet.</div></div>
+    </div>
+  </div>
+
+  <!-- CRM -->
+  <div class="j-panel" id="jp-crm">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <div>
+        <div class="j-section-title">Client CRM</div>
+        <div class="j-section-sub" style="margin-bottom:0">Every client. Every status. Every dollar.</div>
+      </div>
+      <button class="j-btn j-btn-coral j-btn-sm" onclick="jToggleAddClient()">+ Add Client</button>
+    </div>
+    <div class="j-add-client-form" id="jAddClientForm">
+      <div style="font-size:13px;font-weight:600;margin-bottom:14px;color:#141414">New Client</div>
+      <div class="j-form-grid">
+        <div><label class="j-form-lbl">Full Name</label><input type="text" class="j-input" id="nc_name" placeholder="Jane Smith"></div>
+        <div><label class="j-form-lbl">@ Handle / Phone</label><input type="text" class="j-input" id="nc_handle" placeholder="@handle"></div>
+        <div><label class="j-form-lbl">Service</label>
+          <select class="j-input" id="nc_service">
+            <option>Free Lead Magnet</option>
+            <option>Starter Package — $49</option>
+            <option>Core Service — $197</option>
+            <option>Done-For-You — $999</option>
+            <option>Biz Credit Coaching — $250</option>
+            <option>Consultation — $150</option>
+            <option>On-Demand / Custom</option>
+          </select>
+        </div>
+        <div><label class="j-form-lbl">Amount Paid ($)</label><input type="number" class="j-input" id="nc_amount" placeholder="0"></div>
+        <div><label class="j-form-lbl">Status</label>
+          <select class="j-input" id="nc_status">
+            <option value="lead">Lead</option>
+            <option value="active">Active</option>
+            <option value="followup">Follow-up Needed</option>
+            <option value="done">Completed</option>
+            <option value="vip">VIP</option>
+          </select>
+        </div>
+        <div><label class="j-form-lbl">Source</label>
+          <select class="j-input" id="nc_source">
+            <option>Instagram</option><option>TikTok</option><option>Referral</option>
+            <option>GHL Funnel</option><option>Orlando</option><option>Columbus</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px"><label class="j-form-lbl">Notes</label><textarea class="j-input" id="nc_notes" placeholder="Notes about this client..." style="min-height:50px"></textarea></div>
+      <div style="display:flex;gap:8px"><button class="j-btn j-btn-coral" onclick="jAddClient()">Save Client</button><button class="j-btn j-btn-outline" onclick="jToggleAddClient()">Cancel</button></div>
+    </div>
+    <div class="j-crm-toolbar">
+      <input type="text" class="j-input" id="jCrmSearch" placeholder="Search clients..." oninput="jFilterCRM()" style="flex:1;min-width:180px">
+      <select class="j-input" id="jCrmFilter" onchange="jFilterCRM()" style="min-width:130px">
+        <option value="">All Statuses</option>
+        <option value="lead">Leads</option>
+        <option value="active">Active</option>
+        <option value="followup">Follow-up</option>
+        <option value="done">Completed</option>
+        <option value="vip">VIP</option>
+      </select>
+    </div>
+    <div class="j-crm-wrap">
+      <table><thead><tr><th>Client</th><th>Service</th><th>Paid</th><th>Status</th><th>Source</th><th>Notes</th><th></th></tr></thead>
+      <tbody id="jCrmBody"></tbody></table>
+    </div>
+    <div style="margin-top:8px;font-size:10px;color:#888" id="jCrmCount"></div>
+  </div>
+
+  <!-- REVIEW -->
+  <div class="j-panel" id="jp-review">
+    <div class="j-section-title">Weekly CEO Review</div>
+    <div class="j-section-sub">Every Thursday — be honest, adjust fast, scale smart.</div>
+    <div id="jReviewForm"></div>
+    <button class="j-btn j-btn-black j-btn-full" onclick="jSaveReview()">Save Weekly Review</button>
+  </div>
+
+  <!-- MODAL -->
+  <div class="j-modal-ov" id="jModalOv">
+    <div class="j-modal">
+      <div class="j-modal-head">Day Summary — JOSS Consulting</div>
+      <div id="jModalRows"></div>
+      <div class="j-data-box" id="jModalCode"></div>
+      <div class="j-modal-btns">
+        <button class="j-btn j-btn-outline" onclick="jCopyData()">Copy Data</button>
+        <button class="j-btn j-btn-coral" onclick="document.getElementById('jModalOv').classList.remove('open')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="j-toast" id="jToast"></div>
+</div>
+
+<script>
+(function(){
+const OFFERS=[
+  {name:"Free Lead Magnet",price:0,tag:"lead",tagLbl:"Lead Gen"},
+  {name:"Starter Package",price:49,tag:"core",tagLbl:"Entry — $49"},
+  {name:"Core Service",price:197,tag:"core",tagLbl:"Core — $197"},
+  {name:"Done-For-You",price:999,tag:"premium",tagLbl:"Premium — $999"},
+  {name:"Biz Credit Coaching",price:250,tag:"core",tagLbl:"Coaching — $250"},
+  {name:"Consultation",price:150,tag:"core",tagLbl:"Consult — $150"},
+];
+const DEFAULT_TASKS=[
+  {g:"Content",l:"Post 1 Reel or TikTok",p:"high",d:false},
+  {g:"Content",l:"Batch 3 content pieces (Mon)",p:"med",d:false},
+  {g:"Content",l:"Post in English + Creole",p:"med",d:false},
+  {g:"Sales",l:"Respond to ALL DMs",p:"high",d:false},
+  {g:"Sales",l:"Follow up 5–10 leads",p:"high",d:false},
+  {g:"Sales",l:"Push one offer today",p:"high",d:false},
+  {g:"Sales",l:"Send 10 new DM outreach",p:"med",d:false},
+  {g:"Growth",l:"30–60 min skill block",p:"med",d:false},
+  {g:"Growth",l:"Engage on 10+ niche posts",p:"low",d:false},
+  {g:"Systems",l:"Update all trackers",p:"med",d:false},
+  {g:"Systems",l:"Submit day summary",p:"high",d:false},
+];
+const REVIEW_QS=[
+  {s:"Money",q:"What made me money this week?"},
+  {s:"Money",q:"Total revenue ($)?"},
+  {s:"Money",q:"Sales closed (#)?"},
+  {s:"Content",q:"Best performing post?"},
+  {s:"Content",q:"Posted every work day? (Y/N)"},
+  {s:"Content",q:"English + Creole posts? (Y/N)"},
+  {s:"Sales",q:"Followed up everyone? (Y/N)"},
+  {s:"Sales",q:"Biggest objection heard?"},
+  {s:"Energy",q:"Average energy level (1–10)?"},
+  {s:"Energy",q:"Where did I waste time?"},
+  {s:"NextWeek",q:"#1 priority next week?"},
+  {s:"NextWeek",q:"What will I STOP doing?"},
+  {s:"NextWeek",q:"What will I START doing?"},
+];
+const AVATAR_COLORS=["#E8715A","#7A9E7E","#141414","#C4503C","#4E7254"];
+const STATUS_MAP={lead:{l:"Lead",c:"s-lead"},active:{l:"Active",c:"s-active"},followup:{l:"Follow-up",c:"s-followup"},done:{l:"Completed",c:"s-done"},vip:{l:"VIP",c:"s-vip"}};
+const G_COLORS={Content:"#E8715A",Sales:"#7A9E7E",Growth:"#141414",Systems:"#888",Custom:"#555"};
+
+let ST={on:false,inT:null,outT:null,stats:{reels:0,dms:0,fu:0,leads:0},sales:[],rev:0,selOffer:null,energy:7,clients:[],tasks:[],log:[],timer:null};
+
+const $=id=>document.getElementById(id);
+const fmtM=n=>n===0?"Free":"$"+n.toLocaleString("en-US",{minimumFractionDigits:0});
+const fmtT=t=>t.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+const fmtTS=t=>t.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+const fmtD=t=>t.toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+const ini=n=>n.split(" ").map(w=>w[0]).join("").toUpperCase().slice(0,2);
+
+function updateClock(){
+  const now=new Date();
+  const disp=$("jClockBig");
+  if(disp)disp.textContent=fmtT(now);
+  const dd=$("jDashDate");
+  if(dd)dd.textContent=fmtD(now);
+}
+setInterval(updateClock,1000);
+updateClock();
+
+function elStr(from){
+  const s=Math.floor((Date.now()-from)/1000);
+  return String(Math.floor(s/3600)).padStart(2,"0")+":"+String(Math.floor((s%3600)/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")+" elapsed";
+}
+function hStr(from,to){
+  const s=Math.floor((to-from)/1000);
+  return Math.floor(s/3600)+"h "+Math.floor((s%3600)/60)+"m";
+}
+
+function jClockIn(){
+  if(ST.on)return;
+  ST.on=true;ST.inT=new Date();
+  $("jBtnIn").disabled=true;$("jBtnOut").disabled=false;
+  $("jClockLbl").textContent="Money Block Active";
+  $("jClockBig").classList.add("on");
+  $("dShift").textContent="🟢 Clocked in — Money Block";
+  ST.timer=setInterval(()=>$("jClockElapsed").textContent=elStr(ST.inT),1000);
+  addLog("ci","Clocked in at "+fmtTS(ST.inT));
+  jToast("Clocked in! Let's make money 💚","#7A9E7E");
+  jUpdateDash();
+}
+
+function jClockOut(){
+  if(!ST.on)return;
+  ST.on=false;ST.outT=new Date();
+  clearInterval(ST.timer);
+  const hs=hStr(ST.inT,ST.outT);
+  $("jBtnIn").disabled=false;$("jBtnOut").disabled=true;
+  $("jClockLbl").textContent="Shift complete — "+hs+" worked";
+  $("jClockBig").classList.remove("on");
+  $("jClockElapsed").textContent="Total: "+hs;
+  $("dShift").textContent="✓ Clocked out — "+hs+" worked";
+  addLog("co","Clocked out — "+hs+" worked");
+  jToast("Shift done! "+hs+" on the clock 🔥");
+  jUpdateDash();
+}
+
+function jAdj(key,d){
+  ST.stats[key]=Math.max(0,ST.stats[key]+d);
+  const m={reels:"sReels",dms:"sDMs",fu:"sFU",leads:"sLeads"};
+  $(m[key]).textContent=ST.stats[key];
+  jUpdateDash();
+}
+
+function jSetEnergy(v){
+  ST.energy=parseInt(v);
+  const em=["","😴","😩","😔","😐","🙂","😊","💪","🔥","⚡","🚀"];
+  const cl=["","#E8715A","#E8715A","#C4503C","#888","#7A9E7E","#7A9E7E","#4E7254","#E8715A","#E8715A","#141414"];
+  $("jENVal").textContent=v;$("jENVal").style.color=cl[v]||"#E8715A";
+  $("jENEmoji").textContent=em[v]||"😊";
+}
+
+function buildOffers(){
+  $("jOffersGrid").innerHTML=OFFERS.map((o,i)=>`
+    <div class="j-offer${ST.selOffer===i?" sel":""}${o.tag==="lead"?" free-o":""}" onclick="jSelOffer(${i})">
+      <div class="j-offer-price${o.price===0?" free":""}">${fmtM(o.price)}</div>
+      <div class="j-offer-name">${o.name}</div>
+      <div class="j-offer-tag tag-${o.tag}">${o.tagLbl}</div>
+    </div>`).join("");
+}
+
+function jSelOffer(i){ST.selOffer=ST.selOffer===i?null:i;buildOffers();}
+
+function jLogSelected(){
+  if(ST.selOffer===null){jToast("Select an offer first!");return;}
+  const o=OFFERS[ST.selOffer];
+  recSale(o.name,o.price,"");
+  ST.selOffer=null;buildOffers();
+}
+
+function jAddCustomSale(){
+  const n=$("jCName").value.trim()||"Custom Service";
+  const p=parseFloat($("jCPrice").value)||0;
+  const c=$("jCClient").value.trim();
+  recSale(n,p,c);
+  $("jCName").value="";$("jCPrice").value="";$("jCClient").value="";
+}
+
+function recSale(name,price,client){
+  ST.sales.push({name,price,client,time:new Date()});
+  ST.rev+=price;
+  $("topRev").textContent=fmtM(ST.rev);
+  $("jSalesRevBig").textContent=fmtM(ST.rev);
+  renderSalesLog();
+  addLog("sale","SALE: "+name+" — "+fmtM(price)+(client?" ("+client+")":""));
+  jToast(fmtM(price)+" sale logged! 🎉");
+  jUpdateDash();
+}
+
+function renderSalesLog(){
+  if(!ST.sales.length){$("jSalesLog").innerHTML='<div class="j-empty">No sales recorded yet.</div>';return;}
+  $("jSalesLog").innerHTML=ST.sales.map(s=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #F4F4F2">
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#141414">${s.name}</div>
+        <div style="font-size:10px;color:#888">${fmtTS(s.time)}${s.client?" · "+s.client:""}</div>
+      </div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#E8715A">${fmtM(s.price)}</div>
+    </div>`).join("");
+}
+
+function initTasks(){
+  ST.tasks=DEFAULT_TASKS.map(t=>({...t}));renderTasks();
+}
+
+function renderTasks(){
+  const groups={};
+  ST.tasks.forEach((t,i)=>{if(!groups[t.g])groups[t.g]=[];groups[t.g].push({...t,i});});
+  $("jTaskList").innerHTML=Object.entries(groups).map(([g,tasks])=>`
+    <div>
+      <div class="j-task-group-lbl" style="background:${G_COLORS[g]||"#888"}">${g}</div>
+      ${tasks.map(t=>`
+        <div class="j-task-item${t.d?" done":""}" onclick="jToggleTask(${t.i})">
+          <div class="j-chk${t.d?" checked"}">${t.d?"✓":""}</div>
+          <div class="j-task-txt${t.d?" done"}">${t.l}</div>
+          <div class="j-pri pri-${t.p}">${t.p}</div>
+        </div>`).join("")}
+    </div>`).join("");
+  updateTaskProgress();
+}
+
+function jToggleTask(i){ST.tasks[i].d=!ST.tasks[i].d;renderTasks();jUpdateDash();}
+
+function jAddTask(){
+  const txt=$("jNewTask").value.trim();if(!txt)return;
+  ST.tasks.push({g:"Custom",l:txt,p:$("jNewPri").value,d:false});
+  $("jNewTask").value="";renderTasks();jToast("Task added!","#7A9E7E");
+}
+
+function updateTaskProgress(){
+  const total=ST.tasks.length,done=ST.tasks.filter(t=>t.d).length;
+  const pct=total?Math.round(done/total*100):0;
+  $("jTaskLbl").textContent=done+" / "+total;
+  $("jTaskBar").style.width=pct+"%";
+}
+
+function jToggleAddClient(){$("jAddClientForm").classList.toggle("open");}
+
+function jAddClient(){
+  const name=$("nc_name").value.trim();
+  if(!name){jToast("Enter a client name");return;}
+  const c={id:Date.now(),name,handle:$("nc_handle").value.trim(),service:$("nc_service").value,amount:parseFloat($("nc_amount").value)||0,status:$("nc_status").value,source:$("nc_source").value,notes:$("nc_notes").value.trim(),added:new Date()};
+  ST.clients.unshift(c);
+  ["nc_name","nc_handle","nc_amount","nc_notes"].forEach(id=>$(id).value="");
+  jToggleAddClient();renderCRM();jUpdateDash();
+  jToast(name+" added!","#7A9E7E");
+}
+
+function jDeleteClient(id){ST.clients=ST.clients.filter(c=>c.id!==id);renderCRM();jUpdateDash();}
+
+function jUpdateClientStatus(id,status){
+  const c=ST.clients.find(c=>c.id===id);if(c){c.status=status;renderCRM();jUpdateDash();}
+}
+
+function renderCRM(list){
+  list=list||ST.clients;
+  $("jCrmCount").textContent="Showing "+list.length+" of "+ST.clients.length+" clients";
+  if(!list.length){$("jCrmBody").innerHTML='<tr><td colspan="7"><div class="j-empty">No clients yet — add your first one above.</div></td></tr>';return;}
+  $("jCrmBody").innerHTML=list.map(c=>{
+    const s=STATUS_MAP[c.status]||STATUS_MAP.lead;
+    const col=AVATAR_COLORS[c.name.charCodeAt(0)%AVATAR_COLORS.length];
+    return`<tr>
+      <td><div style="display:flex;align-items:center;gap:9px"><div class="j-avatar" style="background:${col};color:#fff">${ini(c.name)}</div><div><div style="font-weight:600;font-size:12px;color:#141414">${c.name}</div><div style="font-size:10px;color:#888">${c.handle||"—"}</div></div></div></td>
+      <td style="font-size:11px;color:#555;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.service}</td>
+      <td style="font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:#E8715A">${c.amount>0?fmtM(c.amount):"Free"}</td>
+      <td><select onchange="jUpdateClientStatus(${c.id},this.value)" style="border:none;background:transparent;font-size:11px;cursor:pointer;color:#333;font-family:'DM Sans',sans-serif">${Object.entries(STATUS_MAP).map(([k,v])=>`<option value="${k}"${c.status===k?" selected":""}>${v.l}</option>`).join("")}</select></td>
+      <td style="font-size:10px;color:#888">${c.source}</td>
+      <td style="font-size:10px;color:#555;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.notes||"—"}</td>
+      <td><button class="j-btn j-btn-danger j-btn-sm" onclick="jDeleteClient(${c.id})">✕</button></td>
+    </tr>`;
+  }).join("");
+}
+
+function jFilterCRM(){
+  const q=$("jCrmSearch").value.toLowerCase();
+  const f=$("jCrmFilter").value;
+  renderCRM(ST.clients.filter(c=>(!q||c.name.toLowerCase().includes(q)||(c.handle||"").toLowerCase().includes(q))&&(!f||c.status===f)));
+}
+
+function buildReview(){
+  const secColors={Money:"#E8715A",Content:"#7A9E7E",Sales:"#141414",Energy:"#888",NextWeek:"#C4503C"};
+  const grouped={};
+  REVIEW_QS.forEach(q=>{if(!grouped[q.s])grouped[q.s]=[];grouped[q.s].push(q.q);});
+  $("jReviewForm").innerHTML=Object.entries(grouped).map(([sec,qs])=>`
+    <div class="j-review-section">
+      <div class="j-review-head" style="border-bottom-color:${secColors[sec]||"#E8715A"}">${sec}</div>
+      ${qs.map((q,i)=>`<div class="j-review-q"><label>${q}</label><input type="text" class="j-input" placeholder="Your answer..." id="rq_${sec}_${i}"></div>`).join("")}
+    </div>`).join("");
+}
+
+function jSaveReview(){jToast("Weekly review saved! Great CEO work ✓","#7A9E7E");}
+
+function addLog(type,text){ST.log.unshift({type,text,time:new Date()});jUpdateDash();}
+
+function jUpdateDash(){
+  $("dKpiRev").textContent=fmtM(ST.rev);
+  $("dKpiRevSub").textContent=ST.sales.length>0?ST.sales.length+" sale"+(ST.sales.length>1?"s":"")+" today":"No sales yet";
+  $("dKpiSales").textContent=ST.sales.length;
+  $("dKpiSalesSub").textContent=ST.sales.length>0?ST.sales[0].name:"—";
+  const active=ST.clients.filter(c=>c.status==="active").length;
+  $("dKpiClients").textContent=active;
+  $("dKpiClientsSub").textContent=ST.clients.length+" total in CRM";
+  const total=ST.tasks.length,done=ST.tasks.filter(t=>t.d).length;
+  const pct=total?Math.round(done/total*100):0;
+  $("dKpiTasks").textContent=pct+"%";
+  $("dKpiTasksSub").textContent=done+" of "+total;
+  $("dAReels").textContent=ST.stats.reels;
+  $("dADMs").textContent=ST.stats.dms;
+  $("dAFU").textContent=ST.stats.fu;
+  $("dALeads").textContent=ST.stats.leads;
+  $("dTaskCount").textContent=done+" / "+total;
+  $("dTaskBar").style.width=pct+"%";
+  $("dLog").innerHTML=ST.log.length?ST.log.slice(0,5).map(e=>`
+    <div class="j-log-entry">
+      <div class="j-log-dot ${e.type}"></div>
+      <div><div class="j-log-txt">${e.text}</div><div class="j-log-time">${fmtTS(e.time)}</div></div>
+    </div>`).join(""):'<div class="j-empty" style="padding:10px">No activity yet</div>';
+}
+
+function jSubmitDay(){
+  const now=new Date();
+  const inT=ST.inT?fmtTS(ST.inT):"Not recorded";
+  const outT=ST.outT?fmtTS(ST.outT):ST.on?"Still working":"Not recorded";
+  let hs="—";if(ST.inT){const end=ST.outT||now;hs=hStr(ST.inT,end);}
+  const rows=[
+    {l:"Business",v:"JOSS Consulting Group"},{l:"Date",v:now.toLocaleDateString("en-US")},
+    {l:"Clock In",v:inT},{l:"Clock Out",v:outT},{l:"Hours Worked",v:hs},
+    {l:"Reels Created",v:ST.stats.reels},{l:"DMs Sent",v:ST.stats.dms},
+    {l:"Follow-Ups",v:ST.stats.fu},{l:"New Leads",v:ST.stats.leads},
+    {l:"Sales Closed",v:ST.sales.length},{l:"Revenue",v:fmtM(ST.rev),m:true},
+    {l:"Energy Level",v:ST.energy+"/10"},{l:"Notes",v:$("jNotes").value||"—"},
+  ];
+  $("jModalRows").innerHTML=rows.map(r=>`<div class="j-modal-row"><span class="j-modal-lbl">${r.l}</span><span class="j-modal-val${r.m?" money":""}">${r.v}</span></div>`).join("");
+  window._jcsv=rows.map(r=>r.l+": "+r.v).join("\n");
+  $("jModalCode").textContent=window._jcsv;
+  $("jModalOv").classList.add("open");
+}
+
+function jCopyData(){
+  navigator.clipboard.writeText(window._jcsv||"").catch(()=>{});
+  jToast("Data copied to clipboard!","#7A9E7E");
+}
+
+function jTab(name,el){
+  document.querySelectorAll("#joss-app .j-panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll("#joss-app .j-tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("jp-"+name).classList.add("active");
+  if(el)el.classList.add("active");
+}
+
+function jToast(msg,color){
+  const t=$("jToast");t.textContent=msg;t.style.borderLeftColor=color||"#E8715A";
+  t.classList.add("show");clearTimeout(window._jtt);
+  window._jtt=setTimeout(()=>t.classList.remove("show"),2600);
+}
+
+buildOffers();initTasks();buildReview();renderCRM();jUpdateDash();jSetEnergy(7);
+})();
+</script>
