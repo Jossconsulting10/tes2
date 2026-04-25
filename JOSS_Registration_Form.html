@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOSS Consulting Group — Client Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --coral:#E07055;--coral-d:#B5503C;--coral-l:#F0C4BA;--coral-xl:#FDF5F3;
+  --sage:#6B9B6F;--sage-d:#4A7050;--sage-l:#C5DBC6;--sage-xl:#EEF5EE;
+  --black:#141414;--ink:#2C2C2C;--mid:#6B6B6B;--soft:#AAAAAA;
+  --rule:#E8E4DE;--bg:#F7F4EF;--white:#FFFFFF;--cream:#FDFCF9;
+  --error:#C0392B;--error-bg:#FDF0EE;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* TOP BAND */
+.top-band{height:5px;background:linear-gradient(90deg,var(--coral) 0%,var(--coral-d) 45%,var(--sage) 100%)}
+
+/* HEADER */
+.form-header{background:var(--black);padding:40px 24px 38px;text-align:center;position:relative;overflow:hidden}
+.form-header::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(224,112,85,0.07)}
+.form-header::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(107,155,111,0.06)}
+.brand-logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;position:relative;z-index:1}
+.logo-mark{width:42px;height:42px;border-radius:10px;background:var(--coral);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff}
+.brand-text{text-align:left}
+.brand-main{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;line-height:1}
+.brand-main em{color:var(--coral);font-style:normal}
+.brand-cities{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.14em;text-transform:uppercase;margin-top:2px}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#fff;letter-spacing:-0.3px;margin-bottom:10px;position:relative;z-index:1;line-height:1.2}
+.header-desc{font-size:13px;color:rgba(255,255,255,0.5);max-width:480px;margin:0 auto;line-height:1.7;position:relative;z-index:1}
+.req-note{display:inline-block;margin-top:14px;font-size:11px;color:rgba(255,255,255,0.3);position:relative;z-index:1}
+.req-note span{color:var(--coral)}
+
+/* PROGRESS */
+.progress-wrap{background:#fff;padding:12px 24px;border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:14px;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
+.progress-bar-bg{flex:1;height:4px;background:var(--rule);border-radius:99px;overflow:hidden}
+.progress-bar-fill{height:100%;background:var(--coral);border-radius:99px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);width:0%}
+.progress-pct{font-size:12px;color:var(--soft);font-weight:500;white-space:nowrap}
+
+/* CONTAINER */
+.form-container{max-width:640px;margin:0 auto;padding:28px 20px 80px}
+
+/* SECTION CARDS */
+.form-section{background:#fff;border:1px solid var(--rule);border-radius:16px;margin-bottom:18px;overflow:hidden;transition:box-shadow 0.2s,border-color 0.2s}
+.form-section:focus-within{box-shadow:0 0 0 2px rgba(224,112,85,0.12);border-color:var(--coral-l)}
+.sec-header{padding:18px 22px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:12px}
+.sec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:var(--black);line-height:1}
+.sec-sub{font-size:11px;color:var(--soft);margin-top:2px}
+.sec-body{padding:22px 22px}
+
+/* FIELDS */
+.field-grp{margin-bottom:18px}
+.field-grp:last-child{margin-bottom:0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.field-row:last-child{margin-bottom:0}
+
+label{display:block;font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--mid);margin-bottom:7px}
+label .req{color:var(--coral);margin-left:2px}
+label .opt{font-size:10px;font-weight:400;color:var(--soft);text-transform:none;letter-spacing:0;margin-left:4px}
+
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{
+  width:100%;background:var(--cream);border:1.5px solid var(--rule);border-radius:10px;
+  padding:11px 14px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--black);
+  outline:none;transition:border-color 0.2s,box-shadow 0.2s,background 0.2s;
+  -webkit-appearance:none;appearance:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--coral);background:#fff;box-shadow:0 0 0 3px rgba(224,112,85,0.1)}
+input::placeholder,textarea::placeholder{color:#C5C0B8}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23AAAAAA'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+textarea{min-height:90px;resize:vertical;line-height:1.5}
+.input-hint{font-size:11px;color:var(--soft);margin-top:5px;font-style:italic}
+.field-err{font-size:11px;color:var(--error);margin-top:5px;display:none}
+.field-err.show{display:block}
+input.err,select.err,textarea.err{border-color:var(--error)!important;background:var(--error-bg)!important}
+
+/* RADIO & CHECKBOX OPTIONS */
+.opt-group{display:flex;flex-direction:column;gap:8px}
+.opt-item{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border:1.5px solid var(--rule);border-radius:10px;cursor:pointer;transition:all 0.18s;background:var(--cream);user-select:none}
+.opt-item:hover{border-color:var(--coral-l);background:var(--coral-xl)}
+.opt-item.checked{border-color:var(--coral);background:var(--coral-xl)}
+.opt-item input[type=radio],.opt-item input[type=checkbox]{
+  width:18px;height:18px;margin:0;padding:0;flex-shrink:0;margin-top:1px;
+  border:2px solid var(--rule);background:#fff;cursor:pointer;
+  -webkit-appearance:none;appearance:none;transition:all 0.15s;position:relative
+}
+.opt-item input[type=radio]{border-radius:50%}
+.opt-item input[type=radio]:checked{border-color:var(--coral);background:var(--coral);box-shadow:inset 0 0 0 3px #fff}
+.opt-item input[type=checkbox]{border-radius:5px}
+.opt-item input[type=checkbox]:checked{border-color:var(--coral);background:var(--coral)}
+.opt-item input[type=checkbox]:checked::after{content:'';position:absolute;left:4px;top:1px;width:6px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg)}
+.opt-label{font-size:13px;color:var(--ink);line-height:1.3;cursor:pointer}
+.opt-label em{display:block;font-size:11px;color:var(--soft);font-style:normal;margin-top:1px}
+
+/* CONSENT */
+.consent-box{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--cream);border:1.5px solid var(--rule);border-radius:10px;margin-bottom:20px;cursor:pointer;transition:border-color 0.2s}
+.consent-box:hover{border-color:var(--coral-l)}
+.consent-box.checked{border-color:var(--coral);background:var(--coral-xl)}
+.consent-box input[type=checkbox]{width:20px;height:20px;border-radius:5px;margin:0;padding:0;flex-shrink:0;margin-top:1px;border:2px solid var(--rule);-webkit-appearance:none;appearance:none;cursor:pointer;position:relative;background:#fff;transition:all 0.15s}
+.consent-box input[type=checkbox]:checked{background:var(--coral);border-color:var(--coral)}
+.consent-box input[type=checkbox]:checked::after{content:'';position:absolute;left:5px;top:2px;width:7px;height:10px;border:2.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg)}
+.consent-txt{font-size:12px;color:var(--mid);line-height:1.6}
+.consent-txt strong{color:var(--black)}
+
+/* SUBMIT BTN */
+.btn-submit{width:100%;padding:16px;background:var(--coral);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-submit:hover{background:var(--coral-d);transform:translateY(-1px);box-shadow:0 6px 20px rgba(224,112,85,0.35)}
+.btn-submit:active{transform:translateY(0)}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+.form-footer{text-align:center;padding:0 20px 40px;margin-top:-20px}
+.footer-badges{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+.badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--soft);font-weight:500}
+.badge-dot{width:6px;height:6px;border-radius:50%}
+.footer-copy{font-size:11px;color:var(--soft)}
+.footer-copy strong{color:var(--mid)}
+
+/* SUCCESS SCREEN */
+.success-screen{display:none;max-width:540px;margin:60px auto;text-align:center;padding:0 20px}
+.success-icon{width:72px;height:72px;border-radius:50%;background:var(--sage-xl);border:2px solid var(--sage-l);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:30px}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--black);margin-bottom:12px;line-height:1.2}
+.success-desc{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:28px}
+.success-card{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:22px;text-align:left;margin-bottom:20px}
+.success-card-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft);margin-bottom:14px}
+.success-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:13px}
+.success-item:last-child{border-bottom:none}
+.success-item-lbl{color:var(--soft);min-width:110px}
+.success-item-val{color:var(--black);font-weight:500}
+.btn-new{display:inline-block;padding:12px 28px;background:var(--coral);color:#fff;border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-new:hover{background:var(--coral-d)}
+
+/* RESPONSIVE */
+@media(max-width:560px){
+  .field-row{grid-template-columns:1fr}
+  .header-title{font-size:26px}
+  .form-container{padding:18px 14px 60px}
+  .sec-body{padding:18px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-band"></div>
+
+<!-- HEADER -->
+<div class="form-header">
+  <div class="brand-logo">
+    <div class="logo-mark">J</div>
+    <div class="brand-text">
+      <div class="brand-main">JOSS <em>Consulting</em> Group</div>
+      <div class="brand-cities">Orlando &nbsp;·&nbsp; Columbus</div>
+    </div>
+  </div>
+  <div class="header-title">Client Registration Form</div>
+  <p class="header-desc">Please complete this form to register your business and get started with JOSS Consulting Group. We will reach out within 24 hours of receiving your information.</p>
+  <div class="req-note">Fields marked <span>*</span> are required</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-pct" id="progressPct">0% complete</div>
+</div>
+
+<!-- MAIN FORM -->
+<div class="form-container" id="formWrap">
+<form id="regForm" novalidate>
+
+  <!-- SECTION 1: PERSONAL INFO -->
+  <div class="form-section">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#FDF5F3">👤</div>
+      <div>
+        <div class="sec-title">Personal Information</div>
+        <div class="sec-sub">Your contact details so we can reach you</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div class="field-row">
+        <div class="field-grp">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="fullName" name="fullName" placeholder="Jane Smith" autocomplete="name">
+          <div class="field-err" id="err-fullName">Please enter your full name.</div>
+        </div>
+        <div class="field-grp">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="email" name="email" placeholder="jane@email.com" autocomplete="email">
+          <div class="field-err" id="err-email">Please enter a valid email address.</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-grp">
+          <label>Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" autocomplete="tel">
+          <div class="field-err" id="err-phone">Please enter your phone number.</div>
+        </div>
+        <div class="field-grp">
+          <label>Instagram / TikTok Handle <span class="opt">(optional)</span></label>
+          <input type="text" id="social" name="social" placeholder="@yourhandle">
+        </div>
+      </div>
+      <div class="field-grp">
+        <label>How did you hear about us? <span class="req">*</span></label>
+        <div class="opt-group" id="sourceGroup">
+          <label class="opt-item" onclick="toggleRadio(this,'source','instagram')">
+            <input type="radio" name="source" value="instagram"> <span class="opt-label">Instagram</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'source','tiktok')">
+            <input type="radio" name="source" value="tiktok"> <span class="opt-label">TikTok</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'source','referral')">
+            <input type="radio" name="source" value="referral"> <span class="opt-label">Referral from a friend</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'source','ghl')">
+            <input type="radio" name="source" value="ghl"> <span class="opt-label">GoHighLevel / Website</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'source','orlando')">
+            <input type="radio" name="source" value="orlando"> <span class="opt-label">Orlando Office</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'source','columbus')">
+            <input type="radio" name="source" value="columbus"> <span class="opt-label">Columbus Office</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'source','other')">
+            <input type="radio" name="source" value="other"> <span class="opt-label">Other</span>
+          </label>
+        </div>
+        <div class="field-err" id="err-source">Please select how you heard about us.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: BUSINESS INFO -->
+  <div class="form-section">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#EEF5EE">🏢</div>
+      <div>
+        <div class="sec-title">Business Information</div>
+        <div class="sec-sub">Tell us about your business — or where you are starting from</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div class="field-row">
+        <div class="field-grp">
+          <label>Business Name <span class="opt">(optional)</span></label>
+          <input type="text" id="bizName" name="bizName" placeholder="Smith Enterprises LLC">
+          <div class="input-hint">Leave blank if not yet formed</div>
+        </div>
+        <div class="field-grp">
+          <label>Business Type <span class="opt">(optional)</span></label>
+          <select id="bizType" name="bizType">
+            <option value="">— Select type —</option>
+            <option>LLC</option>
+            <option>Sole Proprietor</option>
+            <option>S-Corp</option>
+            <option>C-Corp</option>
+            <option>Partnership</option>
+            <option>Non-Profit</option>
+            <option>Not Yet Formed</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-grp">
+          <label>State Registered <span class="opt">(optional)</span></label>
+          <select id="bizState" name="bizState">
+            <option value="">— Select state —</option>
+            <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+            <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+            <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+            <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+            <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+            <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+            <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+            <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+            <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+            <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+            <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+            <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+            <option>Wisconsin</option><option>Wyoming</option>
+            <option>Not Yet Registered</option>
+          </select>
+        </div>
+        <div class="field-grp">
+          <label>EIN / Tax ID <span class="opt">(optional)</span></label>
+          <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX">
+          <div class="input-hint">Leave blank if not yet obtained</div>
+        </div>
+      </div>
+      <div class="field-grp">
+        <label>Business Address <span class="opt">(optional)</span></label>
+        <textarea id="bizAddress" name="bizAddress" placeholder="123 Main Street, Suite 100&#10;City, State, ZIP Code"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: SERVICE & GOALS -->
+  <div class="form-section">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#FDF5F3">🎯</div>
+      <div>
+        <div class="sec-title">Services &amp; Goals</div>
+        <div class="sec-sub">Help us understand exactly what you need</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div class="field-grp">
+        <label>Which JOSS Consulting service are you interested in? <span class="req">*</span><br><span class="opt" style="text-transform:none;font-size:11px">Select all that apply</span></label>
+        <div class="opt-group" id="servicesGroup">
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="free">
+            <span class="opt-label">Free Lead Magnet <em>Get started — no cost</em></span>
+          </label>
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="49">
+            <span class="opt-label">Starter Package — $49 <em>First step in with JOSS</em></span>
+          </label>
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="197">
+            <span class="opt-label">Core Service — $197 <em>Our main offering</em></span>
+          </label>
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="999">
+            <span class="opt-label">Done-For-You Service — $999 <em>We handle everything for you</em></span>
+          </label>
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="250">
+            <span class="opt-label">Business Credit Coaching — $250 <em>1-on-1 credit building strategy</em></span>
+          </label>
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="150">
+            <span class="opt-label">Consultation — $150 <em>60-minute strategy session</em></span>
+          </label>
+          <label class="opt-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="services" value="notsure">
+            <span class="opt-label">Not sure yet — I need guidance <em>We will help you figure out the right fit</em></span>
+          </label>
+        </div>
+        <div class="field-err" id="err-services">Please select at least one service.</div>
+      </div>
+
+      <div class="field-grp" style="margin-top:20px">
+        <label>What is your #1 business goal right now? <span class="req">*</span></label>
+        <div class="opt-group" id="goalGroup">
+          <label class="opt-item" onclick="toggleRadio(this,'goal','llc')">
+            <input type="radio" name="goal" value="llc"> <span class="opt-label">Form my LLC</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'goal','credit')">
+            <input type="radio" name="goal" value="credit"> <span class="opt-label">Get business credit</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'goal','compliant')">
+            <input type="radio" name="goal" value="compliant"> <span class="opt-label">Stay compliant</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'goal','revenue')">
+            <input type="radio" name="goal" value="revenue"> <span class="opt-label">Grow my revenue</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'goal','funding')">
+            <input type="radio" name="goal" value="funding"> <span class="opt-label">Get funding-ready</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'goal','all')">
+            <input type="radio" name="goal" value="all"> <span class="opt-label">All of the above</span>
+          </label>
+        </div>
+        <div class="field-err" id="err-goal">Please select your primary goal.</div>
+      </div>
+
+      <div class="field-grp" style="margin-top:20px">
+        <label>Tell us about your business and what you need help with <span class="opt">(optional)</span></label>
+        <textarea id="businessDesc" name="businessDesc" placeholder="Share where you are right now, what challenges you are facing, and what success looks like for you. The more you share, the better we can help..."></textarea>
+      </div>
+
+      <div class="field-grp" style="margin-top:20px">
+        <label>Best time to reach you? <span class="req">*</span></label>
+        <div class="opt-group" id="contactTimeGroup">
+          <label class="opt-item" onclick="toggleRadio(this,'contactTime','morning')">
+            <input type="radio" name="contactTime" value="morning">
+            <span class="opt-label">Morning — 9am to 12pm</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'contactTime','afternoon')">
+            <input type="radio" name="contactTime" value="afternoon">
+            <span class="opt-label">Afternoon — 12pm to 3pm</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'contactTime','evening')">
+            <input type="radio" name="contactTime" value="evening">
+            <span class="opt-label">Evening — 6pm to 9pm</span>
+          </label>
+        </div>
+        <div class="field-err" id="err-contactTime">Please select your preferred contact time.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: ADDITIONAL NOTES -->
+  <div class="form-section">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#F7F4EF">📝</div>
+      <div>
+        <div class="sec-title">Additional Notes</div>
+        <div class="sec-sub">Anything else you want us to know</div>
+      </div>
+    </div>
+    <div class="sec-body">
+      <div class="field-grp">
+        <label>Questions or special requests <span class="opt">(optional)</span></label>
+        <textarea id="notes" name="notes" placeholder="Any questions, special requests, or anything else you would like to share with our team..."></textarea>
+      </div>
+      <div class="field-grp" style="margin-top:18px">
+        <label>Preferred language <span class="opt">(optional)</span></label>
+        <div class="opt-group">
+          <label class="opt-item" onclick="toggleRadio(this,'lang','english')">
+            <input type="radio" name="lang" value="english" checked> <span class="opt-label">English</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'lang','creole')">
+            <input type="radio" name="lang" value="creole"> <span class="opt-label">Haitian Creole / Kreyòl Ayisyen</span>
+          </label>
+          <label class="opt-item" onclick="toggleRadio(this,'lang','both')">
+            <input type="radio" name="lang" value="both"> <span class="opt-label">Both — English and Creole</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT SECTION -->
+  <div class="form-section">
+    <div class="sec-body">
+      <div class="consent-box" id="consentBox" onclick="toggleConsent()">
+        <input type="checkbox" id="consentCheck" name="consent">
+        <div class="consent-txt">
+          <strong>I consent to JOSS Consulting Group contacting me</strong> at the email and phone number provided above. I understand that my information will be kept confidential and used only to provide the services I have requested. I agree to be contacted within 24 hours of submitting this form.
+        </div>
+      </div>
+      <div class="field-err" id="err-consent">Please check the consent box to continue.</div>
+      <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">
+        <div class="btn-spinner" id="btnSpinner"></div>
+        <span id="btnText">Submit Registration</span>
+      </button>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--soft)">
+        By submitting you agree to be contacted by JOSS Consulting Group · Your information is private and secure
+      </div>
+    </div>
+  </div>
+
+</form>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✓</div>
+  <div class="success-title">You are registered!</div>
+  <div class="success-desc">Thank you for registering with JOSS Consulting Group. We have received your information and will reach out within 24 hours. Check your email for a confirmation.</div>
+  <div class="success-card">
+    <div class="success-card-title">Your Submission Summary</div>
+    <div id="summaryItems"></div>
+  </div>
+  <div style="margin-bottom:16px">
+    <button class="btn-new" onclick="resetForm()">Submit Another Registration</button>
+  </div>
+  <div style="font-size:12px;color:var(--soft)">
+    <strong>JOSS Consulting Group</strong> · Orlando &amp; Columbus<br>
+    We look forward to working with you.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="form-footer" id="formFooter">
+  <div class="footer-badges">
+    <div class="badge"><div class="badge-dot" style="background:var(--sage)"></div>Secure &amp; Confidential</div>
+    <div class="badge"><div class="badge-dot" style="background:var(--coral)"></div>24-Hour Response</div>
+    <div class="badge"><div class="badge-dot" style="background:var(--black)"></div>Orlando &amp; Columbus</div>
+  </div>
+  <div class="footer-copy"><strong>JOSS Consulting Group</strong> &copy; 2026. All rights reserved.</div>
+</div>
+
+<script>
+// ── RADIO TOGGLE ──────────────────────────────────────────────────────────────
+function toggleRadio(el, name, val) {
+  var group = el.closest('.opt-group') || el.parentElement;
+  var items = group.querySelectorAll('.opt-item');
+  for (var i = 0; i < items.length; i++) { items[i].classList.remove('checked'); }
+  el.classList.add('checked');
+  var inp = el.querySelector('input[type=radio]');
+  if (inp) inp.checked = true;
+  updateProgress();
+  clearErr(name === 'source' ? 'err-source' : name === 'goal' ? 'err-goal' : name === 'contactTime' ? 'err-contactTime' : '');
+}
+
+// ── CHECKBOX TOGGLE ───────────────────────────────────────────────────────────
+function toggleCheck(el) {
+  var inp = el.querySelector('input[type=checkbox]');
+  if (!inp) return;
+  inp.checked = !inp.checked;
+  el.classList.toggle('checked', inp.checked);
+  updateProgress();
+  clearErr('err-services');
+}
+
+// ── CONSENT TOGGLE ────────────────────────────────────────────────────────────
+function toggleConsent() {
+  var chk = document.getElementById('consentCheck');
+  var box = document.getElementById('consentBox');
+  chk.checked = !chk.checked;
+  box.classList.toggle('checked', chk.checked);
+  clearErr('err-consent');
+}
+
+// ── CLEAR ERROR ───────────────────────────────────────────────────────────────
+function clearErr(id) {
+  if (!id) return;
+  var el = document.getElementById(id);
+  if (el) el.classList.remove('show');
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+function updateProgress() {
+  var total = 0, filled = 0;
+  var required = ['fullName','email','phone'];
+  for (var i = 0; i < required.length; i++) {
+    total++;
+    var el = document.getElementById(required[i]);
+    if (el && el.value.trim()) filled++;
+  }
+  // source radio
+  total++;
+  if (document.querySelector('input[name="source"]:checked')) filled++;
+  // services checkboxes
+  total++;
+  if (document.querySelector('input[name="services"]:checked')) filled++;
+  // goal radio
+  total++;
+  if (document.querySelector('input[name="goal"]:checked')) filled++;
+  // contactTime radio
+  total++;
+  if (document.querySelector('input[name="contactTime"]:checked')) filled++;
+  // consent
+  total++;
+  if (document.getElementById('consentCheck').checked) filled++;
+
+  var pct = Math.round(filled / total * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '% complete';
+}
+
+// ── LIVE PROGRESS on input ────────────────────────────────────────────────────
+var inputs = document.querySelectorAll('input[type=text], input[type=email], input[type=tel]');
+for (var i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener('input', updateProgress);
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────────────────
+function showErr(id, msg) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (msg) el.textContent = msg;
+  el.classList.add('show');
+}
+function markErr(fieldId) {
+  var el = document.getElementById(fieldId);
+  if (el) { el.classList.add('err'); el.addEventListener('input', function(){ this.classList.remove('err'); }, {once:true}); }
+}
+function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+function validateForm() {
+  var ok = true;
+  // Full Name
+  var fn = document.getElementById('fullName');
+  if (!fn.value.trim()) { showErr('err-fullName','Please enter your full name.'); markErr('fullName'); ok = false; }
+  else { clearErr('err-fullName'); fn.classList.remove('err'); }
+  // Email
+  var em = document.getElementById('email');
+  if (!em.value.trim() || !isEmail(em.value.trim())) { showErr('err-email','Please enter a valid email address.'); markErr('email'); ok = false; }
+  else { clearErr('err-email'); em.classList.remove('err'); }
+  // Phone
+  var ph = document.getElementById('phone');
+  if (!ph.value.trim()) { showErr('err-phone','Please enter your phone number.'); markErr('phone'); ok = false; }
+  else { clearErr('err-phone'); ph.classList.remove('err'); }
+  // Source
+  if (!document.querySelector('input[name="source"]:checked')) { showErr('err-source','Please select how you heard about us.'); ok = false; }
+  else clearErr('err-source');
+  // Services
+  if (!document.querySelector('input[name="services"]:checked')) { showErr('err-services','Please select at least one service.'); ok = false; }
+  else clearErr('err-services');
+  // Goal
+  if (!document.querySelector('input[name="goal"]:checked')) { showErr('err-goal','Please select your primary goal.'); ok = false; }
+  else clearErr('err-goal');
+  // Contact time
+  if (!document.querySelector('input[name="contactTime"]:checked')) { showErr('err-contactTime','Please select your preferred contact time.'); ok = false; }
+  else clearErr('err-contactTime');
+  // Consent
+  if (!document.getElementById('consentCheck').checked) { showErr('err-consent','Please check the consent box to continue.'); ok = false; }
+  else clearErr('err-consent');
+  return ok;
+}
+
+// ── COLLECT DATA ──────────────────────────────────────────────────────────────
+function collectData() {
+  var srcEl = document.querySelector('input[name="source"]:checked');
+  var goalEl = document.querySelector('input[name="goal"]:checked');
+  var timeEl = document.querySelector('input[name="contactTime"]:checked');
+  var langEl = document.querySelector('input[name="lang"]:checked');
+  var svcEls = document.querySelectorAll('input[name="services"]:checked');
+  var svcs = [];
+  for (var i = 0; i < svcEls.length; i++) { svcs.push(svcEls[i].closest('.opt-item').querySelector('.opt-label').firstChild.textContent.trim()); }
+  return {
+    fullName:    document.getElementById('fullName').value.trim(),
+    email:       document.getElementById('email').value.trim(),
+    phone:       document.getElementById('phone').value.trim(),
+    social:      document.getElementById('social').value.trim(),
+    source:      srcEl ? srcEl.closest('.opt-item').querySelector('.opt-label').textContent.trim() : '',
+    bizName:     document.getElementById('bizName').value.trim(),
+    bizType:     document.getElementById('bizType').value,
+    bizState:    document.getElementById('bizState').value,
+    ein:         document.getElementById('ein').value.trim(),
+    bizAddress:  document.getElementById('bizAddress').value.trim(),
+    services:    svcs.join(', '),
+    goal:        goalEl ? goalEl.closest('.opt-item').querySelector('.opt-label').textContent.trim() : '',
+    businessDesc:document.getElementById('businessDesc').value.trim(),
+    contactTime: timeEl ? timeEl.closest('.opt-item').querySelector('.opt-label').textContent.trim() : '',
+    language:    langEl ? langEl.closest('.opt-item').querySelector('.opt-label').textContent.trim() : 'English',
+    notes:       document.getElementById('notes').value.trim(),
+    submitted:   new Date().toLocaleString('en-US')
+  };
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────────
+function submitForm() {
+  if (!validateForm()) {
+    var firstErr = document.querySelector('.field-err.show');
+    if (firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  var btn = document.getElementById('submitBtn');
+  var spinner = document.getElementById('btnSpinner');
+  var btnTxt = document.getElementById('btnText');
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  btnTxt.textContent = 'Submitting...';
+
+  var data = collectData();
+
+  // Simulate submission (replace this block with your actual endpoint/Google Apps Script URL)
+  setTimeout(function() {
+    showSuccess(data);
+  }, 1800);
+}
+
+// ── SUCCESS ───────────────────────────────────────────────────────────────────
+function showSuccess(data) {
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('formFooter').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  var ss = document.getElementById('successScreen');
+  ss.style.display = 'block';
+
+  var items = [
+    { l: 'Name',          v: data.fullName },
+    { l: 'Email',         v: data.email },
+    { l: 'Phone',         v: data.phone },
+    { l: 'Services',      v: data.services },
+    { l: 'Goal',          v: data.goal },
+    { l: 'Best time',     v: data.contactTime },
+    { l: 'Business',      v: data.bizName || 'Not provided' },
+    { l: 'State',         v: data.bizState || 'Not provided' },
+    { l: 'Submitted',     v: data.submitted },
+  ];
+
+  var html = '';
+  for (var i = 0; i < items.length; i++) {
+    html += '<div class="success-item"><div class="success-item-lbl">' + items[i].l + '</div><div class="success-item-val">' + items[i].v + '</div></div>';
+  }
+  document.getElementById('summaryItems').innerHTML = html;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── RESET ─────────────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('regForm').reset();
+  var checked = document.querySelectorAll('.opt-item.checked');
+  for (var i = 0; i < checked.length; i++) checked[i].classList.remove('checked');
+  document.getElementById('consentBox').classList.remove('checked');
+  document.getElementById('successScreen').style.display = 'none';
+  document.getElementById('formWrap').style.display = 'block';
+  document.getElementById('formFooter').style.display = 'block';
+  document.querySelector('.progress-wrap').style.display = 'flex';
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = false;
+  document.getElementById('btnSpinner').style.display = 'none';
+  document.getElementById('btnText').textContent = 'Submit Registration';
+  updateProgress();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Init
+updateProgress();
+
+// Pre-check English language (default)
+var engLang = document.querySelector('input[name="lang"][value="english"]');
+if (engLang) {
+  var engItem = engLang.closest('.opt-item');
+  if (engItem) engItem.classList.add('checked');
+}
+</script>
+</body>
+</html>
