@@ -1,1440 +1,383 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JOSS Consulting Group — CEO Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --coral:    #E07055;
-    --coral-d:  #B5503C;
-    --coral-l:  #F5DDD8;
-    --coral-xl: #FDF5F3;
-    --sage:     #6B9B6F;
-    --sage-d:   #4A7050;
-    --sage-l:   #C5DBC6;
-    --sage-xl:  #EEF5EE;
-    --black:    #141414;
-    --ink:      #2C2C2C;
-    --mid:      #6B6B6B;
-    --soft:     #AAAAAA;
-    --rule:     #E5E2DC;
-    --bg:       #F8F6F2;
-    --white:    #FFFFFF;
-    --cream:    #FDFCFA;
-    --r:        10px;
-    --r-lg:     14px;
-  }
-
-  html, body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    font-size: 14px;
-    line-height: 1.5;
-    min-height: 100vh;
-  }
-
-  /* ─── WRAPPER ─── */
-  .app {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 20px 16px 80px;
-  }
-
-  /* ─── TOP BAR ─── */
-  .topbar {
-    background: var(--black);
-    border-radius: var(--r-lg);
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .brand { display: flex; flex-direction: column; gap: 2px; }
-  .brand-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--white);
-    letter-spacing: 0.02em;
-    line-height: 1;
-  }
-  .brand-name em { color: var(--coral); font-style: normal; }
-  .brand-cities { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 0.14em; text-transform: uppercase; }
-  .top-rev {
-    background: rgba(224,112,85,0.15);
-    border: 1px solid rgba(224,112,85,0.3);
-    border-radius: 99px;
-    padding: 8px 18px;
-    text-align: right;
-  }
-  .top-rev-lbl { font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
-  .top-rev-val {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--coral);
-    line-height: 1;
-  }
-
-  /* ─── TABS ─── */
-  .tabs {
-    display: flex;
-    gap: 4px;
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 5px;
-    margin-bottom: 18px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab {
-    flex-shrink: 0;
-    padding: 9px 16px;
-    border-radius: var(--r);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--soft);
-    cursor: pointer;
-    transition: all 0.18s;
-    white-space: nowrap;
-    user-select: none;
-    border: none;
-    background: transparent;
-    font-family: 'Outfit', sans-serif;
-  }
-  .tab:hover { color: var(--ink); background: var(--bg); }
-  .tab.on {
-    background: var(--black);
-    color: var(--white);
-    font-weight: 600;
-  }
-
-  /* ─── PANELS ─── */
-  .panel { display: none; }
-  .panel.on { display: block; }
-
-  /* ─── CARDS ─── */
-  .card {
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 20px 22px;
-  }
-  .card + .card { margin-top: 14px; }
-  .card-title {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--soft);
-    margin-bottom: 14px;
-  }
-
-  /* ─── GRID ─── */
-  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-
-  /* ─── KPI CARDS ─── */
-  .kpi {
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 18px;
-    position: relative;
-    overflow: hidden;
-  }
-  .kpi-stripe {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    border-radius: 14px 0 0 14px;
-  }
-  .kpi-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); margin-bottom: 6px; }
-  .kpi-val {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--black);
-    line-height: 1;
-  }
-  .kpi-sub { font-size: 11px; color: var(--sage); margin-top: 5px; font-weight: 500; }
-
-  /* ─── BUTTONS ─── */
-  button {
-    font-family: 'Outfit', sans-serif;
-    cursor: pointer;
-    border: none;
-    transition: all 0.18s;
-  }
-  .btn {
-    padding: 10px 20px;
-    border-radius: var(--r);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-  .btn:active:not(:disabled) { transform: scale(0.97); }
-  .btn-coral { background: var(--coral); color: var(--white); }
-  .btn-coral:hover:not(:disabled) { background: var(--coral-d); }
-  .btn-sage  { background: var(--sage);  color: var(--white); }
-  .btn-sage:hover:not(:disabled)  { background: var(--sage-d); }
-  .btn-black { background: var(--black); color: var(--white); }
-  .btn-black:hover:not(:disabled) { background: var(--ink); }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--rule); }
-  .btn-ghost:hover:not(:disabled) { border-color: var(--soft); background: var(--bg); }
-  .btn-danger { background: #FEE2E2; color: #B91C1C; }
-  .btn-danger:hover:not(:disabled) { background: #FECACA; }
-  .btn-sm  { padding: 6px 12px; font-size: 10px; }
-  .btn-lg  { padding: 13px 28px; font-size: 13px; }
-  .btn-full { width: 100%; justify-content: center; }
-
-  /* ─── INPUTS ─── */
-  .inp {
-    width: 100%;
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: var(--r);
-    padding: 9px 13px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 13px;
-    color: var(--black);
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .inp:focus { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(224,112,85,0.1); }
-  .inp::placeholder { color: #C8C5BE; }
-  textarea.inp { min-height: 72px; resize: vertical; }
-  select.inp { cursor: pointer; }
-  .lbl { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-bottom: 5px; }
-
-  /* ─── CLOCK HERO ─── */
-  .clock-hero {
-    background: var(--black);
-    border-radius: var(--r-lg);
-    padding: 24px 28px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .clock-time {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
-    font-weight: 700;
-    color: var(--white);
-    letter-spacing: -2px;
-    line-height: 1;
-    transition: color 0.3s;
-  }
-  .clock-time.running { color: var(--sage-l); }
-  .clock-status { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 5px; }
-  .clock-elapsed { font-size: 12px; color: rgba(255,255,255,0.4); min-height: 18px; margin-top: 4px; }
-  .clock-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-
-  /* ─── STAT TILES ─── */
-  .stat {
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 14px 10px;
-    text-align: center;
-  }
-  .stat-val {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 3px;
-  }
-  .stat-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); }
-  .stat-btns { display: flex; gap: 4px; justify-content: center; margin-top: 8px; }
-  .adj {
-    width: 26px; height: 26px;
-    border-radius: 6px;
-    background: var(--bg);
-    border: 1px solid var(--rule);
-    color: var(--mid);
-    font-size: 16px;
-    font-weight: 600;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    line-height: 1;
-  }
-  .adj:hover { border-color: var(--coral-l); color: var(--coral); background: var(--coral-xl); }
-  .adj:active { transform: scale(0.9); }
-
-  /* ─── OFFERS ─── */
-  .offer {
-    background: var(--white);
-    border: 2px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    user-select: none;
-  }
-  .offer:hover { border-color: var(--coral-l); transform: translateY(-2px); }
-  .offer.picked { border-color: var(--coral); background: var(--coral-xl); }
-  .offer.picked::after { content: '✓'; position: absolute; top: 8px; right: 10px; font-size: 12px; color: var(--coral); font-weight: 700; }
-  .offer.free-offer { border-color: var(--sage-l); }
-  .offer.free-offer:hover { border-color: var(--sage); }
-  .offer-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--black);
-    margin-bottom: 3px;
-    line-height: 1;
-  }
-  .offer-price.free { color: var(--sage-d); }
-  .offer-name { font-size: 11px; font-weight: 600; color: var(--ink); }
-  .offer-tag {
-    display: inline-block;
-    margin-top: 5px;
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .tag-free    { background: var(--sage-xl);  color: var(--sage-d); }
-  .tag-entry   { background: var(--coral-xl); color: var(--coral-d); }
-  .tag-core    { background: var(--coral-xl); color: var(--coral-d); }
-  .tag-premium { background: #F0EDFF;          color: #5B21B6; }
-  .tag-coaching{ background: var(--sage-xl);  color: var(--sage-d); }
-  .tag-custom  { background: var(--bg);        color: var(--mid); }
-
-  /* ─── ENERGY ─── */
-  .energy-wrap { margin-bottom: 16px; }
-  .energy-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .energy-val {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 36px;
-    font-weight: 700;
-  }
-  input[type=range] {
-    width: 100%;
-    -webkit-appearance: none;
-    height: 5px;
-    border-radius: 99px;
-    background: var(--bg);
-    outline: none;
-    cursor: pointer;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--coral);
-    cursor: pointer;
-    border: 3px solid var(--white);
-    box-shadow: 0 0 0 2px var(--coral-l);
-  }
-  .range-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--soft); margin-top: 5px; }
-
-  /* ─── TASKS ─── */
-  .task-group-head {
-    padding: 8px 14px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--white);
-    border-radius: var(--r) var(--r) 0 0;
-    margin-top: 14px;
-  }
-  .task-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 11px 14px;
-    background: var(--white);
-    border: 1px solid var(--rule);
-    border-top: none;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .task-row:last-child { border-radius: 0 0 var(--r) var(--r); }
-  .task-row:hover { background: var(--cream); }
-  .task-row.done { opacity: 0.5; }
-  .chkbox {
-    width: 18px; height: 18px;
-    border-radius: 5px;
-    border: 2px solid var(--rule);
-    flex-shrink: 0;
-    margin-top: 1px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px;
-    transition: all 0.15s;
-  }
-  .chkbox.done { background: var(--sage); border-color: var(--sage); color: var(--white); }
-  .task-text { font-size: 13px; color: var(--ink); flex: 1; line-height: 1.4; }
-  .task-text.done { text-decoration: line-through; color: var(--soft); }
-  .priority {
-    font-size: 8px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 99px;
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: 2px;
-  }
-  .p-high { background: #FEE2E2; color: #B91C1C; }
-  .p-med  { background: var(--coral-xl); color: var(--coral-d); }
-  .p-low  { background: var(--sage-xl);  color: var(--sage-d); }
-
-  /* ─── PROGRESS BAR ─── */
-  .prog-wrap { background: var(--bg); border-radius: 99px; height: 6px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 99px; background: var(--coral); transition: width 0.4s; }
-
-  /* ─── CRM TABLE ─── */
-  .crm-scroll { overflow-x: auto; border-radius: var(--r-lg); border: 1px solid var(--rule); }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 580px; }
-  thead { background: var(--black); }
-  th { padding: 10px 14px; text-align: left; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); white-space: nowrap; }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--cream); }
-  .avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .pill { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
-  .pill-lead     { background: var(--coral-xl); color: var(--coral-d); }
-  .pill-active   { background: var(--sage-xl);  color: var(--sage-d); }
-  .pill-followup { background: #FEF3C7; color: #92400E; }
-  .pill-done     { background: var(--bg); color: var(--soft); }
-  .pill-vip      { background: #F0EDFF; color: #5B21B6; }
-  .add-form-wrap { background: var(--bg); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px; display: none; }
-  .add-form-wrap.open { display: block; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-
-  /* ─── LOG ENTRIES ─── */
-  .log-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
-  .log-item:last-child { border-bottom: none; }
-  .log-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-  .dot-sale { background: var(--coral); }
-  .dot-in   { background: var(--sage); }
-  .dot-out  { background: var(--black); }
-  .dot-task { background: var(--soft); }
-  .log-txt  { font-size: 12px; color: var(--mid); flex: 1; }
-  .log-time { font-size: 10px; color: var(--soft); margin-top: 2px; }
-
-  /* ─── REVIEW ─── */
-  .review-block { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 18px; margin-bottom: 12px; }
-  .review-head { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 700; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid var(--coral); }
-  .review-q { margin-bottom: 12px; }
-  .review-q label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--mid); margin-bottom: 4px; }
-
-  /* ─── DASHBOARD ROW ─── */
-  .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--rule); }
-  .dash-row:last-child { border-bottom: none; }
-  .dash-row-lbl { font-size: 12px; color: var(--mid); }
-  .dash-row-val { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: var(--black); }
-
-  /* ─── MODAL ─── */
-  .modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(20,20,20,0.72);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal-box {
-    background: var(--white);
-    border-radius: var(--r-lg);
-    padding: 28px;
-    width: 100%;
-    max-width: 440px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--coral); }
-  .modal-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
-  .modal-row:last-of-type { border-bottom: none; }
-  .modal-lbl { color: var(--mid); }
-  .modal-val { font-weight: 600; color: var(--black); }
-  .modal-val.money { color: var(--coral); font-family: 'Cormorant Garamond', serif; font-size: 16px; }
-  .copy-box { background: var(--bg); border: 1px solid var(--rule); border-radius: var(--r); padding: 11px; font-family: monospace; font-size: 10px; color: var(--mid); white-space: pre-wrap; word-break: break-all; line-height: 1.7; margin-top: 12px; max-height: 180px; overflow-y: auto; }
-  .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
-  .modal-btns .btn { flex: 1; }
-
-  /* ─── TOAST ─── */
-  #toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--black);
-    color: var(--white);
-    padding: 11px 24px;
-    border-radius: 99px;
-    font-size: 12px;
-    font-weight: 500;
-    z-index: 99999;
-    pointer-events: none;
-    transition: transform 0.32s cubic-bezier(0.34,1.56,0.64,1);
-    border-left: 3px solid var(--coral);
-    white-space: nowrap;
-  }
-  #toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* ─── SECTION HEADER ─── */
-  .sec-head { margin-bottom: 18px; }
-  .sec-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--black); line-height: 1; }
-  .sec-sub { font-size: 12px; color: var(--soft); margin-top: 4px; }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 600px) {
-    .g2, .g4, .form-grid { grid-template-columns: 1fr; }
-    .g3 { grid-template-columns: 1fr 1fr; }
-    .clock-time { font-size: 38px; }
-    .app { padding: 14px 12px 80px; }
-  }
-</style>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOSS CEO Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --black:#141414; --ink:#2C2C2C; --coral:#E07055; --coralDark:#B5503C;
+      --sage:#6B9B6F; --cream:#F8F6F2; --white:#fff; --rule:#E5E2DC; --soft:#888;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--cream);font-family:Outfit,sans-serif;color:var(--ink)}
+    .app{max-width:980px;margin:auto;padding:18px}
+    .top{background:var(--black);color:white;border-radius:16px;padding:20px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+    .brand{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700}
+    .brand span{color:var(--coral)}
+    .revenue{background:rgba(224,112,85,.14);border:1px solid rgba(224,112,85,.4);padding:10px 18px;border-radius:999px}
+    .tabs{display:flex;gap:6px;overflow:auto;background:white;padding:6px;border:1px solid var(--rule);border-radius:14px;margin:16px 0}
+    .tab{border:0;background:transparent;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;white-space:nowrap}
+    .tab.on{background:var(--black);color:white}
+    .panel{display:none}.panel.on{display:block}
+    .card{background:white;border:1px solid var(--rule);border-radius:16px;padding:18px;margin-bottom:14px}
+    h1,h2{font-family:"Cormorant Garamond",serif;margin:0 0 6px;color:var(--black)}
+    .sub{color:var(--soft);font-size:13px;margin-bottom:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#666;font-weight:700;display:block;margin:8px 0 5px}
+    input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;font-family:Outfit,sans-serif;font-size:14px;background:white}
+    textarea{min-height:80px}
+    .btn{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
+    .btnCoral{background:var(--coral);color:white}.btnBlack{background:var(--black);color:white}.btnSage{background:var(--sage);color:white}
+    .kpi{background:white;border:1px solid var(--rule);border-radius:14px;padding:16px}
+    .kpi small{display:block;color:var(--soft);font-size:11px;text-transform:uppercase;font-weight:700}
+    .kpi b{font-family:"Cormorant Garamond",serif;font-size:32px}
+    .offer{border:2px solid var(--rule);border-radius:14px;padding:14px;background:white;cursor:pointer}
+    .offer.selected{border-color:var(--coral);background:#FDF5F3}
+    .taskGroup{font-size:12px;text-transform:uppercase;font-weight:800;color:white;padding:8px 12px;border-radius:10px 10px 0 0;margin-top:12px}
+    .task{display:flex;align-items:flex-start;gap:10px;background:white;border:1px solid var(--rule);border-top:0;padding:12px;cursor:pointer}
+    .box{width:20px;height:20px;border:2px solid var(--rule);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .task.done{opacity:.55}.task.done .text{text-decoration:line-through}
+    .task.done .box{background:var(--sage);border-color:var(--sage);color:white}
+    .priority{font-size:10px;margin-left:auto;background:#FDF5F3;color:var(--coralDark);padding:3px 8px;border-radius:99px}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--black);color:white;padding:12px 22px;border-radius:999px;transition:.25s;z-index:9999}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    @media(max-width:700px){.grid2,.grid3,.grid4{grid-template-columns:1fr}.brand{font-size:24px}}
+  </style>
 </head>
 <body>
 <div class="app">
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="brand">
-      <div class="brand-name">JOSS <em>Consulting</em> Group</div>
-      <div class="brand-cities">Orlando &nbsp;·&nbsp; Columbus</div>
+  <div class="top">
+    <div>
+      <div class="brand">JOSS <span>Consulting</span> Group</div>
+      <div style="opacity:.5;font-size:11px;letter-spacing:.16em;text-transform:uppercase">CEO Tracker</div>
     </div>
-    <div class="top-rev">
-      <div class="top-rev-lbl">Today's Revenue</div>
-      <div class="top-rev-val" id="topRev">$0</div>
+    <div class="revenue">
+      <div style="font-size:10px;text-transform:uppercase;opacity:.65">Today’s Revenue</div>
+      <div id="topRevenue" style="font-family:Cormorant Garamond,serif;font-size:26px;color:var(--coral);font-weight:700">$0</div>
     </div>
   </div>
 
-  <!-- TABS -->
   <div class="tabs">
-    <button class="tab on"  onclick="showTab('dashboard',this)">Dashboard</button>
-    <button class="tab"     onclick="showTab('clock',this)">Clock In/Out</button>
-    <button class="tab"     onclick="showTab('tasks',this)">Tasks</button>
-    <button class="tab"     onclick="showTab('sales',this)">Log Sale</button>
-    <button class="tab"     onclick="showTab('crm',this)">Client CRM</button>
-    <button class="tab"     onclick="showTab('review',this)">Weekly Review</button>
+    <button class="tab on" onclick="showTab('dashboard',this)">Dashboard</button>
+    <button class="tab" onclick="showTab('daily',this)">Daily Tracker</button>
+    <button class="tab" onclick="showTab('sales',this)">Sales</button>
+    <button class="tab" onclick="showTab('clients',this)">Clients</button>
+    <button class="tab" onclick="showTab('tasks',this)">Tasks</button>
+    <button class="tab" onclick="showTab('review',this)">Weekly Review</button>
   </div>
 
-  <!-- ═══════════════════════════════════════ DASHBOARD ══ -->
-  <div class="panel on" id="panel-dashboard">
-    <div class="sec-head">
-      <div class="sec-title">Good day — let's build ✦</div>
-      <div class="sec-sub" id="dashDate"></div>
-    </div>
-
-    <div class="g4" style="margin-bottom:16px">
-      <div class="kpi"><div class="kpi-stripe" style="background:var(--coral)"></div><div class="kpi-lbl">Revenue</div><div class="kpi-val" id="dKpiRev">$0</div><div class="kpi-sub" id="dKpiRevSub">No sales yet</div></div>
-      <div class="kpi"><div class="kpi-stripe" style="background:var(--sage)"></div><div class="kpi-lbl">Sales</div><div class="kpi-val" id="dKpiSales">0</div><div class="kpi-sub" id="dKpiSalesSub">—</div></div>
-      <div class="kpi"><div class="kpi-stripe" style="background:var(--black)"></div><div class="kpi-lbl">Clients</div><div class="kpi-val" id="dKpiClients">0</div><div class="kpi-sub" id="dKpiCliSub">0 in CRM</div></div>
-      <div class="kpi"><div class="kpi-stripe" style="background:var(--coral-l)"></div><div class="kpi-lbl">Tasks</div><div class="kpi-val" id="dKpiTasks">0%</div><div class="kpi-sub" id="dKpiTaskSub">0 of 0</div></div>
-    </div>
-
-    <div class="g2">
-      <div class="card">
-        <div class="card-title">Today's Activity</div>
-        <div class="dash-row"><span class="dash-row-lbl">Reels Posted</span><span class="dash-row-val" id="dAReels">0</span></div>
-        <div class="dash-row"><span class="dash-row-lbl">DMs Sent</span><span class="dash-row-val" id="dADMs">0</span></div>
-        <div class="dash-row"><span class="dash-row-lbl">Follow-Ups</span><span class="dash-row-val" id="dAFU">0</span></div>
-        <div class="dash-row"><span class="dash-row-lbl">New Leads</span><span class="dash-row-val" id="dALeads">0</span></div>
-        <div style="padding-top:12px;margin-top:2px">
-          <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--soft);margin-bottom:4px">Shift Status</div>
-          <div style="font-size:13px;font-weight:600;color:var(--coral)" id="dShift">Not clocked in</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Recent Activity</div>
-        <div id="dLog"><div style="color:var(--soft);font-size:12px;padding:8px 0;text-align:center">No activity yet</div></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:14px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div class="card-title" style="margin:0">Task Progress</div>
-        <div style="font-size:11px;color:var(--soft)" id="dTaskCount">0 / 0</div>
-      </div>
-      <div class="prog-wrap"><div class="prog-fill" id="dTaskBar" style="width:0%"></div></div>
+  <div id="dashboard" class="panel on">
+    <h1>Good day — let’s build.</h1>
+    <div class="sub" id="todayText"></div>
+    <div class="grid4">
+      <div class="kpi"><small>Revenue</small><b id="dashRevenue">$0</b></div>
+      <div class="kpi"><small>Sales</small><b id="dashSales">0</b></div>
+      <div class="kpi"><small>Clients Added</small><b id="dashClients">0</b></div>
+      <div class="kpi"><small>Tasks Done</small><b id="dashTasks">0%</b></div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════ CLOCK ══ -->
-  <div class="panel" id="panel-clock">
-    <div class="sec-head">
-      <div class="sec-title">Clock In / Out</div>
-      <div class="sec-sub">Track your money block. Every minute on the clock counts.</div>
-    </div>
-
-    <div class="clock-hero">
-      <div>
-        <div class="clock-status" id="clockStatus">Ready to start your shift</div>
-        <div class="clock-time" id="clockDisplay">--:--:--</div>
-        <div class="clock-elapsed" id="clockElapsed"></div>
-      </div>
-      <div class="clock-btns">
-        <button class="btn btn-coral btn-lg" id="btnIn" onclick="clockIn()">Clock In</button>
-        <button class="btn btn-ghost btn-lg" id="btnOut" onclick="clockOut()" disabled style="color:rgba(255,255,255,0.4);border-color:rgba(255,255,255,0.15)">Clock Out</button>
-      </div>
-    </div>
-
-    <div class="g2">
-      <div class="card">
-        <div class="card-title">Activity Counters</div>
-        <div class="g4" style="gap:8px">
-          <div class="stat"><div class="stat-val" style="color:var(--coral)" id="sReels">0</div><div class="stat-lbl">Reels</div><div class="stat-btns"><button class="adj" onclick="adj('reels',-1)">−</button><button class="adj" onclick="adj('reels',1)">+</button></div></div>
-          <div class="stat"><div class="stat-val" style="color:var(--sage)" id="sDMs">0</div><div class="stat-lbl">DMs</div><div class="stat-btns"><button class="adj" onclick="adj('dms',-1)">−</button><button class="adj" onclick="adj('dms',1)">+</button></div></div>
-          <div class="stat"><div class="stat-val" style="color:var(--ink)" id="sFU">0</div><div class="stat-lbl">Follow-ups</div><div class="stat-btns"><button class="adj" onclick="adj('fu',-1)">−</button><button class="adj" onclick="adj('fu',1)">+</button></div></div>
-          <div class="stat"><div class="stat-val" style="color:var(--coral-d)" id="sLeads">0</div><div class="stat-lbl">Leads In</div><div class="stat-btns"><button class="adj" onclick="adj('leads',-1)">−</button><button class="adj" onclick="adj('leads',1)">+</button></div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Energy Level</div>
-        <div class="energy-wrap">
-          <div class="energy-row">
-            <div><div style="font-size:11px;color:var(--soft);margin-bottom:2px">How are you feeling?</div><div class="energy-val" id="eVal" style="color:var(--coral)">7</div></div>
-            <div style="font-size:26px" id="eEmoji">💪</div>
-          </div>
-          <input type="range" min="1" max="10" step="1" value="7" oninput="setEnergy(this.value)">
-          <div class="range-labels"><span>Exhausted</span><span>Okay</span><span>On fire</span></div>
-        </div>
-        <label class="lbl">Notes</label>
-        <textarea class="inp" id="notesInput" placeholder="Wins, struggles, anything worth remembering..."></textarea>
-      </div>
-    </div>
-
-    <button class="btn btn-black btn-lg btn-full" style="margin-top:16px" onclick="submitDay()">Submit Day Summary →</button>
-  </div>
-
-  <!-- ═══════════════════════════════════════ TASKS ══ -->
-  <div class="panel" id="panel-tasks">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-      <div class="sec-title">Task Manager</div>
-      <div style="font-size:12px;color:var(--soft)" id="taskCountLbl">0 / 0</div>
-    </div>
-    <div class="sec-sub" style="margin-bottom:14px">Mon–Thu daily tasks. Check off as you complete each one.</div>
-    <div class="prog-wrap" style="margin-bottom:20px"><div class="prog-fill" id="taskBar" style="width:0%"></div></div>
-    <div id="taskList"></div>
-    <div class="card" style="margin-top:16px">
-      <div class="card-title">Add Custom Task</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input type="text" class="inp" id="newTaskTxt" placeholder="Task description..." style="flex:3;min-width:180px">
-        <select class="inp" id="newTaskPri" style="flex:1;min-width:110px">
-          <option value="high">High Priority</option>
-          <option value="med" selected>Medium</option>
-          <option value="low">Low</option>
-        </select>
-        <button class="btn btn-coral" onclick="addCustomTask()">Add Task</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════ SALES ══ -->
-  <div class="panel" id="panel-sales">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div class="sec-title">Log a Sale</div>
-        <div class="sec-sub">Tap an offer to select it, then tap Log Sale</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--soft)">Today's Revenue</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--coral);line-height:1" id="salesRevBig">$0</div>
-      </div>
-    </div>
-
-    <div class="card-title" style="margin-bottom:10px">JOSS Consulting Group — Service Menu</div>
-    <div class="g3" id="offersGrid" style="margin-bottom:10px"></div>
-
-    <button class="btn btn-coral btn-lg" style="margin-bottom:18px;width:100%" onclick="logSelectedOffer()">Log Selected Offer</button>
-
-    <div class="card" style="margin-bottom:14px">
-      <div class="card-title">Custom / On-Demand Service</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input type="text" class="inp" id="cSvcName" placeholder="Service name..." style="flex:2;min-width:140px">
-        <input type="number" class="inp" id="cSvcPrice" placeholder="Price ($)" style="flex:1;max-width:100px;min-width:80px">
-        <input type="text" class="inp" id="cSvcClient" placeholder="Client name..." style="flex:1.5;min-width:120px">
-        <button class="btn btn-sage" onclick="logCustomSale()">Log</button>
-      </div>
-    </div>
-
+  <div id="daily" class="panel">
+    <h1>Daily Tracker</h1>
+    <div class="sub">Enter your daily CEO activity and save it to Google Sheets.</div>
     <div class="card">
-      <div class="card-title">Today's Sales Log</div>
-      <div id="salesLog"><div style="color:var(--soft);font-size:12px;padding:8px 0;text-align:center">No sales recorded yet</div></div>
+      <div class="grid2">
+        <div><label>Clock In</label><input id="clockIn" type="time"></div>
+        <div><label>Clock Out</label><input id="clockOut" type="time"></div>
+        <div><label>Reels Created</label><input id="reels" type="number" value="0"></div>
+        <div><label>DMs Sent</label><input id="dms" type="number" value="0"></div>
+        <div><label>Follow-Ups</label><input id="followUps" type="number" value="0"></div>
+        <div><label>New Leads</label><input id="leads" type="number" value="0"></div>
+        <div><label>Energy Level 1-10</label><input id="energy" type="number" value="7"></div>
+        <div><label>Date</label><input id="dailyDate" type="date"></div>
+      </div>
+      <label>Notes</label><textarea id="dailyNotes"></textarea>
+      <br><br>
+      <button class="btn btnBlack" onclick="saveDaily()">Save Daily Summary</button>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════ CRM ══ -->
-  <div class="panel" id="panel-crm">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
-      <div>
-        <div class="sec-title">Client CRM</div>
-        <div class="sec-sub">Every client. Every status. Every dollar.</div>
+  <div id="sales" class="panel">
+    <h1>Sales Tracker</h1>
+    <div class="sub">Click an offer or add a custom sale.</div>
+    <div class="grid3" id="offers"></div>
+    <div class="card">
+      <div class="grid3">
+        <div><label>Custom Offer</label><input id="customOffer" placeholder="Service name"></div>
+        <div><label>Price</label><input id="customPrice" type="number" placeholder="0"></div>
+        <div><label>Client</label><input id="customClient" placeholder="Client name"></div>
       </div>
-      <button class="btn btn-coral btn-sm" onclick="toggleAddClientForm()">+ Add Client</button>
+      <br><button class="btn btnSage" onclick="saveCustomSale()">Save Custom Sale</button>
     </div>
-
-    <div class="add-form-wrap" id="addClientForm">
-      <div style="font-size:14px;font-weight:600;margin-bottom:4px">New Client Registration</div>
-      <div style="font-size:11px;color:var(--mid);margin-bottom:16px">All fields saved locally in session. Use Google Form for permanent records.</div>
-
-      <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--coral);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--rule)">Personal Information</div>
-      <div class="form-grid" style="margin-bottom:12px">
-        <div><label class="lbl">Full Name *</label><input type="text" class="inp" id="cf_name" placeholder="Jane Smith"></div>
-        <div><label class="lbl">Email Address *</label><input type="email" class="inp" id="cf_email" placeholder="jane@email.com"></div>
-        <div><label class="lbl">Phone / @Handle</label><input type="text" class="inp" id="cf_handle" placeholder="(555) 000-0000 or @handle"></div>
-        <div>
-          <label class="lbl">Source</label>
-          <select class="inp" id="cf_source">
-            <option>Instagram</option><option>TikTok</option><option>Referral</option>
-            <option>GHL Funnel</option><option>Orlando Office</option>
-            <option>Columbus Office</option><option>Other</option>
-          </select>
-        </div>
-      </div>
-
-      <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--sage-d);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--rule)">Business Information</div>
-      <div class="form-grid" style="margin-bottom:12px">
-        <div><label class="lbl">Business Name</label><input type="text" class="inp" id="cf_bizname" placeholder="Smith Enterprises LLC"></div>
-        <div>
-          <label class="lbl">State Registered</label>
-          <select class="inp" id="cf_bizstate">
-            <option value="">— Select State —</option>
-            <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
-            <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
-            <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
-            <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
-            <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
-            <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
-            <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
-            <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
-            <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
-            <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
-            <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
-            <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
-            <option>Wisconsin</option><option>Wyoming</option><option>Not Yet Registered</option>
-          </select>
-        </div>
-        <div><label class="lbl">Business Address</label><input type="text" class="inp" id="cf_bizaddr" placeholder="123 Main St, City, State, ZIP"></div>
-        <div>
-          <label class="lbl">Business Type</label>
-          <select class="inp" id="cf_biztype">
-            <option>LLC</option><option>Sole Proprietor</option><option>S-Corp</option>
-            <option>C-Corp</option><option>Partnership</option><option>Non-Profit</option>
-            <option>Not Yet Formed</option>
-          </select>
-        </div>
-      </div>
-
-      <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--black);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--rule)">Service & Payment</div>
-      <div class="form-grid" style="margin-bottom:12px">
-        <div>
-          <label class="lbl">Service Purchased</label>
-          <select class="inp" id="cf_service">
-            <option>Free Lead Magnet</option>
-            <option>Starter Package — $49</option>
-            <option>Core Service — $197</option>
-            <option>Done-For-You — $999</option>
-            <option>Biz Credit Coaching — $250</option>
-            <option>Consultation — $150</option>
-            <option>On-Demand / Custom</option>
-          </select>
-        </div>
-        <div><label class="lbl">Amount Paid ($)</label><input type="number" class="inp" id="cf_amount" placeholder="0"></div>
-        <div>
-          <label class="lbl">Status</label>
-          <select class="inp" id="cf_status">
-            <option value="lead">Lead</option>
-            <option value="active">Active</option>
-            <option value="followup">Follow-up Needed</option>
-            <option value="done">Completed</option>
-            <option value="vip">VIP</option>
-          </select>
-        </div>
-        <div><label class="lbl">Follow-Up Date</label><input type="date" class="inp" id="cf_followdate"></div>
-      </div>
-
-      <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--rule)">Notes</div>
-      <div style="margin-bottom:12px">
-        <label class="lbl">Goals / What They Need</label>
-        <textarea class="inp" id="cf_notes" placeholder="What are their business goals? What problem are they trying to solve?" style="min-height:60px"></textarea>
-      </div>
-      <div style="margin-bottom:14px">
-        <label class="lbl">Internal Notes (private)</label>
-        <textarea class="inp" id="cf_internal" placeholder="Follow-up reminders, red flags, special instructions..." style="min-height:50px"></textarea>
-      </div>
-
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-coral" onclick="saveClient()">Save Client</button>
-        <button class="btn btn-ghost" onclick="toggleAddClientForm()">Cancel</button>
-      </div>
-    </div>
-
-    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-      <input type="text" class="inp" id="crmSearch" placeholder="Search clients..." oninput="filterCRM()" style="flex:1;min-width:180px">
-      <select class="inp" id="crmFilter" onchange="filterCRM()" style="min-width:140px">
-        <option value="">All Statuses</option>
-        <option value="lead">Leads</option>
-        <option value="active">Active</option>
-        <option value="followup">Follow-up</option>
-        <option value="done">Completed</option>
-        <option value="vip">VIP</option>
-      </select>
-    </div>
-
-    <div class="crm-scroll">
-      <table>
-        <thead>
-          <tr><th>Client</th><th>Email</th><th>Business</th><th>State</th><th>Service</th><th>Paid</th><th>Status</th><th>Follow-up</th><th>Source</th><th>Notes</th><th></th></tr>
-        </thead>
-        <tbody id="crmBody"></tbody>
-      </table>
-    </div>
-    <div style="font-size:11px;color:var(--soft);margin-top:8px" id="crmCount"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════ REVIEW ══ -->
-  <div class="panel" id="panel-review">
-    <div class="sec-head">
-      <div class="sec-title">Weekly CEO Review</div>
-      <div class="sec-sub">Every Thursday. Be honest. Adjust fast. This is how you scale.</div>
+  <div id="clients" class="panel">
+    <h1>Client CRM</h1>
+    <div class="sub">Add client information and save to Google Sheets.</div>
+    <div class="card">
+      <div class="grid2">
+        <div><label>Full Name</label><input id="clientName"></div>
+        <div><label>Email</label><input id="clientEmail"></div>
+        <div><label>Phone / Handle</label><input id="clientPhone"></div>
+        <div><label>Source</label><select id="clientSource"><option>Instagram</option><option>TikTok</option><option>Referral</option><option>GHL Funnel</option><option>Other</option></select></div>
+        <div><label>Business Name</label><input id="businessName"></div>
+        <div><label>Business Type</label><select id="businessType"><option>LLC</option><option>Sole Proprietor</option><option>S-Corp</option><option>C-Corp</option><option>Not Yet Formed</option></select></div>
+        <div><label>State</label><input id="businessState"></div>
+        <div><label>Business Address</label><input id="businessAddress"></div>
+        <div><label>Service</label><select id="clientService"><option>Free Lead Magnet</option><option>Starter Package — $49</option><option>Core Service — $197</option><option>Done-For-You — $999</option><option>Biz Credit Coaching — $250</option><option>Consultation — $150</option><option>Custom</option></select></div>
+        <div><label>Amount Paid</label><input id="amountPaid" type="number"></div>
+        <div><label>Status</label><select id="clientStatus"><option>Lead</option><option>Active</option><option>Follow-up Needed</option><option>Completed</option><option>VIP</option></select></div>
+        <div><label>Follow-Up Date</label><input id="followDate" type="date"></div>
+      </div>
+      <label>Notes</label><textarea id="clientNotes"></textarea>
+      <label>Internal Notes</label><textarea id="internalNotes"></textarea>
+      <br><button class="btn btnCoral" onclick="saveClientForm()">Save Client</button>
     </div>
-    <div id="reviewContent"></div>
-    <button class="btn btn-black btn-lg btn-full" style="margin-top:6px" onclick="saveReview()">Save Weekly Review ✓</button>
   </div>
 
+  <div id="tasks" class="panel">
+    <h1>Tasks</h1>
+    <div class="sub">Click each task checkbox. Every check/uncheck saves to the Tasks sheet.</div>
+    <div id="taskList"></div>
+  </div>
 
-</div>
-
-<!-- MODAL -->
-<div class="modal-backdrop" id="modal">
-  <div class="modal-box">
-    <div class="modal-title">Day Summary — JOSS Consulting</div>
-    <div id="modalRows"></div>
-    <div class="copy-box" id="modalCode"></div>
-    <div class="modal-btns">
-      <button class="btn btn-ghost" onclick="copyDayData()">Copy Data</button>
-      <button class="btn btn-coral" onclick="closeModal()">Done</button>
-    </div>
+  <div id="review" class="panel">
+    <h1>Weekly CEO Review</h1>
+    <div class="sub">Answer the questions and save to the Weekly Review sheet.</div>
+    <div id="reviewList"></div>
+    <button class="btn btnBlack" onclick="saveReview()">Save Weekly Review</button>
   </div>
 </div>
 
-<div id="toast"></div>
+<div class="toast" id="toast">Saved</div>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-// GOOGLE SHEETS CONNECTION
-// Step 1: Create your Apps Script Web App (deploy it first)
-// Step 2: Paste your deployed Web App URL below (replace the placeholder)
-// ─────────────────────────────────────────────────────────────────────────────
-var SHEETS_URL = window.location.href.split('?')[0];
-
-function postToSheets(sheetName, data) {
-  try {
-    var params = 'api=save&sheet=' + encodeURIComponent(sheetName);
-    var keys = Object.keys(data);
-
-    for (var i = 0; i < keys.length; i++) {
-      var val = data[keys[i]] !== undefined ? String(data[keys[i]]) : '';
-      params += '&' + encodeURIComponent(keys[i]) + '=' + encodeURIComponent(val);
-    }
-
-    var url = SHEETS_URL + '?' + params;
-
-    var img = new Image();
-    img.src = url;
-
-  } catch(e) {
-    console.log('Sheet save error:', e);
-  }
-}
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ── STATE ─────────────────────────────────────────────────────────────────────
-var S = {
-  clockedIn: false, clockInTime: null, clockOutTime: null,
-  stats: { reels: 0, dms: 0, fu: 0, leads: 0 },
-  sales: [], revenue: 0, selectedOffer: null,
-  energy: 7, clients: [], tasks: [], log: [],
-  timerInt: null
-};
+var state = { revenue:0, sales:0, clients:0, tasks:[] };
 
 var OFFERS = [
-  { name: "Free Lead Magnet",     price: 0,   tag: "free",     tagLabel: "Lead Gen" },
-  { name: "Starter Package",      price: 49,  tag: "entry",    tagLabel: "Entry" },
-  { name: "Core Service",         price: 197, tag: "core",     tagLabel: "Core" },
-  { name: "Done-For-You",         price: 999, tag: "premium",  tagLabel: "Premium" },
-  { name: "Biz Credit Coaching",  price: 250, tag: "coaching", tagLabel: "Coaching" },
-  { name: "Consultation",         price: 150, tag: "coaching", tagLabel: "Consult" }
+  {name:"Free Lead Magnet", price:0},
+  {name:"Starter Package", price:49},
+  {name:"Core Service", price:197},
+  {name:"Done-For-You", price:999},
+  {name:"Biz Credit Coaching", price:250},
+  {name:"Consultation", price:150}
 ];
 
 var DEFAULT_TASKS = [
-  { g: "Content",  t: "Post 1 Reel or TikTok",             p: "high", done: false },
-  { g: "Content",  t: "Batch 3 content pieces (Mon)",       p: "med",  done: false },
-  { g: "Content",  t: "Post in English + Creole",           p: "med",  done: false },
-  { g: "Sales",    t: "Respond to ALL DMs",                 p: "high", done: false },
-  { g: "Sales",    t: "Follow up 5–10 leads",               p: "high", done: false },
-  { g: "Sales",    t: "Push one offer (Story/DM/Reel CTA)", p: "high", done: false },
-  { g: "Sales",    t: "Send 10 new DM outreach messages",   p: "med",  done: false },
-  { g: "Growth",   t: "30–60 min skill block",              p: "med",  done: false },
-  { g: "Growth",   t: "Engage on 10+ posts in niche",       p: "low",  done: false },
-  { g: "Systems",  t: "Update all trackers",                p: "med",  done: false },
-  { g: "Systems",  t: "Submit day summary before 10pm",     p: "high", done: false }
+  { group:"Content", task:"Post 1 Reel or TikTok", priority:"High", done:false },
+  { group:"Content", task:"Batch 3 content pieces (Mon)", priority:"Medium", done:false },
+  { group:"Content", task:"Post in English + Creole", priority:"Medium", done:false },
+  { group:"Sales", task:"Respond to ALL DMs", priority:"High", done:false },
+  { group:"Sales", task:"Follow up 5–10 leads", priority:"High", done:false },
+  { group:"Sales", task:"Push one offer (Story/DM/Reel CTA)", priority:"High", done:false },
+  { group:"Sales", task:"Send 10 new DM outreach messages", priority:"Medium", done:false },
+  { group:"Growth", task:"30–60 min skill block", priority:"Medium", done:false },
+  { group:"Growth", task:"Engage on 10+ posts in niche", priority:"Low", done:false },
+  { group:"Systems", task:"Update all trackers", priority:"Medium", done:false },
+  { group:"Systems", task:"Submit day summary before 10pm", priority:"High", done:false }
 ];
 
 var REVIEW_QUESTIONS = [
-  { section: "Money",    q: "What made me money this week?" },
-  { section: "Money",    q: "Total revenue this week ($)?" },
-  { section: "Money",    q: "How many sales did I close?" },
-  { section: "Content",  q: "Which post performed best?" },
-  { section: "Content",  q: "Did I post every work day? (Y/N)" },
-  { section: "Content",  q: "Did I post in English + Creole? (Y/N)" },
-  { section: "Sales",    q: "Did I follow up with everyone? (Y/N)" },
-  { section: "Sales",    q: "What objection did I hear most?" },
-  { section: "Energy",   q: "Average energy level this week (1–10)?" },
-  { section: "Energy",   q: "Where did I waste time this week?" },
-  { section: "NextWeek", q: "#1 income priority next week?" },
-  { section: "NextWeek", q: "What will I STOP doing?" },
-  { section: "NextWeek", q: "What will I START doing?" }
+  { section:"Money", question:"What made me money this week?" },
+  { section:"Money", question:"Total revenue this week ($)?" },
+  { section:"Money", question:"How many sales did I close?" },
+  { section:"Content", question:"Which post performed best?" },
+  { section:"Content", question:"Did I post every work day? (Y/N)" },
+  { section:"Content", question:"Did I post in English + Creole? (Y/N)" },
+  { section:"Sales", question:"Did I follow up with everyone? (Y/N)" },
+  { section:"Sales", question:"What objection did I hear most?" },
+  { section:"Energy", question:"Average energy level this week (1–10)?" },
+  { section:"Energy", question:"Where did I waste time this week?" },
+  { section:"Next Week", question:"#1 income priority next week?" },
+  { section:"Next Week", question:"What will I STOP doing?" },
+  { section:"Next Week", question:"What will I START doing?" }
 ];
 
-var GROUP_COLORS = { Content: "#E07055", Sales: "#6B9B6F", Growth: "#141414", Systems: "#888", Custom: "#555" };
-var AVATAR_COLORS = ["#E07055","#6B9B6F","#141414","#B5503C","#4A7050"];
-var STATUS = {
-  lead:     { label: "Lead",       cls: "pill-lead"     },
-  active:   { label: "Active",     cls: "pill-active"   },
-  followup: { label: "Follow-up",  cls: "pill-followup" },
-  done:     { label: "Completed",  cls: "pill-done"     },
-  vip:      { label: "VIP",        cls: "pill-vip"      }
-};
+function $(id){ return document.getElementById(id); }
+function money(n){ return "$" + Number(n || 0).toLocaleString(); }
+function showToast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(function(){t.classList.remove("show")},2500); }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function $(id) { return document.getElementById(id); }
-function fmtMoney(n) { return n === 0 ? "Free" : "$" + n.toLocaleString("en-US", { minimumFractionDigits: 0 }); }
-function fmtTime(t) { return t.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
-function fmtShort(t) { return t.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }); }
-function fmtDate(t) { return t.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }); }
-function initials(name) { return name.split(" ").map(function(w){return w[0]||"";}).join("").toUpperCase().slice(0,2); }
-
-function elapsed(from) {
-  var s = Math.floor((Date.now() - from) / 1000);
-  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
-  return pad(h) + ":" + pad(m) + ":" + pad(sec) + " elapsed";
-}
-function hoursWorked(from, to) {
-  var s = Math.floor((to - from) / 1000);
-  return Math.floor(s / 3600) + "h " + Math.floor((s % 3600) / 60) + "m";
-}
-function pad(n) { return String(n).padStart(2, "0"); }
-
-// ── LIVE CLOCK ────────────────────────────────────────────────────────────────
-function tickClock() {
-  var now = new Date();
-  var d = $("clockDisplay");
-  if (d) d.textContent = fmtTime(now);
-  var dd = $("dashDate");
-  if (dd) dd.textContent = fmtDate(now);
-}
-setInterval(tickClock, 1000);
-tickClock();
-
-// ── TABS ─────────────────────────────────────────────────────────────────────
-function showTab(name, btn) {
-  var panels = document.querySelectorAll(".panel");
-  for (var i = 0; i < panels.length; i++) panels[i].classList.remove("on");
-  var tabs = document.querySelectorAll(".tab");
-  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove("on");
-  $("panel-" + name).classList.add("on");
-  if (btn) btn.classList.add("on");
+function showTab(id, btn){
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("on")});
+  document.querySelectorAll(".tab").forEach(function(b){b.classList.remove("on")});
+  $(id).classList.add("on");
+  btn.classList.add("on");
 }
 
-// ── CLOCK IN / OUT ────────────────────────────────────────────────────────────
-function clockIn() {
-  if (S.clockedIn) return;
-  S.clockedIn = true;
-  S.clockInTime = new Date();
-  $("btnIn").disabled = true;
-  $("btnOut").disabled = false;
-  $("btnOut").style.color = "rgba(255,255,255,0.8)";
-  $("btnOut").style.borderColor = "rgba(255,255,255,0.35)";
-  $("clockStatus").textContent = "Money Block Active";
-  $("clockDisplay").classList.add("running");
-  $("dShift").textContent = "🟢 Clocked in — Money Block";
-  S.timerInt = setInterval(function() {
-    $("clockElapsed").textContent = elapsed(S.clockInTime);
-  }, 1000);
-  addLog("in", "Clocked in at " + fmtShort(S.clockInTime));
-  toast("Clocked in! Let's make money 💚", "#6B9B6F");
-  updateDashboard();
+function updateDash(){
+  $("topRevenue").textContent = money(state.revenue);
+  $("dashRevenue").textContent = money(state.revenue);
+  $("dashSales").textContent = state.sales;
+  $("dashClients").textContent = state.clients;
+  var done = state.tasks.filter(function(t){return t.done}).length;
+  $("dashTasks").textContent = state.tasks.length ? Math.round(done/state.tasks.length*100)+"%" : "0%";
 }
 
-function clockOut() {
-  if (!S.clockedIn) return;
-  S.clockedIn = false;
-  S.clockOutTime = new Date();
-  clearInterval(S.timerInt);
-  var hw = hoursWorked(S.clockInTime, S.clockOutTime);
-  $("btnIn").disabled = false;
-  $("btnOut").disabled = true;
-  $("clockStatus").textContent = "Shift complete — " + hw + " worked";
-  $("clockDisplay").classList.remove("running");
-  $("clockElapsed").textContent = "Total: " + hw;
-  $("dShift").textContent = "✓ Clocked out — " + hw + " worked";
-  addLog("out", "Clocked out at " + fmtShort(S.clockOutTime) + " — " + hw);
-  toast("Shift done! " + hw + " on the clock 🔥");
-  updateDashboard();
+function saveOffer(name, price, client){
+  google.script.run
+    .withSuccessHandler(function(){ 
+      state.revenue += Number(price || 0); state.sales++; updateDash(); showToast("Sale saved"); 
+    })
+    .withFailureHandler(function(err){ alert("Sale did not save: " + err.message); })
+    .saveSale({offer:name, price:price, client:client || "", date:new Date().toLocaleDateString()});
 }
 
-// ── STATS ─────────────────────────────────────────────────────────────────────
-function adj(key, delta) {
-  S.stats[key] = Math.max(0, S.stats[key] + delta);
-  var map = { reels: "sReels", dms: "sDMs", fu: "sFU", leads: "sLeads" };
-  $(map[key]).textContent = S.stats[key];
-  updateDashboard();
+function saveCustomSale(){
+  var name = $("customOffer").value || "Custom Service";
+  var price = $("customPrice").value || 0;
+  var client = $("customClient").value || "";
+  saveOffer(name, price, client);
+  $("customOffer").value = ""; $("customPrice").value = ""; $("customClient").value = "";
 }
 
-function setEnergy(v) {
-  S.energy = parseInt(v);
-  var emojis = ["","😴","😩","😔","😐","🙂","😊","💪","🔥","⚡","🚀"];
-  var colors = ["","#E07055","#E07055","#B5503C","#888","#6B9B6F","#6B9B6F","#4A7050","#E07055","#E07055","#141414"];
-  $("eVal").textContent = v;
-  $("eVal").style.color = colors[v] || "#E07055";
-  $("eEmoji").textContent = emojis[v] || "😊";
+function saveClientForm(){
+  var fullName = $("clientName").value.trim();
+  if(!fullName){ alert("Enter client name first."); return; }
+
+  google.script.run
+    .withSuccessHandler(function(){
+      state.clients++; updateDash(); showToast("Client saved");
+      ["clientName","clientEmail","clientPhone","businessName","businessState","businessAddress","amountPaid","clientNotes","internalNotes","followDate"].forEach(function(id){$(id).value=""});
+    })
+    .withFailureHandler(function(err){ alert("Client did not save: " + err.message); })
+    .saveClient({
+      fullName: fullName,
+      email: $("clientEmail").value,
+      phone: $("clientPhone").value,
+      businessName: $("businessName").value,
+      businessType: $("businessType").value,
+      state: $("businessState").value,
+      businessAddress: $("businessAddress").value,
+      service: $("clientService").value,
+      amountPaid: $("amountPaid").value,
+      status: $("clientStatus").value,
+      followUpDate: $("followDate").value,
+      source: $("clientSource").value,
+      notes: $("clientNotes").value,
+      internalNotes: $("internalNotes").value
+    });
 }
 
-// ── OFFERS ────────────────────────────────────────────────────────────────────
-function buildOffers() {
+function hoursWorked(start, end){
+  if(!start || !end) return "";
+  var a = start.split(":"); var b = end.split(":");
+  var minutes = (Number(b[0])*60+Number(b[1])) - (Number(a[0])*60+Number(a[1]));
+  if(minutes < 0) minutes += 1440;
+  return Math.floor(minutes/60) + "h " + (minutes%60) + "m";
+}
+
+function saveDaily(){
+  var salesDetail = "Revenue tracked in current page session";
+  google.script.run
+    .withSuccessHandler(function(){ showToast("Daily summary saved"); })
+    .withFailureHandler(function(err){ alert("Daily summary did not save: " + err.message); })
+    .saveDailySummary({
+      date: $("dailyDate").value || new Date().toLocaleDateString(),
+      clockIn: $("clockIn").value,
+      clockOut: $("clockOut").value,
+      hoursWorked: hoursWorked($("clockIn").value, $("clockOut").value),
+      reels: $("reels").value,
+      dms: $("dms").value,
+      followUps: $("followUps").value,
+      leads: $("leads").value,
+      salesClosed: state.sales,
+      revenue: money(state.revenue),
+      energy: $("energy").value,
+      notes: $("dailyNotes").value,
+      salesDetail: salesDetail
+    });
+}
+
+function renderOffers(){
   var html = "";
-  for (var i = 0; i < OFFERS.length; i++) {
-    var o = OFFERS[i];
-    var sel = S.selectedOffer === i ? " picked" : "";
-    var freeClass = o.price === 0 ? " free-offer" : "";
-    var priceClass = o.price === 0 ? " free" : "";
-    html += '<div class="offer' + sel + freeClass + '" onclick="selectOffer(' + i + ')">';
-    html += '<div class="offer-price' + priceClass + '">' + fmtMoney(o.price) + "</div>";
-    html += '<div class="offer-name">' + o.name + "</div>";
-    html += '<div class="offer-tag tag-' + o.tag + '">' + o.tagLabel + "</div>";
-    html += "</div>";
-  }
-  $("offersGrid").innerHTML = html;
-}
-
-function selectOffer(i) {
-  S.selectedOffer = S.selectedOffer === i ? null : i;
-  buildOffers();
-}
-
-function logSelectedOffer() {
-  if (S.selectedOffer === null) { toast("Tap an offer first!"); return; }
-  var o = OFFERS[S.selectedOffer];
-  recordSale(o.name, o.price, "");
-  S.selectedOffer = null;
-  buildOffers();
-}
-
-function logCustomSale() {
-  var name  = $("cSvcName").value.trim() || "Custom Service";
-  var price = parseFloat($("cSvcPrice").value) || 0;
-  var client= $("cSvcClient").value.trim();
-  recordSale(name, price, client);
-  $("cSvcName").value = "";
-  $("cSvcPrice").value = "";
-  $("cSvcClient").value = "";
-}
-
-function recordSale(name, price, client) {
-  S.sales.push({ name: name, price: price, client: client, time: new Date() });
-  S.revenue += price;
-  $("topRev").textContent = fmtMoney(S.revenue);
-  $("salesRevBig").textContent = fmtMoney(S.revenue);
-  renderSalesLog();
-
-  // ── POST SALE TO GOOGLE SHEETS ──
-  postToSheets('Sales Tracker', {
-    Timestamp:   new Date().toLocaleString('en-US'),
-    'Offer':     name,
-    'Price':     price,
-    'Client':    client || '',
-    'Date':      new Date().toLocaleDateString('en-US')
+  OFFERS.forEach(function(o){
+    html += '<div class="offer" onclick="saveOffer(\'' + o.name.replace(/'/g,"\\'") + '\',' + o.price + ',\'\')"><strong>' + (o.price === 0 ? "Free" : money(o.price)) + '</strong><br><span>' + o.name + '</span></div>';
   });
-
-  addLog("sale", "SALE: " + name + " — " + fmtMoney(price) + (client ? " (" + client + ")" : ""));
-  toast(fmtMoney(price) + " sale logged! 🎉");
-  updateDashboard();
+  $("offers").innerHTML = html;
 }
 
-function renderSalesLog() {
-  if (!S.sales.length) {
-    $("salesLog").innerHTML = '<div style="color:var(--soft);font-size:12px;padding:8px 0;text-align:center">No sales recorded yet</div>';
-    return;
-  }
-  var html = "";
-  for (var i = 0; i < S.sales.length; i++) {
-    var s = S.sales[i];
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--rule)">';
-    html += '<div><div style="font-size:13px;font-weight:600;color:var(--black)">' + s.name + "</div>";
-    html += '<div style="font-size:10px;color:var(--soft)">' + fmtShort(s.time) + (s.client ? " · " + s.client : "") + "</div></div>";
-    html += '<div style="font-family:Cormorant Garamond,serif;font-size:18px;font-weight:700;color:var(--coral)">' + fmtMoney(s.price) + "</div></div>";
-  }
-  $("salesLog").innerHTML = html;
-}
-
-// ── TASKS ─────────────────────────────────────────────────────────────────────
-function initTasks() {
-  S.tasks = [];
-  for (var i = 0; i < DEFAULT_TASKS.length; i++) {
-    S.tasks.push({ g: DEFAULT_TASKS[i].g, t: DEFAULT_TASKS[i].t, p: DEFAULT_TASKS[i].p, done: false });
-  }
-  renderTasks();
-}
-
-function renderTasks() {
+function renderTasks(){
+  state.tasks = DEFAULT_TASKS.map(function(t){ return Object.assign({}, t); });
+  var colors = {Content:"#E07055", Sales:"#6B9B6F", Growth:"#141414", Systems:"#777"};
   var grouped = {};
-  for (var i = 0; i < S.tasks.length; i++) {
-    var t = S.tasks[i];
-    if (!grouped[t.g]) grouped[t.g] = [];
-    grouped[t.g].push({ t: t, i: i });
-  }
+  state.tasks.forEach(function(t,i){ if(!grouped[t.group]) grouped[t.group]=[]; grouped[t.group].push({task:t,index:i}); });
+
   var html = "";
-  var groups = Object.keys(grouped);
-  for (var gi = 0; gi < groups.length; gi++) {
-    var g = groups[gi];
-    var col = GROUP_COLORS[g] || "#888";
-    html += '<div class="task-group-head" style="background:' + col + '">' + g + "</div>";
-    var items = grouped[g];
-    for (var ti = 0; ti < items.length; ti++) {
-      var item = items[ti];
-      var doneClass = item.t.done ? " done" : "";
-      var chkClass  = item.t.done ? " done" : "";
-      var chkTxt    = item.t.done ? "✓" : "";
-      var txtClass  = item.t.done ? " done" : "";
-      html += '<div class="task-row' + doneClass + '" onclick="toggleTask(' + item.i + ')">';
-      html += '<div class="chkbox' + chkClass + '">' + chkTxt + "</div>";
-      html += '<div class="task-text' + txtClass + '">' + item.t.t + "</div>";
-      html += '<div class="priority p-' + item.t.p + '">' + item.t.p + "</div>";
-      html += "</div>";
-    }
-  }
+  Object.keys(grouped).forEach(function(group){
+    html += '<div class="taskGroup" style="background:'+(colors[group] || "#555")+'">'+group+'</div>';
+    grouped[group].forEach(function(item){
+      html += '<div class="task" id="task_'+item.index+'" onclick="toggleTask('+item.index+')">';
+      html += '<div class="box" id="box_'+item.index+'"></div>';
+      html += '<div class="text">'+item.task.task+'</div>';
+      html += '<div class="priority">'+item.task.priority+'</div>';
+      html += '</div>';
+    });
+  });
   $("taskList").innerHTML = html;
-  updateTaskProgress();
+  updateDash();
 }
 
-function toggleTask(i) {
-  S.tasks[i].done = !S.tasks[i].done;
-  renderTasks();
-  updateDashboard();
+function toggleTask(i){
+  var task = state.tasks[i];
+  task.done = !task.done;
+
+  var row = $("task_"+i);
+  var box = $("box_"+i);
+  if(task.done){ row.classList.add("done"); box.textContent = "✓"; }
+  else { row.classList.remove("done"); box.textContent = ""; }
+
+  google.script.run
+    .withSuccessHandler(function(){ showToast(task.done ? "Task checked" : "Task unchecked"); updateDash(); })
+    .withFailureHandler(function(err){ alert("Task did not save: " + err.message); })
+    .saveTask({
+      task: task.task,
+      group: task.group,
+      priority: task.priority,
+      status: task.done ? "Completed" : "Unchecked",
+      action: task.done ? "Checked" : "Unchecked"
+    });
 }
 
-function addCustomTask() {
-  var txt = $("newTaskTxt").value.trim();
-  if (!txt) return;
-  S.tasks.push({ g: "Custom", t: txt, p: $("newTaskPri").value, done: false });
-  $("newTaskTxt").value = "";
-  renderTasks();
-  toast("Task added!", "#6B9B6F");
+function renderReview(){
+  var html = "";
+  var current = "";
+  REVIEW_QUESTIONS.forEach(function(q,i){
+    if(q.section !== current){
+      current = q.section;
+      html += '<div class="card"><h2>'+current+'</h2>';
+    }
+    html += '<label>'+q.question+'</label><input id="review_'+i+'" placeholder="Your answer">';
+    var next = REVIEW_QUESTIONS[i+1];
+    if(!next || next.section !== current){ html += '</div>'; }
+  });
+  $("reviewList").innerHTML = html;
 }
 
-function updateTaskProgress() {
-  var total = S.tasks.length;
-  var done  = 0;
-  for (var i = 0; i < S.tasks.length; i++) { if (S.tasks[i].done) done++; }
-  var pct = total ? Math.round(done / total * 100) : 0;
-  $("taskCountLbl").textContent = done + " / " + total;
-  $("taskBar").style.width = pct + "%";
-}
-
-// ── CRM ───────────────────────────────────────────────────────────────────────
-function toggleAddClientForm() {
-  $("addClientForm").classList.toggle("open");
-}
-
-function saveClient() {
-  var name = $("cf_name").value.trim();
-  if (!name) { toast("Please enter a client name"); return; }
-  var client = {
-    id: Date.now(), name: name,
-    email:     $("cf_email").value.trim(),
-    handle:    $("cf_handle").value.trim(),
-    bizname:   $("cf_bizname").value.trim(),
-    bizstate:  $("cf_bizstate").value,
-    bizaddr:   $("cf_bizaddr").value.trim(),
-    biztype:   $("cf_biztype").value,
-    service:   $("cf_service").value,
-    amount:    parseFloat($("cf_amount").value) || 0,
-    status:    $("cf_status").value,
-    followdate:$("cf_followdate").value,
-    source:    $("cf_source").value,
-    notes:     $("cf_notes").value.trim(),
-    internal:  $("cf_internal").value.trim(),
-    added:     new Date()
-  };
-  S.clients.unshift(client);
-
-  // ── POST TO GOOGLE SHEETS ──
-  postToSheets('Clients', {
-    Timestamp:        new Date().toLocaleString('en-US'),
-    'Full Name':      client.name,
-    'Email':          client.email,
-    'Phone / Handle': client.handle,
-    'Business Name':  client.bizname,
-    'Business Type':  client.biztype,
-    'State':          client.bizstate,
-    'Business Address': client.bizaddr,
-    'Service':        client.service,
-    'Amount Paid':    client.amount,
-    'Status':         client.status,
-    'Follow-Up Date': client.followdate,
-    'Source':         client.source,
-    'Notes':          client.notes,
-    'Internal Notes': client.internal
+function saveReview(){
+  var data = REVIEW_QUESTIONS.map(function(q,i){
+    return { section:q.section, question:q.question, answer:$("review_"+i).value || "" };
   });
 
-  ["cf_name","cf_email","cf_handle","cf_bizname","cf_bizaddr","cf_amount","cf_notes","cf_internal","cf_followdate"].forEach(function(id){ $(id).value = ""; });
-  toggleAddClientForm();
-  renderCRM();
-  updateDashboard();
-  toast(name + " added to CRM!", "#6B9B6F");
+  google.script.run
+    .withSuccessHandler(function(){ showToast("Weekly review saved"); })
+    .withFailureHandler(function(err){ alert("Weekly review did not save: " + err.message); })
+    .saveWeeklyReview(data);
 }
 
-function deleteClient(id) {
-  S.clients = S.clients.filter(function(c){ return c.id !== id; });
-  renderCRM();
-  updateDashboard();
-  toast("Client removed");
+function init(){
+  $("todayText").textContent = new Date().toLocaleDateString(undefined,{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  $("dailyDate").valueAsDate = new Date();
+  renderOffers();
+  renderTasks();
+  renderReview();
+  updateDash();
 }
-
-function updateStatus(id, status) {
-  for (var i = 0; i < S.clients.length; i++) {
-    if (S.clients[i].id === id) { S.clients[i].status = status; break; }
-  }
-  renderCRM();
-  updateDashboard();
-}
-
-function renderCRM(list) {
-  list = list || S.clients;
-  $("crmCount").textContent = "Showing " + list.length + " of " + S.clients.length + " clients";
-  if (!list.length) {
-    $("crmBody").innerHTML = '<tr><td colspan="11" style="text-align:center;padding:24px;color:var(--soft);font-size:12px">No clients yet — add your first one above.</td></tr>';
-    return;
-  }
-  var html = "";
-  for (var i = 0; i < list.length; i++) {
-    var c = list[i];
-    var st = STATUS[c.status] || STATUS.lead;
-    var col = AVATAR_COLORS[c.name.charCodeAt(0) % AVATAR_COLORS.length];
-    var statusOptions = "";
-    var keys = Object.keys(STATUS);
-    for (var k = 0; k < keys.length; k++) {
-      var sel = c.status === keys[k] ? ' selected' : '';
-      statusOptions += '<option value="' + keys[k] + '"' + sel + '>' + STATUS[keys[k]].label + '</option>';
-    }
-    var fdDisplay = c.followdate ? c.followdate : "—";
-    html += "<tr>";
-    html += '<td style="min-width:140px"><div style="display:flex;align-items:center;gap:9px"><div class="avatar" style="background:' + col + ';color:#fff">' + initials(c.name) + '</div><div><div style="font-weight:600;font-size:12px">' + c.name + '</div><div style="font-size:10px;color:var(--soft)">' + (c.handle||"—") + '</div></div></div></td>';
-    html += '<td style="font-size:11px;color:var(--mid);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.email||"—") + '</td>';
-    html += '<td style="font-size:11px;min-width:120px"><div style="font-weight:600;color:var(--black)">' + (c.bizname||"—") + '</div><div style="font-size:10px;color:var(--soft)">' + (c.biztype||"") + '</div></td>';
-    html += '<td style="font-size:11px;color:var(--mid);white-space:nowrap">' + (c.bizstate||"—") + '</td>';
-    html += '<td style="font-size:11px;color:var(--mid);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (c.service||"—") + '</td>';
-    html += '<td style="font-family:Cormorant Garamond,serif;font-weight:700;font-size:14px;color:var(--coral);white-space:nowrap">' + (c.amount > 0 ? fmtMoney(c.amount) : "Free") + '</td>';
-    html += '<td><select onchange="updateStatus(' + c.id + ',this.value)" style="border:none;background:transparent;font-size:11px;cursor:pointer;color:var(--ink);font-family:Outfit,sans-serif">' + statusOptions + '</select></td>';
-    html += '<td style="font-size:11px;color:var(--mid);white-space:nowrap">' + fdDisplay + '</td>';
-    html += '<td style="font-size:10px;color:var(--soft);white-space:nowrap">' + (c.source||"—") + '</td>';
-    html += '<td style="font-size:10px;color:var(--mid);max-width:160px;white-space:pre-wrap;word-break:break-word">' + (c.notes ? c.notes.substring(0,80) + (c.notes.length>80?"…":"") : "—") + (c.internal ? '<div style="font-size:9px;color:var(--soft);font-style:italic;margin-top:2px">' + c.internal.substring(0,60) + '</div>' : '') + '</td>';
-    html += '<td style="white-space:nowrap"><button class="btn btn-danger btn-sm" onclick="deleteClient(' + c.id + ')">✕</button></td>';
-    html += "</tr>";
-  }
-  $("crmBody").innerHTML = html;
-}
-
-function filterCRM() {
-  var q = $("crmSearch").value.toLowerCase();
-  var f = $("crmFilter").value;
-  var filtered = S.clients.filter(function(c) {
-    var matchQ = !q ||
-      c.name.toLowerCase().indexOf(q) > -1 ||
-      (c.handle||"").toLowerCase().indexOf(q) > -1 ||
-      (c.email||"").toLowerCase().indexOf(q) > -1 ||
-      (c.bizname||"").toLowerCase().indexOf(q) > -1 ||
-      (c.bizstate||"").toLowerCase().indexOf(q) > -1;
-    var matchF = !f || c.status === f;
-    return matchQ && matchF;
-  });
-  renderCRM(filtered);
-}
-
-// ── WEEKLY REVIEW ─────────────────────────────────────────────────────────────
-function buildReview() {
-  var secColors = { Money: "#E07055", Content: "#6B9B6F", Sales: "#141414", Energy: "#888", NextWeek: "#B5503C" };
-  var grouped = {};
-  for (var i = 0; i < REVIEW_QUESTIONS.length; i++) {
-    var rq = REVIEW_QUESTIONS[i];
-    if (!grouped[rq.section]) grouped[rq.section] = [];
-    grouped[rq.section].push({ q: rq.q, i: i });
-  }
-  var html = "";
-  var sections = Object.keys(grouped);
-  for (var si = 0; si < sections.length; si++) {
-    var sec = sections[si];
-    var col = secColors[sec] || "#E07055";
-    html += '<div class="review-block">';
-    html += '<div class="review-head" style="border-bottom-color:' + col + '">' + sec + '</div>';
-    var qs = grouped[sec];
-    for (var qi = 0; qi < qs.length; qi++) {
-      html += '<div class="review-q"><label>' + qs[qi].q + '</label>';
-      html += '<input type="text" class="inp" placeholder="Your answer..." id="rq_' + qs[qi].i + '"></div>';
-    }
-    html += '</div>';
-  }
-  $("reviewContent").innerHTML = html;
-}
-
-function saveReview() {
-  toast("Weekly review saved! Great CEO work ✓", "#6B9B6F");
-}
-
-// ── ACTIVITY LOG ──────────────────────────────────────────────────────────────
-function addLog(type, text) {
-  S.log.unshift({ type: type, text: text, time: new Date() });
-  updateDashboard();
-}
-
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
-function updateDashboard() {
-  $("dKpiRev").textContent   = fmtMoney(S.revenue);
-  $("dKpiRevSub").textContent= S.sales.length > 0 ? S.sales.length + " sale" + (S.sales.length > 1 ? "s" : "") + " today" : "No sales yet";
-  $("dKpiSales").textContent = S.sales.length;
-  $("dKpiSalesSub").textContent = S.sales.length > 0 ? S.sales[0].name : "—";
-  var active = 0;
-  for (var i = 0; i < S.clients.length; i++) { if (S.clients[i].status === "active") active++; }
-  $("dKpiClients").textContent  = active;
-  $("dKpiCliSub").textContent   = S.clients.length + " in CRM";
-  var total = S.tasks.length;
-  var done  = 0; for (var i = 0; i < S.tasks.length; i++) { if (S.tasks[i].done) done++; }
-  var pct = total ? Math.round(done / total * 100) : 0;
-  $("dKpiTasks").textContent = pct + "%";
-  $("dKpiTaskSub").textContent = done + " of " + total;
-  $("dAReels").textContent  = S.stats.reels;
-  $("dADMs").textContent    = S.stats.dms;
-  $("dAFU").textContent     = S.stats.fu;
-  $("dALeads").textContent  = S.stats.leads;
-  $("dTaskCount").textContent = done + " / " + total;
-  $("dTaskBar").style.width = pct + "%";
-  var logItems = S.log.slice(0, 5);
-  if (!logItems.length) {
-    $("dLog").innerHTML = '<div style="color:var(--soft);font-size:12px;padding:8px 0;text-align:center">No activity yet</div>';
-    return;
-  }
-  var html = "";
-  for (var i = 0; i < logItems.length; i++) {
-    var e = logItems[i];
-    var dot = e.type === "sale" ? "dot-sale" : e.type === "in" ? "dot-in" : e.type === "out" ? "dot-out" : "dot-task";
-    html += '<div class="log-item"><div class="log-dot ' + dot + '"></div><div><div class="log-txt">' + e.text + '</div><div class="log-time">' + fmtShort(e.time) + '</div></div></div>';
-  }
-  $("dLog").innerHTML = html;
-}
-
-// ── SUBMIT DAY ────────────────────────────────────────────────────────────────
-function submitDay() {
-  var now = new Date();
-  var inT  = S.clockInTime  ? fmtShort(S.clockInTime)  : "Not recorded";
-  var outT = S.clockOutTime ? fmtShort(S.clockOutTime) : (S.clockedIn ? "Still working" : "Not recorded");
-  var hw = "—";
-  if (S.clockInTime) { var end = S.clockOutTime || now; hw = hoursWorked(S.clockInTime, end); }
-  var rows = [
-    { l: "Business",     v: "JOSS Consulting Group" },
-    { l: "Date",         v: now.toLocaleDateString("en-US") },
-    { l: "Clock In",     v: inT },
-    { l: "Clock Out",    v: outT },
-    { l: "Hours Worked", v: hw },
-    { l: "Reels Created",v: S.stats.reels },
-    { l: "DMs Sent",     v: S.stats.dms },
-    { l: "Follow-Ups",   v: S.stats.fu },
-    { l: "New Leads",    v: S.stats.leads },
-    { l: "Sales Closed", v: S.sales.length },
-    { l: "Revenue",      v: fmtMoney(S.revenue), money: true },
-    { l: "Energy Level", v: S.energy + "/10" },
-    { l: "Notes",        v: ($("notesInput").value||"—") }
-  ];
-
-  // ── POST DAILY SUMMARY TO GOOGLE SHEETS ──
-  var dayData = {};
-  for (var i = 0; i < rows.length; i++) { dayData[rows[i].l] = rows[i].v; }
-  dayData['Timestamp'] = now.toLocaleString('en-US');
-  if (S.sales.length) {
-    dayData['Sales Detail'] = S.sales.map(function(s){ return s.name + ' ($' + s.price + ')'; }).join(' | ');
-  }
-  postToSheets('Daily Tracker', dayData);
-
-  var html = "";
-  for (var i = 0; i < rows.length; i++) {
-    var r = rows[i];
-    html += '<div class="modal-row"><span class="modal-lbl">' + r.l + '</span><span class="modal-val' + (r.money ? " money" : "") + '">' + r.v + '</span></div>';
-  }
-  $("modalRows").innerHTML = html;
-  var csv = "";
-  for (var i = 0; i < rows.length; i++) { csv += rows[i].l + ": " + rows[i].v + "\n"; }
-  $("modalCode").textContent = csv.trim();
-  window._dayCSV = csv.trim();
-  $("modal").classList.add("open");
-}
-
-function copyDayData() {
-  if (navigator.clipboard && window._dayCSV) {
-    navigator.clipboard.writeText(window._dayCSV).catch(function(){});
-  }
-  toast("Data copied to clipboard!", "#6B9B6F");
-}
-
-function closeModal() {
-  $("modal").classList.remove("open");
-}
-
-// ── TOAST ─────────────────────────────────────────────────────────────────────
-function toast(msg, borderColor) {
-  var t = $("toast");
-  t.textContent = msg;
-  t.style.borderLeftColor = borderColor || "var(--coral)";
-  t.classList.add("show");
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2700);
-}
-
-// ── INIT ─────────────────────────────────────────────────────────────────────
-buildOffers();
-initTasks();
-buildReview();
-renderCRM();
-updateDashboard();
-setEnergy(7);
+init();
 </script>
 </body>
 </html>
