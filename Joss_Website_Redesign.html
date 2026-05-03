@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Your LLC the Right Way · Joss Consulting Group</title>
+<meta name="description" content="Done-for-you LLC setup by Yoldine J., MBA · Notary Public. Structured, compliant, and funding-ready in 7-14 business days. Limited time: $799.">
+
+<!-- Fonts: Playfair Display (editorial serif) + DM Sans (modern, characterful) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+     ============================================================ */
+  :root {
+    --coral: #F26C5C;
+    --coral-deep: #D9533F;
+    --coral-soft: #FBDED7;
+    --sage: #8FA68A;
+    --sage-deep: #5F7A5C;
+    --sage-soft: #DDE4D9;
+    --cream: #F7F1E8;
+    --cream-warm: #EFE6D7;
+    --ink: #1A1A1A;
+    --ink-soft: #3D3D3D;
+    --muted: #6B6B6B;
+    --line: rgba(26, 26, 26, 0.08);
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --max-w: 1200px;
+    --max-w-narrow: 880px;
+  }
+
+  /* ============================================================
+     RESET & BASE
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-padding-top: 80px; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+
+  /* Anchor scroll offset so sticky nav doesn't cover section headings */
+  section[id] { scroll-margin-top: 80px; }
+
+  /* Subtle paper-grain texture across the whole site */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0.04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+  .container--narrow { max-width: var(--max-w-narrow); }
+
+  /* ============================================================
+     PROMO BANNER
+     ============================================================ */
+  .promo-bar {
+    position: relative;
+    background: linear-gradient(135deg, var(--coral) 0%, var(--coral-deep) 100%);
+    color: #fff;
+    z-index: 100;
+    overflow: hidden;
+  }
+  .promo-bar::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--ink);
+  }
+  .promo-bar-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .promo-bar-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 5px 11px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 2px;
+  }
+  .promo-bar-dot {
+    width: 6px; height: 6px;
+    background: var(--coral);
+    border-radius: 50%;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+  .promo-bar-text { font-weight: 500; }
+  .promo-bar-text strong { font-weight: 700; }
+  .promo-bar-strike { text-decoration: line-through; opacity: 0.7; }
+  .promo-bar-price { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+  .promo-bar-cta {
+    background: #fff;
+    color: var(--coral-deep);
+    padding: 7px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border: 2px solid var(--ink);
+    border-radius: 3px;
+    transition: transform 0.15s ease;
+  }
+  .promo-bar-cta:hover { transform: translateY(-1px); }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background: rgba(247, 241, 232, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo-img {
+    height: 44px;
+    width: auto;
+    display: block;
+    border-radius: 6px;
+  }
+  .logo-mark {
+    width: 28px; height: 28px;
+    background: var(--coral);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--ink-soft);
+    transition: color 0.2s ease;
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--coral-deep); }
+  .nav-cta {
+    background: var(--ink);
+    color: #fff !important;
+    padding: 10px 18px;
+    border-radius: 3px;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background 0.2s ease;
+  }
+  .nav-cta:hover { background: var(--coral-deep); color: #fff !important; }
+  .mobile-menu-btn { display: none; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    position: relative;
+    padding: 80px 0 100px;
+    overflow: hidden;
+  }
+  /* Big arch decoration */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 60px;
+    right: -10%;
+    width: 700px;
+    height: 900px;
+    background: var(--coral-soft);
+    border-radius: 350px 350px 60px 60px;
+    transform: rotate(8deg);
+    opacity: 0.6;
+    z-index: 0;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    background: var(--sage-soft);
+    border-radius: 50%;
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+  }
+  .hero-eyebrow::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--sage-deep);
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(48px, 6.5vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--coral-deep);
+    font-weight: 600;
+  }
+  .hero-sub {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin-bottom: 36px;
+  }
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--ink);
+    color: #fff;
+    padding: 18px 32px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    transition: background 0.2s ease, transform 0.15s ease;
+    border: 2px solid var(--ink);
+  }
+  .btn-primary:hover { background: var(--coral-deep); border-color: var(--coral-deep); transform: translateY(-2px); }
+  .btn-primary svg { width: 16px; height: 16px; }
+  .btn-secondary {
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 1.5px;
+    transition: color 0.2s ease;
+  }
+  .btn-secondary:hover { color: var(--coral-deep); }
+  .hero-stats {
+    margin-top: 48px;
+    display: flex;
+    gap: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--coral-deep);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 6px;
+  }
+
+  /* Hero image with arch */
+  .hero-photo-wrap {
+    position: relative;
+    min-height: 620px;
+  }
+  .hero-photo-arch-shadow {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 85%;
+    height: 100%;
+    background: var(--sage);
+    border-radius: 280px 280px 30px 30px;
+    opacity: 0.5;
+    z-index: 1;
+  }
+  .hero-photo-arch {
+    position: absolute;
+    top: 0;
+    left: 50px;
+    width: 85%;
+    height: 100%;
+    background: var(--coral);
+    border-radius: 280px 280px 30px 30px;
+    z-index: 2;
+  }
+  .hero-photo {
+    position: absolute;
+    top: 12px;
+    left: 62px;
+    width: calc(85% - 24px);
+    height: calc(100% - 24px);
+    border-radius: 270px 270px 24px 24px;
+    overflow: hidden;
+    z-index: 3;
+  }
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 22%;
+  }
+  /* Floating price card */
+  .hero-price-card {
+    position: absolute;
+    top: 80px;
+    left: -10px;
+    background: var(--cream);
+    padding: 18px 24px;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    z-index: 4;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    transform: rotate(-4deg);
+  }
+  .hero-price-card-label {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    font-weight: 700;
+  }
+  .hero-price-card-strike {
+    font-family: var(--font-display);
+    font-size: 16px;
+    text-decoration: line-through;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .hero-price-card-price {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--coral-deep);
+    line-height: 1;
+    margin-top: 2px;
+  }
+  /* Floating credential card */
+  .hero-cred-card {
+    position: absolute;
+    bottom: 60px;
+    right: -10px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 16px 20px;
+    border-radius: 6px;
+    z-index: 4;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    transform: rotate(3deg);
+    max-width: 240px;
+  }
+  .hero-cred-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .hero-cred-creds {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .hero-cred-title {
+    font-size: 12px;
+    color: var(--cream);
+    opacity: 0.85;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     SOCIAL PROOF STRIP
+     ============================================================ */
+  .proof-strip {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 24px 0;
+    overflow: hidden;
+  }
+  .proof-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .proof-strip-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.85;
+  }
+  .proof-strip-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .proof-strip-divider {
+    width: 4px; height: 4px;
+    background: var(--coral);
+    border-radius: 50%;
+  }
+
+  /* ============================================================
+     PROBLEM SECTION
+     ============================================================ */
+  .problem {
+    padding: 120px 0;
+    position: relative;
+  }
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    margin-bottom: 24px;
+  }
+  .section-eyebrow::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--sage-deep);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 24px;
+  }
+  .section-title em {
+    font-style: italic;
+    color: var(--coral-deep);
+    font-weight: 600;
+  }
+  .section-lead {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 680px;
+    margin-bottom: 64px;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+  .problem-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 32px;
+    position: relative;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .problem-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+  }
+  .problem-card-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--coral-soft);
+    color: var(--coral-deep);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    font-style: italic;
+  }
+  .problem-card h3 {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .problem-card p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .problem-callout {
+    margin-top: 64px;
+    padding: 48px;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .problem-callout::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: var(--coral);
+    opacity: 0.15;
+    border-radius: 50%;
+  }
+  .problem-callout-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 500;
+    line-height: 1.3;
+    max-width: 760px;
+    margin: 0 auto 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .problem-callout-quote em {
+    color: var(--coral);
+    font-weight: 700;
+  }
+  .problem-callout-attr {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ============================================================
+     SOLUTION / WHAT'S INCLUDED
+     ============================================================ */
+  .solution {
+    padding: 120px 0;
+    background: var(--cream-warm);
+    position: relative;
+  }
+  .solution::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--line);
+  }
+  .solution-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 72px;
+  }
+  .solution-header .section-eyebrow {
+    justify-content: center;
+  }
+  .solution-header .section-eyebrow::before {
+    display: none;
+  }
+  .solution-header .section-eyebrow {
+    padding: 6px 14px;
+    background: var(--sage-soft);
+    color: var(--sage-deep);
+    border-radius: 50px;
+  }
+  .solution-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .feature-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+    position: relative;
+    transition: transform 0.25s ease;
+  }
+  .feature-card:hover { transform: translateY(-3px); }
+  .feature-card-num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--coral-deep);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 8px 0 12px;
+    color: var(--ink);
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .feature-card-icon-bar {
+    width: 36px;
+    height: 3px;
+    background: var(--coral);
+    margin-top: 20px;
+    border-radius: 2px;
+  }
+
+  /* Bonus block */
+  .bonus-block {
+    margin-top: 56px;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 56px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .bonus-block::before {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 300px;
+    height: 300px;
+    background: var(--coral);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+  .bonus-tag {
+    display: inline-block;
+    background: var(--coral);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 3px;
+    margin-bottom: 18px;
+  }
+  .bonus-block h3 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  .bonus-block h3 em { font-style: italic; color: var(--coral); }
+  .bonus-block p { font-size: 16px; opacity: 0.85; line-height: 1.55; }
+  .bonus-list {
+    list-style: none;
+    display: grid;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .bonus-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(247,241,232,0.1);
+  }
+  .bonus-list li:last-child { border-bottom: none; }
+  .bonus-list-num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--coral);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 50px;
+  }
+  .bonus-list-text strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .bonus-list-text span {
+    font-size: 13px;
+    opacity: 0.75;
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+     RESULTS SECTION
+     ============================================================ */
+  .results {
+    padding: 120px 0;
+    position: relative;
+  }
+  .results-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .results-list {
+    list-style: none;
+    margin-top: 32px;
+  }
+  .results-list li {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .results-list li:last-child { border-bottom: none; }
+  .results-list-check {
+    width: 28px;
+    height: 28px;
+    background: var(--coral);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .results-list-check svg { width: 14px; height: 14px; }
+  .results-image {
+    position: relative;
+    min-height: 540px;
+  }
+  .results-image-arch {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
+    border-radius: 240px 240px 12px 12px;
+    transform: rotate(-3deg);
+  }
+  .results-image-content {
+    position: absolute;
+    inset: 20px;
+    background: var(--cream);
+    border-radius: 220px 220px 6px 6px;
+    padding: 56px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .results-image-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .results-image-quote::before {
+    content: "“";
+    display: block;
+    font-size: 80px;
+    line-height: 0.5;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+  .results-image-author {
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--coral-deep);
+  }
+  .results-image-role {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     ABOUT YOLDINE
+     ============================================================ */
+  .about {
+    padding: 120px 0;
+    background: var(--cream-warm);
+    position: relative;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-photo-wrap {
+    position: relative;
+    min-height: 600px;
+  }
+  .about-photo-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 90%;
+    height: 100%;
+    background: var(--coral);
+    border-radius: 8px;
+    transform: rotate(-2deg);
+  }
+  .about-photo {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    width: 90%;
+    height: calc(100% - 20px);
+    background: url('headshot.png') center 22% / cover;
+    border-radius: 8px;
+    z-index: 2;
+  }
+  .about-credentials {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 24px 28px;
+    border-radius: 6px;
+    z-index: 3;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  }
+  .about-credentials-name {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .about-credentials-creds {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--coral);
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .about-credentials-title {
+    font-size: 13px;
+    color: var(--cream);
+    opacity: 0.85;
+    font-style: italic;
+    margin-top: 4px;
+  }
+  .about p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 20px;
+  }
+  .about p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    float: left;
+    line-height: 0.9;
+    margin: 6px 12px 0 0;
+    color: var(--coral-deep);
+  }
+  .about-sig {
+    margin-top: 32px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+  }
+
+  /* ============================================================
+     PROCESS / TIMELINE
+     ============================================================ */
+  .process { padding: 120px 0; }
+  .process-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 72px;
+  }
+  .process-header .section-eyebrow { justify-content: center; }
+  .process-header .section-eyebrow::before { display: none; }
+  .process-header .section-eyebrow {
+    padding: 6px 14px;
+    background: var(--coral-soft);
+    color: var(--coral-deep);
+    border-radius: 50px;
+  }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .process-steps::before {
+    content: "";
+    position: absolute;
+    top: 32px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 2px;
+    background: var(--coral);
+    opacity: 0.3;
+    z-index: 1;
+  }
+  .process-step {
+    text-align: center;
+    padding: 0 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .process-step-num {
+    width: 64px;
+    height: 64px;
+    background: var(--coral);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    border: 4px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--coral);
+  }
+  .process-step h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .process-step p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+
+  /* ============================================================
+     PRICING / OFFER
+     ============================================================ */
+  .pricing {
+    padding: 120px 0;
+    background: var(--ink);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing::before {
+    content: "";
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 500px; height: 500px;
+    background: var(--coral);
+    opacity: 0.12;
+    border-radius: 50%;
+  }
+  .pricing::after {
+    content: "";
+    position: absolute;
+    bottom: -150px; left: -150px;
+    width: 400px; height: 400px;
+    background: var(--sage);
+    opacity: 0.12;
+    border-radius: 50%;
+  }
+  .pricing-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 72px;
+    position: relative;
+    z-index: 2;
+  }
+  .pricing-header .section-eyebrow {
+    justify-content: center;
+    color: var(--coral);
+  }
+  .pricing-header .section-eyebrow::before { background: var(--coral); }
+  .pricing-header h2 {
+    color: var(--cream);
+  }
+  .pricing-card {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--cream);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 56px 56px 48px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+    border: 3px solid var(--coral);
+  }
+  .pricing-card-tag {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--coral);
+    color: #fff;
+    padding: 8px 20px;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-radius: 50px;
+  }
+  .pricing-card h3 {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .pricing-card-sub {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-bottom: 36px;
+  }
+  .pricing-amounts {
+    text-align: center;
+    margin-bottom: 36px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .pricing-strike {
+    font-family: var(--font-display);
+    font-size: 22px;
+    text-decoration: line-through;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .pricing-price {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 700;
+    color: var(--coral-deep);
+    line-height: 1;
+    margin: 8px 0;
+    letter-spacing: -0.02em;
+  }
+  .pricing-price .dollar {
+    font-size: 48px;
+    vertical-align: super;
+  }
+  .pricing-savings {
+    display: inline-block;
+    background: var(--sage-soft);
+    color: var(--sage-deep);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .pricing-includes {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 28px;
+    margin-bottom: 36px;
+  }
+  .pricing-includes li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .pricing-includes li::before {
+    content: "✓";
+    color: var(--coral-deep);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+  .pricing-cta-block {
+    text-align: center;
+  }
+  .pricing-promo-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .pricing-promo-code {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: 2px dashed var(--coral);
+  }
+  .btn-cta-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--coral);
+    color: #fff;
+    padding: 22px 48px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    border: 2px solid var(--ink);
+    box-shadow: 0 6px 0 var(--ink);
+    width: 100%;
+    max-width: 460px;
+  }
+  .btn-cta-large:hover {
+    background: var(--coral-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 var(--ink);
+  }
+  .btn-cta-large:active {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 var(--ink);
+  }
+  .pricing-guarantee {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+     FAQ
+     ============================================================ */
+  .faq { padding: 120px 0; }
+  .faq-header { text-align: center; max-width: 600px; margin: 0 auto 64px; }
+  .faq-header .section-eyebrow { justify-content: center; }
+  .faq-header .section-eyebrow::before { display: none; }
+  .faq-list { max-width: 800px; margin: 0 auto; }
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    padding-right: 8px;
+    transition: color 0.2s ease;
+  }
+  .faq-q:hover { color: var(--coral-deep); }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q-icon {
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+  }
+  .faq-item[open] .faq-q-icon {
+    transform: rotate(45deg);
+    background: var(--coral);
+    border-color: var(--coral);
+    color: #fff;
+  }
+  .faq-a {
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-right: 56px;
+  }
+
+  /* ============================================================
+     FINAL CTA
+     ============================================================ */
+  .final-cta {
+    padding: 120px 0;
+    background: var(--coral);
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: "";
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 400px; height: 400px;
+    background: var(--coral-deep);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+  .final-cta::after {
+    content: "";
+    position: absolute;
+    bottom: -150px; right: -100px;
+    width: 350px; height: 350px;
+    background: var(--ink);
+    opacity: 0.15;
+    border-radius: 50%;
+  }
+  .final-cta-inner { position: relative; z-index: 2; }
+  .final-cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5.5vw, 76px);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .final-cta h2 em { font-style: italic; }
+  .final-cta p {
+    font-size: 19px;
+    max-width: 580px;
+    margin: 0 auto 40px;
+    opacity: 0.95;
+  }
+  .btn-cta-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--cream);
+    color: var(--coral-deep);
+    padding: 22px 48px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    border: 2px solid var(--ink);
+    box-shadow: 0 6px 0 var(--ink);
+  }
+  .btn-cta-light:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 var(--ink);
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  .footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 80px 0 32px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 56px;
+  }
+  .footer-brand .logo { color: var(--cream); margin-bottom: 18px; font-size: 22px; }
+  .footer-brand p {
+    font-size: 14px;
+    opacity: 0.7;
+    line-height: 1.6;
+    max-width: 360px;
+  }
+  .footer h4 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    color: var(--coral);
+  }
+  .footer ul { list-style: none; }
+  .footer ul li { margin-bottom: 10px; }
+  .footer ul a {
+    font-size: 14px;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+  .footer ul a:hover { opacity: 1; color: var(--coral); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(247,241,232,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 960px) {
+    .hero-inner, .results-grid, .about-grid { grid-template-columns: 1fr; gap: 60px; }
+    .hero-photo-wrap, .results-image, .about-photo-wrap { min-height: 480px; max-width: 520px; margin: 0 auto; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .solution-grid { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 40px 0; }
+    .process-steps::before { display: none; }
+    .bonus-block { grid-template-columns: 1fr; padding: 40px; gap: 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .footer-brand { grid-column: 1 / -1; }
+    .pricing-includes { grid-template-columns: 1fr; }
+    .pricing-card { padding: 40px 28px 32px; }
+    .pricing-price { font-size: 72px; }
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 0 22px; }
+    .nav-links { display: none; }
+    .nav-links.nav-cta-only { display: flex; }
+    .nav-cta { padding: 9px 14px; font-size: 11px !important; }
+    .promo-bar-inner { padding: 10px 16px; gap: 10px; font-size: 12px; }
+    .promo-bar-tag { font-size: 9px; }
+    .hero { padding: 56px 0 80px; }
+    .problem, .solution, .results, .about, .process, .pricing, .faq, .final-cta { padding: 80px 0; }
+    .solution-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; }
+    .hero-cred-card, .hero-price-card { transform: none; }
+    .hero-price-card { left: 0; top: 30px; padding: 14px 18px; }
+    .hero-price-card-price { font-size: 32px; }
+    .hero-cred-card { right: 0; bottom: 30px; max-width: 200px; padding: 14px 16px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+
+  /* Reveal-on-scroll animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     PROMO BAR (top sticky banner)
+     ============================================================ -->
+<div class="promo-bar">
+  <div class="promo-bar-inner">
+    <span class="promo-bar-tag"><span class="promo-bar-dot"></span>Limited Time</span>
+    <span class="promo-bar-text">
+      Build your LLC the right way for
+      <span class="promo-bar-strike">$1,999</span>
+      <span class="promo-bar-price">$799</span>
+      <strong>— save $1,200</strong>
+    </span>
+    <a href="#offer" class="promo-bar-cta">Claim My Spot →</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <img src="logo.jpg" alt="Joss Consulting Group" class="logo-img">
+    </a>
+    <div class="nav-links">
+      <a href="#problem">Why Us</a>
+      <a href="#included">What's Included</a>
+      <a href="#about">About Yoldine</a>
+      <a href="#faq">FAQ</a>
+      <a href="#offer" class="nav-cta">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Done-For-You LLC Setup</div>
+        <h1>Build your LLC the <em>right way</em> the first time.</h1>
+        <p class="hero-sub">
+          Structured, compliant, and positioned for banking and funding readiness — without the guesswork or costly mistakes that get business owners denied.
+        </p>
+        <div class="hero-cta-row">
+          <a href="#offer" class="btn-primary">
+            Claim Your Spot — $799
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M13 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#included" class="btn-secondary">See what's included</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">7-14</div>
+            <div class="hero-stat-label">Business days to launch</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">40+</div>
+            <div class="hero-stat-label">Hours we save you</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">100%</div>
+            <div class="hero-stat-label">Funding-ready setup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-arch-shadow"></div>
+        <div class="hero-photo-arch"></div>
+        <div class="hero-photo">
+          <img src="headshot.png" alt="Yoldine J., MBA, Founder of Joss Consulting Group">
+        </div>
+        <div class="hero-price-card">
+          <div class="hero-price-card-label">Limited Time</div>
+          <div class="hero-price-card-strike">$1,999</div>
+          <div class="hero-price-card-price">$799</div>
+        </div>
+        <div class="hero-cred-card">
+          <div class="hero-cred-name">Yoldine J.</div>
+          <div class="hero-cred-creds">MBA · Notary Public</div>
+          <div class="hero-cred-title">Business Formation Strategist</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SOCIAL PROOF STRIP
+     ============================================================ -->
+<section class="proof-strip">
+  <div class="container">
+    <div class="proof-strip-inner">
+      <div class="proof-strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Filed with Secretary of State
+      </div>
+      <div class="proof-strip-divider"></div>
+      <div class="proof-strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Funding-Ready Setup
+      </div>
+      <div class="proof-strip-divider"></div>
+      <div class="proof-strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        100% Compliance Guaranteed
+      </div>
+      <div class="proof-strip-divider"></div>
+      <div class="proof-strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Done in 7-14 Days
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROBLEM SECTION
+     ============================================================ -->
+<section class="problem" id="problem">
+  <div class="container container--narrow">
+    <div class="section-eyebrow">The hidden problem</div>
+    <h2 class="section-title">Why so many business owners get <em>denied funding.</em></h2>
+    <p class="section-lead">
+      Lenders and banks don't deny entrepreneurs because they're unqualified. They deny them because of the small details that make a business look amateur on paper.
+    </p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-card-icon">i</div>
+        <h3>Personal email & phone number</h3>
+        <p>Using a Gmail address and your cell phone signals "side hustle" — not "established business."</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon">ii</div>
+        <h3>Home address as business address</h3>
+        <p>Your home address on lender applications immediately raises red flags about legitimacy.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon">iii</div>
+        <h3>Mismatched business info</h3>
+        <p>One typo across the IRS, your bank, and the Secretary of State = automatic denial.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon">iv</div>
+        <h3>No operating agreement</h3>
+        <p>Lenders ask for it. Without it, they assume you're not a real, structured entity.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon">v</div>
+        <h3>No business bank account</h3>
+        <p>Mixing personal and business finances destroys your funding chances before you start.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-card-icon">vi</div>
+        <h3>Invisible online presence</h3>
+        <p>No website. No 411 listing. No Google profile. To a lender, you're a ghost.</p>
+      </div>
+    </div>
+
+    <div class="problem-callout">
+      <div class="problem-callout-quote">
+        When lenders notice these gaps, they say <em>"no."</em><br>Let's make sure that never happens to you.
+      </div>
+      <div class="problem-callout-attr">— Yoldine J., Joss Consulting Group</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SOLUTION / WHAT'S INCLUDED
+     ============================================================ -->
+<section class="solution" id="included">
+  <div class="container">
+    <div class="solution-header">
+      <div class="section-eyebrow">The Joss method</div>
+      <h2 class="section-title">Everything you need, <em>handled by experts.</em></h2>
+      <p class="section-lead" style="margin: 0 auto;">
+        13 components, 1 streamlined process, 0 guesswork. We set up your business the way it should have been from day one.
+      </p>
+    </div>
+
+    <div class="solution-grid">
+      <div class="feature-card">
+        <span class="feature-card-num">01 / Foundation</span>
+        <h3>LLC or Corporation Filing</h3>
+        <p>Filed correctly with your Secretary of State, with the right structure for your business goals.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">02 / Strategy</span>
+        <h3>Low-Risk Name & NAICS Codes</h3>
+        <p>We screen your name and select industry codes that don't trigger lender or insurance red flags.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">03 / Compliance</span>
+        <h3>Registered Agent Service</h3>
+        <p>Your official point of contact for state notices and legal documents — kept current and reliable.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">04 / Legal</span>
+        <h3>LLC Operating Agreement</h3>
+        <p>The legal document banks and lenders ask for — drafted, signed, and ready to present.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">05 / Tax ID</span>
+        <h3>Free EIN Number</h3>
+        <p>Your federal tax ID — required for hiring, banking, and filing taxes — included at no extra cost.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">06 / Credit</span>
+        <h3>Free DUNS Number</h3>
+        <p>Your business credit identifier — the foundation for building credit lenders actually trust.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">07 / Identity</span>
+        <h3>Domain & Business Email</h3>
+        <p>A professional domain and matching email — instantly more credible than yourname@gmail.com.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">08 / Privacy</span>
+        <h3>Virtual Office Address</h3>
+        <p>A real business address that protects your home privacy and meets every lender requirement.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">09 / Communication</span>
+        <h3>800 Phone Number & Fax</h3>
+        <p>A dedicated business line and fax — separating you from the side-hustle crowd.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">10 / Permits</span>
+        <h3>License Report</h3>
+        <p>Federal, state, and local — a complete report of every license your business needs to operate.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">11 / Visibility</span>
+        <h3>Public Directory Listings</h3>
+        <p>Listed on 411, Google Business, and Yelp — searchable, verifiable, and findable by lenders.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card-num">12 / Banking</span>
+        <h3>Bank Account Setup Guidance</h3>
+        <p>Step-by-step direction on opening business bank accounts the right way, the first time.</p>
+        <div class="feature-card-icon-bar"></div>
+      </div>
+    </div>
+
+    <div class="bonus-block">
+      <div>
+        <div class="bonus-tag">+ Free Bonuses Worth $497</div>
+        <h3>Plus three <em>powerful tools</em> to keep you moving.</h3>
+        <p>Three resources you'd typically pay for separately — yours included free with your setup.</p>
+      </div>
+      <ul class="bonus-list">
+        <li>
+          <div class="bonus-list-num">01</div>
+          <div class="bonus-list-text">
+            <strong>30-Day Action Plan Workbook</strong>
+            <span>A guided week-by-week plan to keep your business launch on track during the critical first month.</span>
+          </div>
+        </li>
+        <li>
+          <div class="bonus-list-num">02</div>
+          <div class="bonus-list-text">
+            <strong>Business Compliance Tracker</strong>
+            <span>One central place to organize every business credential, account, and renewal date so nothing slips.</span>
+          </div>
+        </li>
+        <li>
+          <div class="bonus-list-num">03</div>
+          <div class="bonus-list-text">
+            <strong>Business Funding List</strong>
+            <span>Our curated list of banks, lenders, and credit lines that work with newly-formed businesses.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESULTS SECTION
+     ============================================================ -->
+<section class="results">
+  <div class="container">
+    <div class="results-grid">
+      <div>
+        <div class="section-eyebrow">Your results</div>
+        <h2 class="section-title">What your business will <em>look like</em> after.</h2>
+        <ul class="results-list">
+          <li>
+            <span class="results-list-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+            <span>Confidence to apply for funding without second-guessing your setup</span>
+          </li>
+          <li>
+            <span class="results-list-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+            <span>Your home address, personal phone, and Gmail — completely separated from your business</span>
+          </li>
+          <li>
+            <span class="results-list-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+            <span>Every business credential organized in one accessible place</span>
+          </li>
+          <li>
+            <span class="results-list-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+            <span>A professional appearance to lenders, clients, and partners</span>
+          </li>
+          <li>
+            <span class="results-list-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+            <span>40+ hours of research and applications saved</span>
+          </li>
+          <li>
+            <span class="results-list-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span>
+            <span>Time and energy returned to actually running your business</span>
+          </li>
+        </ul>
+      </div>
+      <div class="results-image">
+        <div class="results-image-arch"></div>
+        <div class="results-image-content">
+          <div class="results-image-quote">
+            Everything was explained clearly — from licenses and permits to what lenders actually look for. I stopped guessing and finally felt prepared to move toward funding the right way.
+          </div>
+          <div class="results-image-author">Sophia M.</div>
+          <div class="results-image-role">Entrepreneur · DFY LLC Setup Client</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ABOUT YOLDINE
+     ============================================================ -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-photo-wrap">
+        <div class="about-photo-bg"></div>
+        <div class="about-photo"></div>
+        <div class="about-credentials">
+          <div class="about-credentials-name">Yoldine J.</div>
+          <div class="about-credentials-creds">MBA · Notary Public</div>
+          <div class="about-credentials-title">Business Formation Strategist</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-eyebrow">Meet your strategist</div>
+        <h2 class="section-title">I built this because too many founders were <em>doing it wrong.</em></h2>
+        <p>
+          I've watched too many ambitious entrepreneurs build incredible businesses on broken foundations — only to be turned down by lenders for reasons that had nothing to do with their actual business potential.
+        </p>
+        <p>
+          With my MBA, my Notary Public credential, and years inside business formation, I built Joss Consulting Group to close the gap. To make sure smart, hardworking founders never lose funding, deals, or partnerships because of paperwork mistakes.
+        </p>
+        <p>
+          Every LLC I set up is structured the way I'd structure my own — for credibility, for compliance, and for the funding doors that need to open in your future.
+        </p>
+        <div class="about-sig">— Yoldine</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROCESS / TIMELINE
+     ============================================================ -->
+<section class="process">
+  <div class="container">
+    <div class="process-header">
+      <div class="section-eyebrow">The process</div>
+      <h2 class="section-title">From <em>checkout</em> to <em>fully launched</em> in 4 steps.</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="process-step-num">1</div>
+        <h3>Secure Your Spot</h3>
+        <p>Complete your order and reserve your place in our queue. You'll get a confirmation email immediately.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">2</div>
+        <h3>Quick Intake Form</h3>
+        <p>Fill out a short intake form so we have everything we need to begin building your business.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">3</div>
+        <h3>Onboarding (1-3 Days)</h3>
+        <p>We start work within 1-3 business days, walking you through every step in clear, plain English.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">4</div>
+        <h3>Fully Launched</h3>
+        <p>Your business is officially set up in 7-14 business days. You walk away ready to bank, fund, and grow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRICING / OFFER
+     ============================================================ -->
+<section class="pricing" id="offer">
+  <div class="container">
+    <div class="pricing-header">
+      <div class="section-eyebrow">The offer</div>
+      <h2 class="section-title">A complete business setup for <em>$1,200 less.</em></h2>
+      <p class="section-lead" style="color: rgba(247,241,232,0.85); margin: 0 auto;">
+        Limited spots available at this price. Once they're claimed, the offer returns to $1,999.
+      </p>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-card-tag">Limited Time Offer</div>
+      <h3>Done-For-You LLC Setup</h3>
+      <p class="pricing-card-sub">Everything you need to launch a credible, compliant, funding-ready business.</p>
+
+      <div class="pricing-amounts">
+        <div class="pricing-strike">$1,999</div>
+        <div class="pricing-price"><span class="dollar">$</span>799</div>
+        <div class="pricing-savings">You save $1,200</div>
+      </div>
+
+      <ul class="pricing-includes">
+        <li>LLC / Corp filed with the Secretary of State</li>
+        <li>Registered Agent + Operating Agreement</li>
+        <li>Free EIN & DUNS Numbers</li>
+        <li>Domain, business email, virtual address</li>
+        <li>800 phone number & fax line</li>
+        <li>Federal, State & Local License Report</li>
+        <li>411, Google & Yelp directory listings</li>
+        <li>Bank & social account setup guidance</li>
+        <li><strong>BONUS:</strong> 30-Day Action Plan Workbook</li>
+        <li><strong>BONUS:</strong> Business Compliance Tracker</li>
+        <li><strong>BONUS:</strong> Business Funding List</li>
+        <li>Direct email support throughout setup</li>
+      </ul>
+
+      <div class="pricing-cta-block">
+        <div class="pricing-promo-row">
+          Use code <span class="pricing-promo-code">CEO799</span> at checkout
+        </div>
+        <a href="checkout.html" class="btn-cta-large">
+          Claim Your Spot Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:18px;height:18px;">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <p class="pricing-guarantee">
+          Setup fee only. State filing fees, domain ($12/yr), registered agent ($50+/yr), email ($8/mo), 800 number ($20/mo), and virtual address ($20-100/mo) are not included. Most setups complete in 7-14 business days.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-eyebrow">Common questions</div>
+      <h2 class="section-title">Questions, <em>answered.</em></h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary class="faq-q">
+          What's actually included in the $799 setup fee?
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          The $799 covers our setup service — every component listed above, plus the bonus tools. It does not include third-party fees like state filing fees, domain registration ($12/yr), registered agent ($50+/yr), email ($8/mo), 800 number ($20/mo), or virtual address ($20-$100/mo). We're transparent about this upfront so there are no surprises.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">
+          How long does the setup take?
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          Most setups are completed in 7-14 business days. The exact timeline depends on your state's processing time for LLC filings, which is outside our control. We start work within 1-3 business days of your intake form being submitted.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">
+          What if I've already started forming my LLC?
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          That's fine — many of our clients come to us partway through. We'll review what you've already done, identify what's missing or set up incorrectly, and complete the rest. We'll make sure everything is consistent across the IRS, your state, and any platforms you've registered on.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">
+          Do you offer refunds?
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          Due to the nature of this service — which involves time-sensitive filings and irreversible work — all sales are final. We're upfront about this so you can make a confident decision before purchasing. If you have questions before signing up, we encourage you to reach out first.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">
+          Is this for new businesses only, or can existing businesses use it too?
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          Both. We work with brand-new founders forming their first LLC, as well as established business owners who want to clean up a setup that wasn't done right the first time. If you're not sure where you stand, that's exactly why this service exists.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">
+          Will I be guided through the process or left to figure it out?
+          <span class="faq-q-icon">+</span>
+        </summary>
+        <div class="faq-a">
+          You'll have direct support throughout. We send clear instructions for the steps you need to complete (like signing documents and opening your business bank account) and handle the rest ourselves. You'll never be left wondering what to do next.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="final-cta">
+  <div class="container final-cta-inner">
+    <h2>Move like the <em>CEO</em><br>you were born to be.</h2>
+    <p>Stop second-guessing your setup. Stop losing funding to paperwork mistakes. Let's build your business on the foundation it deserves.</p>
+    <a href="#offer" class="btn-cta-light">
+      Get Started — $799
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:18px;height:18px;">
+        <path d="M5 12h14M13 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <img src="logo.jpg" alt="Joss Consulting Group" class="logo-img" style="height: 56px;">
+        </a>
+        <p>Helping ambitious founders build credible, compliant, funding-ready businesses. Led by Yoldine J., MBA · Notary Public.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#problem">Why Us</a></li>
+          <li><a href="#included">What's Included</a></li>
+          <li><a href="#about">About Yoldine</a></li>
+          <li><a href="#offer">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/jossonbusiness/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.facebook.com/profile.php?id=61574869033012" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.tiktok.com/@jossonbusiness" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="https://www.youtube.com/@Jossonbusiness" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="mailto:support@jossconsultinggroup.com">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Joss Consulting Group · JCG™ · All Rights Reserved</div>
+      <div><a href="https://drive.google.com/file/d/1IqvR0CWBS86ofazILCXeaZq_BpfEiYXi/view" target="_blank" rel="noopener" style="opacity:0.7;">Terms &amp; Conditions</a> · <a href="https://drive.google.com/file/d/1IqvR0CWBS86ofazILCXeaZq_BpfEiYXi/view" target="_blank" rel="noopener" style="opacity:0.7;">Privacy Policy</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ============================================================
+  // SMOOTH SCROLL FOR ALL ANCHOR LINKS
+  // Works for nav links (Why Us, What's Included, About Yoldine, FAQ),
+  // the GET STARTED button, all CTA buttons (#offer), and footer links.
+  // Uses JS instead of CSS-only so it works reliably in GHL, embedded
+  // contexts, and across all browsers.
+  // ============================================================
+  (function() {
+    // Get the sticky nav height so scroll lands BELOW it, not behind it
+    function getNavOffset() {
+      var nav = document.querySelector('.nav');
+      return nav ? nav.offsetHeight + 12 : 80;
+    }
+
+    // Attach a click handler to every anchor link that points to an in-page ID
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+
+        // Skip empty hashes (#) and let normal links behave normally
+        if (!href || href === '#') return;
+
+        var target = document.querySelector(href);
+        if (!target) return;  // anchor doesn't exist, let browser handle it
+
+        e.preventDefault();
+
+        var targetTop = target.getBoundingClientRect().top + window.pageYOffset;
+        var scrollTo = targetTop - getNavOffset();
+
+        window.scrollTo({
+          top: scrollTo,
+          behavior: 'smooth'
+        });
+
+        // Update the URL hash without jumping (after scroll starts)
+        if (history.pushState) {
+          history.pushState(null, null, href);
+        }
+      });
+    });
+  })();
+
+  // ============================================================
+  // REVEAL-ON-SCROLL using IntersectionObserver
+  // ============================================================
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
